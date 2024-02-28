@@ -83,7 +83,7 @@ const SignInForm = (props: SignInFormProps) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="User Name"
+                                label="Usuario"
                                 invalid={
                                     (errors.userName &&
                                         touched.userName) as boolean
@@ -99,10 +99,9 @@ const SignInForm = (props: SignInFormProps) => {
                                 />
                             </FormItem>
                             <FormItem
-                                label="Password"
+                                label="Contraseña"
                                 invalid={
-                                    (errors.password &&
-                                        touched.password) as boolean
+                                     (errors.password && touched.password) as boolean
                                 }
                                 errorMessage={errors.password}
                             >
@@ -119,10 +118,10 @@ const SignInForm = (props: SignInFormProps) => {
                                     name="rememberMe"
                                     component={Checkbox}
                                 >
-                                    Remember Me
+                                    Recuerdame 
                                 </Field>
                                 <ActionLink to={forgotPasswordUrl}>
-                                    Forgot Password?
+                                    Olvidaste tu contraseña?
                                 </ActionLink>
                             </div>
                             <Button
@@ -131,11 +130,11 @@ const SignInForm = (props: SignInFormProps) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {isSubmitting ? 'Signing in...' : 'Sign In'}
+                                {isSubmitting ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>{`Don't have an account yet?`} </span>
-                                <ActionLink to={signUpUrl}>Sign up</ActionLink>
+                                <span>{`Aún no tienes una cuenta?`} </span>
+                                <ActionLink to={signUpUrl}>Regístrate</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

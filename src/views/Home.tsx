@@ -1,5 +1,5 @@
 const Home = () => {
-    return <div>Home</div>
+    return <div>BACKOFFICE CASHIN</div>
 }
 
 export default Home
