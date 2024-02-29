@@ -5,7 +5,8 @@
             "home":"Inicio",
             "products":"Productos",
             "listproducts":"Listado de Productos",
-            "newproduct":"Crear Producto"
+            "newproduct":"Crear Producto",
+            "inventory":"Inventario"
         }
     }
 }

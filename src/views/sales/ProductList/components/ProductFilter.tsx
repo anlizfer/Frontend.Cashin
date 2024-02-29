@@ -248,10 +248,10 @@ const ProductFilter = () => {
                 icon={<HiOutlineFilter />}
                 onClick={() => openDrawer()}
             >
-                Filter
+                Filtrar
             </Button>
             <Drawer
-                title="Filter"
+                title="Filtro Producto"
                 isOpen={isOpen}
                 footer={
                     <DrawerFooter

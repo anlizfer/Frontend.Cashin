@@ -42,17 +42,17 @@ const inventoryStatusColor: Record<
     }
 > = {
     0: {
-        label: 'In Stock',
+        label: 'En Stock',
         dotClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
     },
     1: {
-        label: 'Limited',
+        label: 'Limitado',
         dotClass: 'bg-amber-500',
         textClass: 'text-amber-500',
     },
     2: {
-        label: 'Out of Stock',
+        label: 'Fuera de Stock',
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
     },
@@ -64,7 +64,7 @@ const ActionColumn = ({ row }: { row: Product }) => {
     const navigate = useNavigate()
 
     const onEdit = () => {
-        navigate(`/app/sales/product-edit/${row.id}`)
+        navigate(`/app/product/${row.id}`)
     }
 
     const onDelete = () => {
@@ -149,7 +149,7 @@ const ProductTable = () => {
     const columns: ColumnDef<Product>[] = useMemo(
         () => [
             {
-                header: 'Name',
+                header: 'Producto',
                 accessorKey: 'name',
                 cell: (props) => {
                     const row = props.row.original
@@ -157,7 +157,7 @@ const ProductTable = () => {
                 },
             },
             {
-                header: 'Category',
+                header: 'Categoría',
                 accessorKey: 'category',
                 cell: (props) => {
                     const row = props.row.original
@@ -165,12 +165,12 @@ const ProductTable = () => {
                 },
             },
             {
-                header: 'Quantity',
+                header: 'Cantidad',
                 accessorKey: 'stock',
                 sortable: true,
             },
             {
-                header: 'Status',
+                header: 'Estado',
                 accessorKey: 'status',
                 cell: (props) => {
                     const { status } = props.row.original
@@ -191,7 +191,7 @@ const ProductTable = () => {
                 },
             },
             {
-                header: 'Price',
+                header: 'Precio',
                 accessorKey: 'price',
                 cell: (props) => {
                     const { price } = props.row.original

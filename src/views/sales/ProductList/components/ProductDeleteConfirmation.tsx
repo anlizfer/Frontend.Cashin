@@ -33,11 +33,11 @@ const ProductDeleteConfirmation = () => {
             dispatch(getProducts(tableData))
             toast.push(
                 <Notification
-                    title={'Successfuly Deleted'}
+                    title={'Eliminado exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Product successfuly deleted
+                    Producto eliminado exitosamente
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -50,7 +50,7 @@ const ProductDeleteConfirmation = () => {
         <ConfirmDialog
             isOpen={dialogOpen}
             type="danger"
-            title="Delete product"
+            title="Borrar Producto"
             confirmButtonColor="red-600"
             onClose={onDialogClose}
             onRequestClose={onDialogClose}
@@ -58,9 +58,9 @@ const ProductDeleteConfirmation = () => {
             onConfirm={onDelete}
         >
             <p>
-                Are you sure you want to delete this product? All record related
-                to this product will be deleted as well. This action cannot be
-                undone.
+            ¿Estás seguro de que deseas eliminar este producto? También se eliminarán todos 
+            los registros relacionados con este producto. 
+            Esta acción no se puede deshacer.
             </p>
         </ConfirmDialog>
     )

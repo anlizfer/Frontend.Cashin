@@ -16,6 +16,25 @@ export const protectedRoutes = [
     {
         key: 'products.list',
         path: `${APP_PREFIX_PATH}/product-list`,
+        component: lazy(() => import('@/views/sales/ProductList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'products.create',
+        path: `${APP_PREFIX_PATH}/product/`,
+        component: lazy(() => import('@/views/sales/ProductForm')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'products.edit',
+        path: `${APP_PREFIX_PATH}/product/:productId?`,
+        component: lazy(() => import('@/views/sales/ProductEdit')),
+        authority: [ADMIN, USER],
+    },
+    
+    {
+        key: 'products.inventory',
+        path: `${APP_PREFIX_PATH}/inventory`,
         component: lazy(() => import('@/views/sales/SalesDashboard')),
         authority: [ADMIN, USER],
     }

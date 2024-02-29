@@ -13,7 +13,15 @@ type DropdownList = {
     icon: JSX.Element
 }
 
-const dropdownItemList: DropdownList[] = []
+const dropdownItemList: DropdownList[] = [
+    {
+        label: 'Cuenta',
+        path: '/app/user',
+        icon: <HiOutlineUser />,
+    }
+]
+
+
 
 const _UserDropdown = ({ className }: CommonProps) => {
 
@@ -76,7 +84,7 @@ const _UserDropdown = ({ className }: CommonProps) => {
                     <span className="text-xl opacity-50">
                         <HiOutlineLogout />
                     </span>
-                    <span>Sign Out</span>
+                    <span>Cerrar Sesión</span>
                 </Dropdown.Item>
             </Dropdown>
         </div>
