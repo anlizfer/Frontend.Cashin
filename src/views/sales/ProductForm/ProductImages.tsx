@@ -209,7 +209,7 @@ const ProductImages = (props: ProductImagesProps) => {
                                                 darkModeSrc="/img/others/upload-dark.png"
                                             />
                                             <p className="font-semibold text-center text-gray-800 dark:text-white">
-                                                Subir
+                                                Sel. Imágen
                                             </p>
                                         </div>
                                     </Upload>
