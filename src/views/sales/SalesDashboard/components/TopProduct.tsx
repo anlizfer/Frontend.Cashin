@@ -43,14 +43,14 @@ const columnHelper = createColumnHelper<Product>()
 
 const columns = [
     columnHelper.accessor('name', {
-        header: 'Product',
+        header: 'Producto',
         cell: (props) => {
             const row = props.row.original
             return <ProductColumn row={row} />
         },
     }),
     columnHelper.accessor('sold', {
-        header: 'Sold',
+        header: 'Ventas',
     }),
 ]
 
@@ -64,8 +64,8 @@ const TopProduct = ({ data = [], className }: TopProductProps) => {
     return (
         <Card className={className}>
             <div className="flex items-center justify-between mb-4">
-                <h4>Top Selling</h4>
-                <Button size="sm">View Products</Button>
+                <h4>Top Ventas</h4>
+                <Button size="sm">Ver Productos</Button>
             </div>
             <Table>
                 <THead>

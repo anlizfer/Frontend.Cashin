@@ -1,7 +1,11 @@
 {
     "nav": {
-        "home": "Inicio"        
-        
-        
+        "menu": "Menú",
+        "submenu": {
+            "home":"Inicio",
+            "products":"Productos",
+            "listproducts":"Listado de Productos",
+            "newproduct":"Crear Producto"
+        }
     }
 }

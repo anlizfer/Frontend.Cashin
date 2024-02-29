@@ -51,7 +51,7 @@ const StatisticCard = ({
                         />
                     </h3>
                     <p>
-                        vs. 3 months prior to{' '}
+                        vs. 3 meses antes de {' '}
                         <span className="font-semibold">
                             {dayjs(date).format('DD MMM')}
                         </span>
@@ -73,14 +73,17 @@ const Statistic = ({ data = {} }: StatisticProps) => {
             <StatisticCard
                 data={data.revenue}
                 valuePrefix="$"
-                label="Revenue"
+                label="Ganancias"
                 date={startDate}
             />
-            <StatisticCard data={data.orders} label="Orders" date={startDate} />
+            <StatisticCard 
+                data={data.orders} 
+                label="Ordenes" 
+                date={startDate} />
             <StatisticCard
                 data={data.purchases}
                 valuePrefix="$"
-                label="Purchases"
+                label="Ventas"
                 date={startDate}
             />
         </div>

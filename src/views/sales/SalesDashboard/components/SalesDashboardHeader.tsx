@@ -34,8 +34,8 @@ const SalesDashboardHeader = () => {
     return (
         <div className="lg:flex items-center justify-between mb-4 gap-3">
             <div className="mb-4 lg:mb-0">
-                <h3>Sales Overview</h3>
-                <p>View your current sales & summary</p>
+                <h3>Ordenes</h3>
+                <p>Ver tus ordenes actuales y resumen</p>
             </div>
             <div className="flex flex-col lg:flex-row lg:items-center gap-3">
                 <DatePickerRange
@@ -45,10 +45,11 @@ const SalesDashboardHeader = () => {
                     ]}
                     inputFormat={dateFormat}
                     size="sm"
+                    locale='es'                    
                     onChange={handleDateChange}
                 />
                 <Button size="sm" icon={<HiOutlineFilter />} onClick={onFilter}>
-                    Filter
+                    Filtrar
                 </Button>
             </div>
         </div>

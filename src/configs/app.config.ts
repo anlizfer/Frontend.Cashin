@@ -1,3 +1,5 @@
+import { APP_PREFIX_PATH } from "@/constants/route.constant"
+
 export type AppConfig = {
     apiPrefix: string
     authenticatedEntryPath: string
@@ -9,7 +11,7 @@ export type AppConfig = {
 
 const appConfig: AppConfig = {
     apiPrefix: '/api',
-    authenticatedEntryPath: '/home',
+    authenticatedEntryPath: `${APP_PREFIX_PATH}/home`,
     unAuthenticatedEntryPath: '/login',
     tourPath: '/',
     locale: 'es',

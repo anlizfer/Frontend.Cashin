@@ -78,11 +78,11 @@ const columnHelper = createColumnHelper<Order>()
 
 const columns = [
     columnHelper.accessor('id', {
-        header: 'Order',
+        header: 'Orden',
         cell: (props) => <OrderColumn row={props.row.original} />,
     }),
     columnHelper.accessor('status', {
-        header: 'Status',
+        header: 'Estado',
         cell: (props) => {
             const { status } = props.row.original
             return (
@@ -98,17 +98,17 @@ const columns = [
         },
     }),
     columnHelper.accessor('date', {
-        header: 'Date',
+        header: 'Fecha',
         cell: (props) => {
             const row = props.row.original
             return <span>{dayjs.unix(row.date).format('DD/MM/YYYY')}</span>
         },
     }),
     columnHelper.accessor('customer', {
-        header: 'Customer',
+        header: 'Cliente',
     }),
     columnHelper.accessor('totalAmount', {
-        header: 'Profile Progress',
+        header: 'Total',
         cell: (props) => {
             const { totalAmount } = props.row.original
             return (
@@ -133,8 +133,8 @@ const LatestOrder = ({ data = [], className }: LatestOrderProps) => {
     return (
         <Card className={className}>
             <div className="flex items-center justify-between mb-6">
-                <h4>Latest Orders</h4>
-                <Button size="sm">View Orders</Button>
+                <h4>Últimas Órdenes</h4>
+                <Button size="sm">Ver Todas</Button>
             </div>
             <Table>
                 <THead>

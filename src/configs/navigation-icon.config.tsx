@@ -5,15 +5,14 @@ import {
     HiOutlineViewGridAdd,
     HiOutlineHome,
 } from 'react-icons/hi'
+import { MdSportsBasketball } from "react-icons/md";
+
 
 export type NavigationIcons = Record<string, JSX.Element>
 
 const navigationIcon: NavigationIcons = {
     home: <HiOutlineHome />,
-    singleMenu: <HiOutlineViewGridAdd />,
-    collapseMenu: <HiOutlineTemplate />,
-    groupSingleMenu: <HiOutlineDesktopComputer />,
-    groupCollapseMenu: <HiOutlineColorSwatch />,
+    products:<MdSportsBasketball />
 }
 
 export default navigationIcon

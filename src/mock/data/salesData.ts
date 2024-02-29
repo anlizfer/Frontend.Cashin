@@ -42,31 +42,31 @@ export const salesDashboardData = {
     topProductsData: [
         {
             id: '12',
-            name: 'Luminaire Giotto Headphones',
+            name: 'Audifonos Sorny',
             img: '/img/products/product-1.jpg',
             sold: 252,
         },
         {
             id: '14',
-            name: 'Black Sneaker',
+            name: 'Sneaker Negro',
             img: '/img/products/product-3.jpg',
             sold: 186,
         },
         {
             id: '15',
-            name: 'Gray Hoodies',
+            name: 'Buzo Armani',
             img: '/img/products/product-4.jpg',
             sold: 166,
         },
         {
             id: '16',
-            name: 'Blue Backpack',
+            name: 'Bolso Perrito',
             img: '/img/products/product-5.jpg',
             sold: 93,
         },
         {
             id: '18',
-            name: 'Strip Analog Watch',
+            name: 'Reloj RoleZZZ',
             img: '/img/products/product-7.jpg',
             sold: 81,
         },
@@ -75,7 +75,7 @@ export const salesDashboardData = {
         {
             id: '95954',
             date: 1660132800,
-            customer: 'Ron Vargas',
+            customer: 'Angel Lizcano',
             status: 0,
             paymentMehod: 'visa',
             paymentIdendifier: '•••• 6165',
@@ -84,7 +84,7 @@ export const salesDashboardData = {
         {
             id: '95423',
             date: 1659132800,
-            customer: 'Carolyn Hanso',
+            customer: 'Omar Narvaez',
             status: 0,
             paymentMehod: 'visa',
             paymentIdendifier: '•••• 7128',
@@ -93,7 +93,7 @@ export const salesDashboardData = {
         {
             id: '92903',
             date: 1658132800,
-            customer: 'Gabriella May',
+            customer: 'Gabriela Novoa',
             status: 1,
             paymentMehod: 'paypal',
             paymentIdendifier: '••••@gmail.com',
@@ -102,7 +102,7 @@ export const salesDashboardData = {
         {
             id: '92627',
             date: 1657332800,
-            customer: 'Tara Fletcher',
+            customer: 'Gisell Avellaneda',
             status: 2,
             paymentMehod: 'master',
             paymentIdendifier: '•••• 0921',
@@ -111,7 +111,7 @@ export const salesDashboardData = {
         {
             id: '89332',
             date: 1654132800,
-            customer: 'Eileen Horton',
+            customer: 'Mónica Ballesteros',
             status: 0,
             paymentMehod: 'paypal',
             paymentIdendifier: '••••@gmail.com',
@@ -120,7 +120,7 @@ export const salesDashboardData = {
         {
             id: '86497',
             date: 1647632800,
-            customer: 'Lloyd Obrien',
+            customer: 'Lucía Martinez',
             status: 2,
             paymentMehod: 'visa',
             paymentIdendifier: '•••• 0443',
@@ -129,7 +129,7 @@ export const salesDashboardData = {
         {
             id: '86212',
             date: 1646832800,
-            customer: 'Tara Fletcher',
+            customer: 'Gloria Sofia',
             status: 0,
             paymentMehod: 'paypal',
             paymentIdendifier: '••••@gmail.com',
@@ -137,15 +137,15 @@ export const salesDashboardData = {
         },
     ],
     salesByCategoriesData: {
-        labels: ['Devices', 'Watches', 'Bags', 'Shoes'],
-        data: [351, 246, 144, 83],
+        labels: ['Celulares', 'Relojes', 'Ropa', 'Zapatos'],
+        data: [350, 246, 144, 83],
     },
 }
 
 export const productsData = [
     {
         id: '12',
-        name: 'Luminaire Giotto Headphones',
+        name: 'Audifonos Sony',
         productCode: 'BIS-012',
         img: '/img/products/product-1.jpg',
         imgList: [
@@ -469,7 +469,7 @@ export const ordersData = [
     {
         id: '95954',
         date: 1660132800,
-        customer: 'Ron Vargas',
+        customer: 'Angel Lizcano',
         status: 0,
         paymentMehod: 'visa',
         paymentIdendifier: '•••• 6165',
