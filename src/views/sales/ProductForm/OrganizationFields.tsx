@@ -28,11 +28,11 @@ type OrganizationFieldsProps = {
 }
 
 const categories = [
-    { label: 'Bags', value: 'bags' },
-    { label: 'Cloths', value: 'cloths' },
-    { label: 'Devices', value: 'devices' },
-    { label: 'Shoes', value: 'shoes' },
-    { label: 'Watches', value: 'watches' },
+    { label: 'Bolsos', value: 'bags' },
+    { label: 'Ropa', value: 'cloths' },
+    { label: 'Dispositivos', value: 'devices' },
+    { label: 'Zapatos', value: 'shoes' },
+    { label: 'Relojes', value: 'watches' },
 ]
 
 const tags = [
@@ -45,12 +45,12 @@ const OrganizationFields = (props: OrganizationFieldsProps) => {
 
     return (
         <AdaptableCard divider isLastChild className="mb-4">
-            <h5>Organizations</h5>
-            <p className="mb-6">Section to config the product attribute</p>
+            <h5>Organización</h5>
+            <p className="mb-6">Sección para configurar el atributo del producto.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1">
                     <FormItem
-                        label="Category"
+                        label="Categorías"
                         invalid={
                             (errors.category && touched.category) as boolean
                         }
@@ -77,64 +77,9 @@ const OrganizationFields = (props: OrganizationFieldsProps) => {
                         </Field>
                     </FormItem>
                 </div>
-                <div className="col-span-1">
-                    <FormItem
-                        label="Tags"
-                        invalid={
-                            (errors.tags && touched.tags) as unknown as boolean
-                        }
-                        errorMessage={errors.tags as string}
-                    >
-                        <Field name="tags">
-                            {({ field, form }: FieldProps) => (
-                                <Select
-                                    isMulti
-                                    componentAs={CreatableSelect}
-                                    field={field}
-                                    form={form}
-                                    options={tags}
-                                    value={values.tags}
-                                    onChange={(option) =>
-                                        form.setFieldValue(field.name, option)
-                                    }
-                                />
-                            )}
-                        </Field>
-                    </FormItem>
-                </div>
+                
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="col-span-1">
-                    <FormItem
-                        label="Brand"
-                        invalid={(errors.brand && touched.brand) as boolean}
-                        errorMessage={errors.brand}
-                    >
-                        <Field
-                            type="text"
-                            autoComplete="off"
-                            name="brand"
-                            placeholder="Brand"
-                            component={Input}
-                        />
-                    </FormItem>
-                </div>
-                <div className="col-span-1">
-                    <FormItem
-                        label="Vendor"
-                        invalid={(errors.vendor && touched.vendor) as boolean}
-                        errorMessage={errors.vendor}
-                    >
-                        <Field
-                            type="text"
-                            autoComplete="off"
-                            name="vendor"
-                            placeholder="Vendor"
-                            component={Input}
-                        />
-                    </FormItem>
-                </div>
-            </div>
+            
         </AdaptableCard>
     )
 }

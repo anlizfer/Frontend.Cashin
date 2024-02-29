@@ -62,12 +62,12 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                 invalid={errors.name && touched.name}
                                 errorMessage={errors.name}
                             >
-                                <h6 className="mb-4">Included text</h6>
+                                <h6 className="mb-4">Por Palabra Clave</h6>
                                 <Field
                                     type="text"
                                     autoComplete="off"
                                     name="name"
-                                    placeholder="Keyword"
+                                    placeholder="Palabra Clave"
                                     component={Input}
                                     prefix={
                                         <HiOutlineSearch className="text-lg" />
@@ -78,7 +78,7 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                 invalid={errors.category && touched.category}
                                 errorMessage={errors.category as string}
                             >
-                                <h6 className="mb-4">Product Category</h6>
+                                <h6 className="mb-4">Categoría </h6>
                                 <Field name="category">
                                     {({ field, form }: FieldProps) => (
                                         <>
@@ -97,34 +97,34 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                                     name={field.name}
                                                     value="bags"
                                                 >
-                                                    Bags{' '}
+                                                    Bolsos{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     className="mb-3"
                                                     name={field.name}
                                                     value="cloths"
                                                 >
-                                                    Cloths{' '}
+                                                    Ropa{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     className="mb-3"
                                                     name={field.name}
                                                     value="devices"
                                                 >
-                                                    Devices{' '}
+                                                    Dispositivos{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     className="mb-3"
                                                     name={field.name}
                                                     value="shoes"
                                                 >
-                                                    Shoes{' '}
+                                                    Zapatos{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     name={field.name}
                                                     value="watches"
                                                 >
-                                                    Watches{' '}
+                                                    Relojes{' '}
                                                 </Checkbox>
                                             </Checkbox.Group>
                                         </>
@@ -135,7 +135,7 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                 invalid={errors.status && touched.status}
                                 errorMessage={errors.status as string}
                             >
-                                <h6 className="mb-4">Product Category</h6>
+                                <h6 className="mb-4">Estado Stock</h6>
                                 <Field name="status">
                                     {({ field, form }: FieldProps) => (
                                         <>
@@ -154,21 +154,21 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                                     name={field.name}
                                                     value={0}
                                                 >
-                                                    In Stock{' '}
+                                                    En Stock{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     className="mb-3"
                                                     name={field.name}
                                                     value={1}
                                                 >
-                                                    Limited{' '}
+                                                    Limitado{' '}
                                                 </Checkbox>
                                                 <Checkbox
                                                     className="mb-3"
                                                     name={field.name}
                                                     value={2}
                                                 >
-                                                    Out Of Stock{' '}
+                                                    Fuera De Stock{' '}
                                                 </Checkbox>
                                             </Checkbox.Group>
                                         </>
@@ -182,7 +182,7 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                 }
                                 errorMessage={errors.productStatus}
                             >
-                                <h6 className="mb-4">Product Status</h6>
+                                <h6 className="mb-4">Estado Producto</h6>
                                 <Field name="productStatus">
                                     {({ field, form }: FieldProps) => (
                                         <Radio.Group
@@ -194,10 +194,9 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                                     val
                                                 )
                                             }
-                                        >
-                                            <Radio value={0}>Published</Radio>
-                                            <Radio value={1}>Disabled</Radio>
-                                            <Radio value={2}>Archive</Radio>
+                                        >                                         
+                                            <Radio value={0}>Desactivados</Radio>
+                                            <Radio value={1}>Activados</Radio>
                                         </Radio.Group>
                                     )}
                                 </Field>
@@ -214,10 +213,10 @@ const DrawerFooter = ({ onSaveClick, onCancel }: DrawerFooterProps) => {
     return (
         <div className="text-right w-full">
             <Button size="sm" className="mr-2" onClick={onCancel}>
-                Cancel
+                Cancelar
             </Button>
             <Button size="sm" variant="solid" onClick={onSaveClick}>
-                Query
+                Filtrar
             </Button>
         </div>
     )

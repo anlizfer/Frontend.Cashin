@@ -106,14 +106,14 @@ const ImageList = (props: ImageListProps) => {
             <ConfirmDialog
                 isOpen={deleteConfirmationOpen}
                 type="danger"
-                title="Remove image"
+                title="Quitar imágen"
                 confirmButtonColor="red-600"
                 onClose={onDeleteConfirmationClose}
                 onRequestClose={onDeleteConfirmationClose}
                 onCancel={onDeleteConfirmationClose}
                 onConfirm={onDelete}
             >
-                <p> Are you sure you want to remove this image? </p>
+                <p> ¿Estás seguro de que quieres eliminar esta imagen? </p>
             </ConfirmDialog>
         </>
     )
@@ -131,11 +131,11 @@ const ProductImages = (props: ProductImagesProps) => {
         if (file) {
             for (const f of file) {
                 if (!allowedFileType.includes(f.type)) {
-                    valid = 'Please upload a .jpeg or .png file!'
+                    valid = '¡Sube un archivo .jpeg o .png!'
                 }
 
                 if (f.size >= maxFileSize) {
-                    valid = 'Upload image cannot more then 500kb!'
+                    valid = '¡La imagen cargada no puede tener más de 500 kb!'
                 }
             }
         }
@@ -180,8 +180,8 @@ const ProductImages = (props: ProductImagesProps) => {
 
     return (
         <AdaptableCard className="mb-4">
-            <h5>Product Image</h5>
-            <p className="mb-6">Add or change image for the product</p>
+            <h5>Imágenes Producto</h5>
+            <p className="mb-6">Agregar o cambiar imagen del producto.</p>
             <FormItem>
                 <Field name="imgList">
                     {({ field, form }: FieldProps) => {
@@ -209,7 +209,7 @@ const ProductImages = (props: ProductImagesProps) => {
                                                 darkModeSrc="/img/others/upload-dark.png"
                                             />
                                             <p className="font-semibold text-center text-gray-800 dark:text-white">
-                                                Upload
+                                                Subir
                                             </p>
                                         </div>
                                     </Upload>
@@ -234,14 +234,14 @@ const ProductImages = (props: ProductImagesProps) => {
                                     />
                                     <p className="font-semibold">
                                         <span className="text-gray-800 dark:text-white">
-                                            Drop your image here, or{' '}
+                                        Deja tu imagen aquí, o{' '}
                                         </span>
                                         <span className="text-blue-500">
-                                            browse
+                                            navega en tu equipo
                                         </span>
                                     </p>
                                     <p className="mt-1 opacity-60 dark:text-white">
-                                        Support: jpeg, png
+                                        Soporta: jpg ,jpeg, png
                                     </p>
                                 </div>
                             </Upload>

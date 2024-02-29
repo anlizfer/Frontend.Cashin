@@ -61,11 +61,11 @@ const PricingFields = (props: PricingFieldsProps) => {
     return (
         <AdaptableCard divider className="mb-4">
             <h5>Pricing</h5>
-            <p className="mb-6">Section to config product sales information</p>
+            <p className="mb-6">Sección para configurar la información de venta del producto.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1">
                     <FormItem
-                        label="SKU"
+                        label="Cant. Stock"
                         invalid={(errors.stock && touched.stock) as boolean}
                         errorMessage={errors.stock}
                     >
@@ -93,7 +93,7 @@ const PricingFields = (props: PricingFieldsProps) => {
                 </div>
                 <div className="col-span-1">
                     <FormItem
-                        label="Price"
+                        label="Precio"
                         invalid={(errors.price && touched.price) as boolean}
                         errorMessage={errors.price}
                     >
@@ -123,7 +123,7 @@ const PricingFields = (props: PricingFieldsProps) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1">
                     <FormItem
-                        label="Bulk Discount Price"
+                        label="Precio Sugerido"
                         invalid={
                             (errors.bulkDiscountPrice &&
                                 touched.bulkDiscountPrice) as boolean
@@ -154,7 +154,7 @@ const PricingFields = (props: PricingFieldsProps) => {
                 </div>
                 <div className="col-span-1">
                     <FormItem
-                        label="Tax Rate(%)"
+                        label="Impuesto (%)"
                         invalid={(errors.taxRate && touched.taxRate) as boolean}
                         errorMessage={errors.taxRate}
                     >

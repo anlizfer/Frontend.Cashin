@@ -214,7 +214,7 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                         type="button"
                                         onClick={() => onDiscard?.()}
                                     >
-                                        Discard
+                                        Cancelar
                                     </Button>
                                     <Button
                                         size="sm"
@@ -223,7 +223,7 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                         icon={<AiOutlineSave />}
                                         type="submit"
                                     >
-                                        Save
+                                        Guardar
                                     </Button>
                                 </div>
                             </StickyFooter>

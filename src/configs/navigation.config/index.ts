@@ -60,7 +60,7 @@ const navigationConfig: NavigationTree[] = [
                     },{
                         key: 'products.category',
                         path: `${APP_PREFIX_PATH}/categories`,
-                        title: 'Category',
+                        title: 'Categorias',
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
