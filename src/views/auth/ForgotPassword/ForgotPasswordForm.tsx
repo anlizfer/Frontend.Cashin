@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const ForgotPasswordForm = (props: ForgotPasswordFormProps) => {
-    const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
+    const { disableSubmit = false, className, signInUrl = '/login' } = props
 
     const [emailSent, setEmailSent] = useState(false)
 
@@ -56,18 +56,16 @@ const ForgotPasswordForm = (props: ForgotPasswordFormProps) => {
             <div className="mb-6">
                 {emailSent ? (
                     <>
-                        <h3 className="mb-1">Check your email</h3>
+                        <h3 className="mb-1">Consulta tu correo electrónico</h3>
                         <p>
-                            We have sent a password recovery instruction to your
-                            email
+                        Hemos enviado una instrucción de recuperación de contraseña a tu correo electrónico.
                         </p>
                     </>
                 ) : (
                     <>
-                        <h3 className="mb-1">Forgot Password</h3>
+                        <h3 className="mb-1">Has olvidado tu contraseña</h3>
                         <p>
-                            Please enter your email address to receive a
-                            verification code
+                        Por favor ingrese su dirección de correo electrónico para recibir un código de verificación
                         </p>
                     </>
                 )}
@@ -113,11 +111,11 @@ const ForgotPasswordForm = (props: ForgotPasswordFormProps) => {
                                 variant="solid"
                                 type="submit"
                             >
-                                {emailSent ? 'Resend Email' : 'Send Email'}
+                                {emailSent ? 'Reenviar Email' : 'Enviar Email'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>Back to </span>
-                                <ActionLink to={signInUrl}>Sign in</ActionLink>
+                                <span>Regresar a  </span>
+                                <ActionLink to={signInUrl}>Login</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>

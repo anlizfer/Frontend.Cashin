@@ -34,7 +34,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const SignUpForm = (props: SignUpFormProps) => {
-    const { disableSubmit = false, className, signInUrl = '/sign-in' } = props
+    const { disableSubmit = false, className, signInUrl = '/login' } = props
 
     const { signUp } = useAuth()
 
@@ -82,7 +82,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="User Name"
+                                label="Usuario"
                                 invalid={errors.userName && touched.userName}
                                 errorMessage={errors.userName}
                             >
@@ -108,19 +108,19 @@ const SignUpForm = (props: SignUpFormProps) => {
                                 />
                             </FormItem>
                             <FormItem
-                                label="Password"
+                                label="Contraseña"
                                 invalid={errors.password && touched.password}
                                 errorMessage={errors.password}
                             >
                                 <Field
                                     autoComplete="off"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder="Contraseña"
                                     component={PasswordInput}
                                 />
                             </FormItem>
                             <FormItem
-                                label="Confirm Password"
+                                label="Confirmar Contraseña"
                                 invalid={
                                     errors.confirmPassword &&
                                     touched.confirmPassword
@@ -130,7 +130,7 @@ const SignUpForm = (props: SignUpFormProps) => {
                                 <Field
                                     autoComplete="off"
                                     name="confirmPassword"
-                                    placeholder="Confirm Password"
+                                    placeholder="Confirmar Contraseña"
                                     component={PasswordInput}
                                 />
                             </FormItem>
@@ -141,12 +141,12 @@ const SignUpForm = (props: SignUpFormProps) => {
                                 type="submit"
                             >
                                 {isSubmitting
-                                    ? 'Creating Account...'
-                                    : 'Sign Up'}
+                                    ? 'Creando Cuenta...'
+                                    : 'Crear Cuenta Cashin'}
                             </Button>
                             <div className="mt-4 text-center">
-                                <span>Already have an account? </span>
-                                <ActionLink to={signInUrl}>Sign in</ActionLink>
+                                <span>¿Ya tienes una cuenta? </span>
+                                <ActionLink to={signInUrl}>Login</ActionLink>
                             </div>
                         </FormContainer>
                     </Form>
