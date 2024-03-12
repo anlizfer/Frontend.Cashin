@@ -60,7 +60,7 @@ const PricingFields = (props: PricingFieldsProps) => {
 
     return (
         <AdaptableCard divider className="mb-4">
-            <h5>Pricing</h5>
+            <h5>Precio</h5>
             <p className="mb-6">Sección para configurar la información de venta del producto.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1">
