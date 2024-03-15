@@ -1,4 +1,5 @@
-import { apiSignIn, apiSignOut, apiSignUp } from '@/services/AuthService'
+import { apiSignIn,apiSignUp,apiSignOut } from '@/services/AuthService'
+//import { apiSignIn, apiSignOut, apiSignUp } from '@/services/AuthService'
 import {
     setUser,
     signInSuccess,
@@ -34,17 +35,22 @@ function useAuth() {
     > => {
         try {
             const resp = await apiSignIn(values)
-            if (resp.data) {
-                const { token } = resp.data
-                dispatch(signInSuccess(token))
-                if (resp.data.user) {
+            
+            if (resp) {
+                const  {token}  = resp.data!;
+                
+                dispatch(signInSuccess(token))                                
+                if (resp.succeeded) {
+
+                    //console.log("ANGEL ",resp.data);
+
                     dispatch(
-                        setUser(
-                            resp.data.user || {
-                                avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['USER'],
-                                email: '',
+                        setUser(                            
+                            {
+                                avatar: resp.data?.avatar,
+                                userName: resp.data?.userName,
+                                authority: resp.data?.authority,
+                                email: resp.data?.email,
                             }
                         )
                     )
@@ -73,7 +79,7 @@ function useAuth() {
             if (resp.data) {
                 const { token } = resp.data
                 dispatch(signInSuccess(token))
-                if (resp.data.user) {
+                /*if (resp.data.user) {
                     dispatch(
                         setUser(
                             resp.data.user || {
@@ -84,7 +90,7 @@ function useAuth() {
                             }
                         )
                     )
-                }
+                }*/
                 const redirectUrl = query.get(REDIRECT_URL_KEY)
                 navigate(
                     redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
@@ -117,7 +123,7 @@ function useAuth() {
     }
 
     const signOut = async () => {
-        await apiSignOut()
+        //await apiSignOut()
         handleSignOut()
     }
 
@@ -126,6 +132,11 @@ function useAuth() {
         signIn,
         signUp,
         signOut,
+    }
+
+    return {
+        authenticated: token && signedIn,
+        signIn       
     }
 }
 

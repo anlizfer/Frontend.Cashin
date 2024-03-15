@@ -49,7 +49,7 @@ const SignInForm = (props: SignInFormProps) => {
         setSubmitting(true)
 
         const result = await signIn({ userName, password })
-
+        
         if (result?.status === 'failed') {
             setMessage(result.message)
         }
@@ -67,7 +67,7 @@ const SignInForm = (props: SignInFormProps) => {
             <Formik
                 initialValues={{
                     userName: 'admin',
-                    password: '123Qwe',
+                    password: '123456',
                     rememberMe: true,
                 }}
                 validationSchema={validationSchema}
