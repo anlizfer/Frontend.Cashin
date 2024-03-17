@@ -51,6 +51,7 @@ function useAuth() {
                                 userName: resp.data?.userName,
                                 authority: resp.data?.authority,
                                 email: resp.data?.email,
+                                companies:["Qurioso Store","MatangaStore"]
                             }
                         )
                     )

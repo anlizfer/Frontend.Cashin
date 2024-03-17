@@ -5,6 +5,7 @@ import HeaderLogo from '@/components/template/HeaderLogo'
 import SecondaryHeader from '@/components/template/SecondaryHeader'
 import MobileNav from '@/components/template/MobileNav'
 import View from '@/views'
+import CompanyDropdown from '../template/CompanyDropdown'
 
 const HeaderActionsStart = () => {
     return (
@@ -20,6 +21,7 @@ const HeaderActionsEnd = () => {
         <>
             <SidePanel />
             <UserDropdown hoverable={false} />
+            <CompanyDropdown  hoverable={false} />
         </>
     )
 }

@@ -4,9 +4,11 @@ import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import useAuth from '@/utils/hooks/useAuth'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { HiOutlineLogout, HiOutlineUser } from 'react-icons/hi'
+import { HiOutlineLogout, HiOutlineUser, HiOutlineOfficeBuilding,HiOutlinePlus } from 'react-icons/hi'
 import type { CommonProps } from '@/@types/common'
 import { useAppSelector } from '@/store'
+import { useEffect, useState } from 'react'
+import { forEach } from 'lodash'
 
 type DropdownList = {
     label: string
@@ -14,38 +16,48 @@ type DropdownList = {
     icon: JSX.Element
 }
 
-const dropdownItemList: DropdownList[] = [
-    {
-        label: 'Cuenta',
-        path: '/app/user',
-        icon: <HiOutlineUser />,
-    }
-]
 
 
 
-const _UserDropdown = ({ className }: CommonProps) => {
+const _CompanyDropdown = ({ className }: CommonProps) => {
 
-    const { avatar, userName, authority, email } = useAppSelector(
-        (state) => state.auth.user
-    )
+    
     
 
-    const { signOut } = useAuth()
+    const { avatar, userName, authority, email,companies } = useAppSelector(
+        (state) => state.auth.user
+    )
+
+    const [companiesUser, setCompayUser]=useState(companies);
+    const [dropdownItemList, SetDropdownItemList]=useState<DropdownList[]>([]); 
+
+    useEffect(()=>{
+        let itemDrop:DropdownList[]=[];
+        companiesUser?.forEach((item)=>{
+            itemDrop.push({
+                label: item,
+                path: '/app/home',
+                icon: <HiOutlineOfficeBuilding />,
+            })
+        });
+
+        SetDropdownItemList(itemDrop);
+
+    },[])
+    
+
+    const  urlCompany = () => {
+        console.log("'/add-company'");
+    }
 
     const UserAvatar = (
         <div className={classNames(className, 'flex items-center gap-2')}>
-            {
-                (avatar!="")?
-                    <Avatar  size={32} shape="circle" src={avatar} />
-                :
-                <Avatar size={32} shape="circle" icon={<HiOutlineUser />} />
+            {               
+                <Avatar size={32} shape="circle" icon={<HiOutlineOfficeBuilding />} />
             }
-            
-            
+
             <div className="hidden md:block">
-                <div className="text-xs capitalize">{authority?.[0]}</div>
-                <div className="font-bold">{userName}</div>
+                <div className="text-xs capitalize">Compañía A</div>                
             </div>
         </div>
     )
@@ -53,29 +65,21 @@ const _UserDropdown = ({ className }: CommonProps) => {
     return (
         <div>
             <Dropdown
-                menuStyle={{ minWidth: 240 }}
-                renderTitle={UserAvatar}
+                menuStyle={{ minWidth: 240 }}                
                 placement="bottom-end"
+                renderTitle={UserAvatar}
             >
-                <Dropdown.Item variant="header">
-                    <div className="py-2 px-3 flex items-center gap-2">                        
-
-                        {
-                            (avatar!="")?
-                                <Avatar shape="circle" src={avatar} />
-                            :
-                            <Avatar  shape="circle" icon={<HiOutlineUser />} />
-                        }
-
+                {/*<Dropdown.Item variant="header">
+                    <div className="py-2 px-3 flex items-center gap-2">
+                        <Avatar shape="circle" icon={<HiOutlineUser />} />
                         <div>
                             <div className="font-bold text-gray-900 dark:text-gray-100">
-                                {userName}
-                            </div>
-                            <div className="text-xs">{email}</div>
+                                Company
+                            </div>                            
                         </div>
                     </div>
                 </Dropdown.Item>
-                <Dropdown.Item variant="divider" />
+                <Dropdown.Item variant="divider" />*/}
                 {dropdownItemList.map((item) => (
                     <Dropdown.Item
                         key={item.label}
@@ -95,22 +99,23 @@ const _UserDropdown = ({ className }: CommonProps) => {
                         </Link>
                     </Dropdown.Item>
                 ))}
-                {/* <Dropdown.Item variant="divider" /> */}
+                <Dropdown.Item variant="divider" />
                 <Dropdown.Item
                     eventKey="Sign Out"
-                    className="gap-2"
-                    onClick={signOut}
+                    className="gap-2"                    
+                    onClick={urlCompany}
                 >
                     <span className="text-xl opacity-50">
-                        <HiOutlineLogout />
+                        <HiOutlinePlus />
                     </span>
-                    <span>Cerrar Sesión</span>
+                    <span>Nueva Compañía</span>
                 </Dropdown.Item>
+                
             </Dropdown>
         </div>
     )
 }
 
-const UserDropdown = withHeaderItem(_UserDropdown)
+const CompanyDropdown = withHeaderItem(_CompanyDropdown)
 
-export default UserDropdown
+export default CompanyDropdown
