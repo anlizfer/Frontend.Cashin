@@ -6,12 +6,14 @@ import {
     signOutSuccess,
     useAppSelector,
     useAppDispatch,
+    CompanyState,
 } from '@/store'
 import appConfig from '@/configs/app.config'
 import { REDIRECT_URL_KEY } from '@/constants/app.constant'
 import { useNavigate } from 'react-router-dom'
 import useQuery from './useQuery'
 import type { SignInCredential, SignUpCredential } from '@/@types/auth'
+import { jwtDecode } from 'jwt-decode'
 
 type Status = 'success' | 'failed'
 
@@ -23,6 +25,13 @@ function useAuth() {
     const query = useQuery()
 
     const { token, signedIn } = useAppSelector((state) => state.auth.session)
+
+
+    let getPayloadCompanies=(jwtToken:string)=>{          
+        let objPayloadToken=jwtDecode<{ company: string }>(jwtToken);
+        return objPayloadToken.company;
+    }
+
 
     const signIn = async (
         values: SignInCredential
@@ -39,7 +48,18 @@ function useAuth() {
             if (resp) {
                 const  {token}  = resp.data!;
                 
-                dispatch(signInSuccess(token))                                
+                dispatch(signInSuccess(token))
+                const Companies=getPayloadCompanies(token);                
+                const CompaniesJSON = JSON.parse(Companies);
+                let CompaniesArra:CompanyState[]=[];
+                
+                CompaniesJSON.company.forEach((company: { id: number, name: string }) => {
+                    console.log(company.id, company.name);
+                    CompaniesArra.push({
+                        ...company
+                    });
+                });
+
                 if (resp.succeeded) {
 
                     //console.log("ANGEL ",resp.data);
@@ -51,7 +71,7 @@ function useAuth() {
                                 userName: resp.data?.userName,
                                 authority: resp.data?.authority,
                                 email: resp.data?.email,
-                                companies:["Qurioso Store","MatangaStore"]
+                                companies:CompaniesArra
                             }
                         )
                     )

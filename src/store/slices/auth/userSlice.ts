@@ -1,12 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { SLICE_BASE_NAME } from './constants'
 
+export type CompanyState={
+    id?:number,
+    name?:string
+}
+
 export type UserState = {
     avatar?: string
     userName?: string
     email?: string
     authority?: string[],
-    companies?:string[]
+    companies?:CompanyState[]
 }
 
 const initialState: UserState = {

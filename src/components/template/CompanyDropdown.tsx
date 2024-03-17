@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react'
 import { forEach } from 'lodash'
 
 type DropdownList = {
-    label: string
+    id?:number
+    label?: string
     path: string
     icon: JSX.Element
 }
@@ -35,7 +36,8 @@ const _CompanyDropdown = ({ className }: CommonProps) => {
         let itemDrop:DropdownList[]=[];
         companiesUser?.forEach((item)=>{
             itemDrop.push({
-                label: item,
+                id:item.id,
+                label: item.name,
                 path: '/app/home',
                 icon: <HiOutlineOfficeBuilding />,
             })
@@ -82,7 +84,7 @@ const _CompanyDropdown = ({ className }: CommonProps) => {
                 <Dropdown.Item variant="divider" />*/}
                 {dropdownItemList.map((item) => (
                     <Dropdown.Item
-                        key={item.label}
+                        key={item.id}
                         eventKey={item.label}
                         className="mb-1 px-0"
                     >
