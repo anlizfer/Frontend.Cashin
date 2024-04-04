@@ -2,28 +2,58 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
     apiGetSalesProducts,
     apiDeleteSalesProducts,
+    apiGetCategories,
 } from '@/services/SalesService'
 import type { TableQueries } from '@/@types/common'
+type Category = {
+    id: string
+    name: string 
+    idCompany: number    
+}
+
 
 type Product = {
     id: string
     name: string
+    description: string
     productCode: string
-    img: string
-    category: string
+    brand: string
+    img: string        
+    size: number
+    weight: number
     price: number
     stock: number
     status: number
+    idCompany: number
+    productCategory:ProductCategory[]
 }
+
+type ProductCategory={
+    id: number,
+    name: string
+    idProduct:number
+    idCategory: number
+}
+
 
 type Products = Product[]
 
-type GetSalesProductsResponse = {
-    data: Products
-    total: number
+type MetadataSetting = {
+    totalCount:number
 }
 
-type FilterQueries = {
+type Meta=MetadataSetting;
+
+type GetSalesProductsResponse = {
+    data: Products    
+}
+
+
+export type GetCategoriesResponse = {
+    data: Category,    
+}
+
+export type FilterQueries = {
     name: string
     category: string[]
     status: number[]
@@ -39,20 +69,28 @@ export type SalesProductListState = {
     productList: Product[]
 }
 
-type GetSalesProductsRequest = TableQueries & { filterData?: FilterQueries }
+export type GetSalesProductsRequest = TableQueries & { filterData?: FilterQueries }
+type GetCategoriesRequest={
+    IdCompany:number
+}
 
 export const SLICE_NAME = 'salesProductList'
 
 export const getProducts = createAsyncThunk(
     SLICE_NAME + '/getProducts',
-    async (data: GetSalesProductsRequest) => {
-        const response = await apiGetSalesProducts<
-            GetSalesProductsResponse,
-            GetSalesProductsRequest
-        >(data)
-        return response.data
+    async (data: GetSalesProductsRequest) => {        
+        const response = await apiGetSalesProducts<GetSalesProductsResponse,GetSalesProductsRequest>(data)   
+        return response
     }
 )
+
+
+
+export const getCategories = async () => {
+    const response = await apiGetCategories<GetCategoriesResponse,GetCategoriesRequest>();
+    return response.data
+}
+
 
 export const deleteProduct = async (data: { id: string | string[] }) => {
     const response = await apiDeleteSalesProducts<
@@ -77,12 +115,12 @@ const initialState: SalesProductListState = {
     loading: false,
     deleteConfirmation: false,
     selectedProduct: '',
-    productList: [],
+    productList: [],    
     tableData: initialTableData,
     filterData: {
         name: '',
-        category: ['bags', 'cloths', 'devices', 'shoes', 'watches'],
-        status: [0, 1, 2],
+        category: [],
+        status: [0, 1],
         productStatus: 0,
     },
 }
@@ -109,14 +147,14 @@ const productListSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getProducts.fulfilled, (state, action) => {
+            .addCase(getProducts.fulfilled, (state, action) => {                
                 state.productList = action.payload.data
-                state.tableData.total = action.payload.total
+                state.tableData.total = action.payload.meta.totalCount
                 state.loading = false
             })
             .addCase(getProducts.pending, (state) => {
                 state.loading = true
-            })
+            })            
     },
 })
 
@@ -125,7 +163,7 @@ export const {
     setTableData,
     setFilterData,
     toggleDeleteConfirmation,
-    setSelectedProduct,
+    setSelectedProduct,    
 } = productListSlice.actions
 
 export default productListSlice.reducer

@@ -1,4 +1,4 @@
-import { useState, useRef, forwardRef } from 'react'
+import { useState, useRef, forwardRef, useEffect } from 'react'
 import { HiOutlineFilter, HiOutlineSearch } from 'react-icons/hi'
 import {
     getProducts,
@@ -6,6 +6,9 @@ import {
     initialTableData,
     useAppDispatch,
     useAppSelector,
+    getCategories,
+    GetCategoriesResponse,
+    GetSalesProductsRequest,
 } from '../store'
 import { FormItem, FormContainer } from '@/components/ui/Form'
 import Input from '@/components/ui/Input'
@@ -15,6 +18,7 @@ import Radio from '@/components/ui/Radio'
 import Drawer from '@/components/ui/Drawer'
 import { Field, Form, Formik, FormikProps, FieldProps } from 'formik'
 import type { MouseEvent } from 'react'
+import { TableQueries } from '@/@types/common'
 
 type FormModel = {
     name: string
@@ -24,7 +28,8 @@ type FormModel = {
 }
 
 type FilterFormProps = {
-    onSubmitComplete?: () => void
+    onSubmitComplete?: () => void,
+    dataCat:any
 }
 
 type DrawerFooterProps = {
@@ -33,18 +38,38 @@ type DrawerFooterProps = {
 }
 
 const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
-    ({ onSubmitComplete }, ref) => {
+    ({ onSubmitComplete,dataCat}, ref) => {
         const dispatch = useAppDispatch()
 
         const filterData = useAppSelector(
             (state) => state.salesProductList.data.filterData
-        )
+        )        
 
         const handleSubmit = (values: FormModel) => {
-            onSubmitComplete?.()
+            onSubmitComplete?.()            
             dispatch(setFilterData(values))
-            dispatch(getProducts(initialTableData))
+            let filterDataProduct:GetSalesProductsRequest={
+                pageIndex:1,
+                pageSize:10,
+                query:"",
+                filterData:{
+                    name:values.name,
+                    category:[],
+                    status:[],
+                    productStatus:1
+                }
+                
+            };
+            
+            dispatch(getProducts(filterDataProduct))
         }
+
+        const getCategoryComponent=()=>{
+            
+            
+        }
+
+
 
         return (
             <Formik
@@ -92,89 +117,24 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                                     )
                                                 }
                                             >
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value="bags"
-                                                >
-                                                    Bolsos{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value="cloths"
-                                                >
-                                                    Ropa{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value="devices"
-                                                >
-                                                    Dispositivos{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value="shoes"
-                                                >
-                                                    Zapatos{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    name={field.name}
-                                                    value="watches"
-                                                >
-                                                    Relojes{' '}
-                                                </Checkbox>
+                                                
+                                                {dataCat.map((element:any) => (
+                                                    <Checkbox
+                                                        key={element.id} // Asegúrate de proporcionar una clave única para cada elemento
+                                                        className="mb-3"
+                                                        name={field.name}
+                                                        value={element.id}
+                                                    >
+                                                        {element.name} {/* Renderiza el nombre de la categoría */}
+                                                    </Checkbox>
+                                                ))}                                                
+                                                
                                             </Checkbox.Group>
                                         </>
                                     )}
                                 </Field>
                             </FormItem>
-                            <FormItem
-                                invalid={errors.status && touched.status}
-                                errorMessage={errors.status as string}
-                            >
-                                <h6 className="mb-4">Estado Stock</h6>
-                                <Field name="status">
-                                    {({ field, form }: FieldProps) => (
-                                        <>
-                                            <Checkbox.Group
-                                                vertical
-                                                value={values.status}
-                                                onChange={(options) =>
-                                                    form.setFieldValue(
-                                                        field.name,
-                                                        options
-                                                    )
-                                                }
-                                            >
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value={0}
-                                                >
-                                                    En Stock{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value={1}
-                                                >
-                                                    Limitado{' '}
-                                                </Checkbox>
-                                                <Checkbox
-                                                    className="mb-3"
-                                                    name={field.name}
-                                                    value={2}
-                                                >
-                                                    Fuera De Stock{' '}
-                                                </Checkbox>
-                                            </Checkbox.Group>
-                                        </>
-                                    )}
-                                </Field>
-                            </FormItem>
+                            
                             <FormItem
                                 invalid={
                                     errors.productStatus &&
@@ -225,18 +185,31 @@ const DrawerFooter = ({ onSaveClick, onCancel }: DrawerFooterProps) => {
 const ProductFilter = () => {
     const formikRef = useRef<FormikProps<FormModel>>(null)
 
+    const [dataCategory,setDataCategory]=useState<GetCategoriesResponse>();
+        
+
     const [isOpen, setIsOpen] = useState(false)
 
     const openDrawer = () => {
         setIsOpen(true)
     }
 
+    useEffect(()=>{
+        const fetchData = async () => {
+            let dataCat = await getCategories(); // Se espera a que se resuelva la promesa de getCategories()
+            setDataCategory(dataCat!);             
+        };
+    
+        fetchData(); 
+
+    },[])
+
     const onDrawerClose = () => {
         setIsOpen(false)
     }
 
     const formSubmit = () => {
-        formikRef.current?.submitForm()
+        formikRef.current?.submitForm()                
     }
 
     return (
@@ -261,7 +234,7 @@ const ProductFilter = () => {
                 onClose={onDrawerClose}
                 onRequestClose={onDrawerClose}
             >
-                <FilterForm ref={formikRef} onSubmitComplete={onDrawerClose} />
+                <FilterForm ref={formikRef} onSubmitComplete={onDrawerClose} dataCat={dataCategory} />
             </Drawer>
         </>
     )

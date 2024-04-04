@@ -23,7 +23,7 @@ import type {
 } from '@/components/shared/DataTable'
 
 type Product = {
-    id: string
+    id: string    
     name: string
     productCode: string
     img: string
@@ -31,6 +31,13 @@ type Product = {
     price: number
     stock: number
     status: number
+    productCategory:ProductCategory[]
+}
+type ProductCategory={
+    id: number,
+    name: string
+    idProduct:number
+    idCategory: number
 }
 
 const inventoryStatusColor: Record<
@@ -41,18 +48,13 @@ const inventoryStatusColor: Record<
         textClass: string
     }
 > = {
-    0: {
-        label: 'En Stock',
+    1: {
+        label: 'Activo',
         dotClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
-    },
-    1: {
-        label: 'Limitado',
-        dotClass: 'bg-amber-500',
-        textClass: 'text-amber-500',
-    },
+    },    
     2: {
-        label: 'Fuera de Stock',
+        label: 'Inactivo',
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
     },
@@ -91,6 +93,9 @@ const ActionColumn = ({ row }: { row: Product }) => {
 }
 
 const ProductColumn = ({ row }: { row: Product }) => {
+
+
+
     const avatar = row.img ? (
         <Avatar src={row.img} />
     ) : (
@@ -131,9 +136,9 @@ const ProductTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex, pageSize, sort])
 
-    useEffect(() => {
+    useEffect(() => {        
         if (tableRef) {
-            tableRef.current?.resetSorting()
+            //tableRef.current?.resetSorting()            
         }
     }, [filterData])
 
@@ -142,7 +147,7 @@ const ProductTable = () => {
         [pageIndex, pageSize, sort, query, total]
     )
 
-    const fetchData = () => {
+    const fetchData = () => {                
         dispatch(getProducts({ pageIndex, pageSize, sort, query, filterData }))
     }
 
@@ -158,11 +163,18 @@ const ProductTable = () => {
             },
             {
                 header: 'Categoría',
-                accessorKey: 'category',
+                accessorKey: 'productCategory',
+                sortable:false,
                 cell: (props) => {
-                    const row = props.row.original
-                    return <span className="capitalize">{row.category}</span>
+                    const row = props.row.original;
+
+                    let catChain="";
+                    row.productCategory.forEach(element => {
+                        catChain+=`${element.name}, `;
+                    });                    
+                    return <span className="capitalize">{catChain}</span>
                 },
+                
             },
             {
                 header: 'Cantidad',
@@ -178,7 +190,7 @@ const ProductTable = () => {
                         <div className="flex items-center gap-2">
                             <Badge
                                 className={
-                                    inventoryStatusColor[status].dotClass
+                                    inventoryStatusColor[status].dotClass                                    
                                 }
                             />
                             <span

@@ -11,7 +11,7 @@ const reducer = combineReducers({
 
 export const useAppSelector: TypedUseSelectorHook<
     RootState & {
-        [SLICE_NAME]: {
+        [SLICE_NAME]: {            
             data: SalesProductListState
         }
     }

@@ -23,7 +23,7 @@ export async function apiSignIn(data: SignInCredential) {
     return ApiServiceFetch.fetchData<SignInResponse>(
         `${API_SERVER}${API_SERVER_AUTH_PREFIX}/Login`,
         data,
-        'post'
+        'POST'
     );
 }
 
@@ -32,7 +32,7 @@ export async function apiSignUp(data: SignUpCredential) {
     return ApiServiceFetch.fetchData<SignUpResponse>(
         `${API_SERVER}${API_SERVER_AUTH_PREFIX}/sign-up`,
         data,
-        'post'
+        'POST'
     );
 
 }

@@ -5,27 +5,34 @@ import { ResponseApi } from '@/@types/auth';
 const ApiServiceFetch = {    
         async fetchData<T>(url: string,param:any,method:string): Promise<ResponseApi<T>> {
         try {
-            const response = await fetch(url, {
-                method: 'POST',
+
+            let options: RequestInit = {
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(param)
-            });
+                }
+            };
+
+            if (method === 'POST') {
+                options.method = 'POST';
+                options.body = JSON.stringify(param);
+            }
+
+            const response = await fetch(url, options);
+
+          
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-    
-            const responseData= await response.json();            
-            debugger
+            }    
+            const responseData= await response.json();                       
     
             // Construir la respuesta con los datos recibidos
             const jsonResponse: ResponseApi<T> = {
                 succeeded: responseData.succeeded,
                 codeError: responseData.codeError,
                 message: responseData.message,
-                data: responseData.data
+                data: responseData.data,
+                meta:responseData.meta
             };
     
             return jsonResponse;

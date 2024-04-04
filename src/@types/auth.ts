@@ -29,10 +29,17 @@ export type SignInCredential = {
 //     }
 // }
 
+type MetadataSetting = {
+    totalCount:number
+}
+
+type Meta=MetadataSetting;
+
 export type ResponseApi<T>={
     succeeded:boolean;
     codeError:string;
     message:string;
+    meta:Meta;
     data?:T | null;
 }
 
