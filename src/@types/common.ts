@@ -11,6 +11,7 @@ export type TableQueries = {
     pageIndex?: number
     pageSize?: number
     query?: string
+    idCompany?:number
     sort?: {
         order: 'asc' | 'desc' | ''
         key: string | number

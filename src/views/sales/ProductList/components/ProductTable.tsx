@@ -11,6 +11,7 @@ import {
     toggleDeleteConfirmation,
     useAppDispatch,
     useAppSelector,
+    GetSalesProductsRequest,
 } from '../store'
 import useThemeClass from '@/utils/hooks/useThemeClass'
 import ProductDeleteConfirmation from './ProductDeleteConfirmation'
@@ -115,6 +116,11 @@ const ProductTable = () => {
 
     const dispatch = useAppDispatch()
 
+    const { companyDefault } = useAppSelector(
+        (state) => state.auth.user
+    )
+    
+
     const { pageIndex, pageSize, sort, query, total } = useAppSelector(
         (state) => state.salesProductList.data.tableData
     )
@@ -147,8 +153,9 @@ const ProductTable = () => {
         [pageIndex, pageSize, sort, query, total]
     )
 
-    const fetchData = () => {                
-        dispatch(getProducts({ pageIndex, pageSize, sort, query, filterData }))
+    const fetchData = () => { 
+        let pageParams:GetSalesProductsRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
+        dispatch(getProducts(pageParams))
     }
 
     const columns: ColumnDef<Product>[] = useMemo(

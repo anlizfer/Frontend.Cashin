@@ -3,7 +3,8 @@ import { SLICE_BASE_NAME } from './constants'
 
 export type CompanyState={
     id?:number,
-    name?:string
+    name?:string,
+    img?:string
 }
 
 export type UserState = {
@@ -11,7 +12,8 @@ export type UserState = {
     userName?: string
     email?: string
     authority?: string[],
-    companies?:CompanyState[]
+    companies?:CompanyState[],
+    companyDefault?:CompanyState
 }
 
 const initialState: UserState = {
@@ -19,7 +21,8 @@ const initialState: UserState = {
     userName: '',
     email: '',
     authority: [],
-    companies:[]
+    companies:[],
+    companyDefault:{}
 }
 
 const userSlice = createSlice({
@@ -32,6 +35,7 @@ const userSlice = createSlice({
             state.userName = action.payload?.userName
             state.authority = action.payload?.authority
             state.companies = action.payload?.companies
+            state.companyDefault = action.payload?.companyDefault
         },
     },
 })

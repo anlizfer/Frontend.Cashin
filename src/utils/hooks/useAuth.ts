@@ -53,10 +53,10 @@ function useAuth() {
                 const CompaniesJSON = JSON.parse(Companies);
                 let CompaniesArra:CompanyState[]=[];
                 
-                CompaniesJSON.company.forEach((company: { id: number, name: string }) => {
-                    console.log(company.id, company.name);
+                CompaniesJSON.company.forEach((company: { Id: number, Name: string }) => {                    
                     CompaniesArra.push({
-                        ...company
+                        id:company.Id,
+                        name:company.Name
                     });
                 });
 
@@ -71,7 +71,8 @@ function useAuth() {
                                 userName: resp.data?.userName,
                                 authority: resp.data?.authority,
                                 email: resp.data?.email,
-                                companies:CompaniesArra
+                                companies:CompaniesArra,
+                                companyDefault:CompaniesArra[0]
                             }
                         )
                     )
@@ -96,33 +97,26 @@ function useAuth() {
 
     const signUp = async (values: SignUpCredential) => {
         try {
-            const resp = await apiSignUp(values)
-            if (resp.data) {
-                const { token } = resp.data
-                dispatch(signInSuccess(token))
-                /*if (resp.data.user) {
-                    dispatch(
-                        setUser(
-                            resp.data.user || {
-                                avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['USER'],
-                                email: '',
-                            }
-                        )
-                    )
-                }*/
+            const resp = await apiSignUp(values)            
+            debugger
+            if (resp.succeeded) {                
                 const redirectUrl = query.get(REDIRECT_URL_KEY)
                 navigate(
                     redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
                 )
                 return {
                     status: 'success',
-                    message: '',
+                    message: 'Registro generado con éxito, Bienvenido a Cashin',
                 }
+            }else{
+                return {
+                    status: 'failed',
+                    message: resp.message,
+                }     
             }
             // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         } catch (errors: any) {
+            
             return {
                 status: 'failed',
                 message: errors?.response?.data?.message || errors.toString(),

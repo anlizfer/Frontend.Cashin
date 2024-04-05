@@ -11,17 +11,9 @@ import type {
 } from '@/@types/auth'
 import ApiServiceFetch from './ApiServiceFetch';
 
-/*export async function apiSignIn(data: SignInCredential) {
-    return ApiService.fetchData<SignInResponse>({
-        url: '/sign-in',
-        method: 'post',
-        data,
-    })
-}*/
-
 export async function apiSignIn(data: SignInCredential) {
     return ApiServiceFetch.fetchData<SignInResponse>(
-        `${API_SERVER}${API_SERVER_AUTH_PREFIX}/Login`,
+        `${API_SERVER}${API_SERVER_AUTH_PREFIX}/login`,
         data,
         'POST'
     );

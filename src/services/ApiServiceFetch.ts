@@ -22,7 +22,8 @@ const ApiServiceFetch = {
           
 
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                const errorMessage = await response.text(); 
+                throw new Error(errorMessage);
             }    
             const responseData= await response.json();                       
     
@@ -36,13 +37,20 @@ const ApiServiceFetch = {
             };
     
             return jsonResponse;
-        } catch (error) {
+        } catch (errors:any) {            
+            let ErrorFetch:string=errors.toString();
+            ErrorFetch=ErrorFetch.replace("Error:","");
+            console.log(ErrorFetch);
+            const errorMessageJSON = JSON.parse(ErrorFetch);
             // En caso de error, construir la respuesta con el mensaje de error
             const errorResponse: ResponseApi<T> = {
                 succeeded: false,
                 codeError: "ERROR",
-                message: "",
-                data: null
+                message: errorMessageJSON.Message,
+                data: null,
+                meta:{
+                    totalCount:0
+                }
             };
     
             return errorResponse;

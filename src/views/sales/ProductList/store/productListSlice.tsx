@@ -58,6 +58,7 @@ export type FilterQueries = {
     category: string[]
     status: number[]
     productStatus: number
+    idCompany:number
 }
 
 export type SalesProductListState = {
@@ -105,6 +106,7 @@ export const initialTableData: TableQueries = {
     pageIndex: 1,
     pageSize: 10,
     query: '',
+    idCompany:0,
     sort: {
         order: '',
         key: '',
@@ -122,6 +124,7 @@ const initialState: SalesProductListState = {
         category: [],
         status: [0, 1],
         productStatus: 0,
+        idCompany:0
     },
 }
 

@@ -16,20 +16,22 @@ interface SignUpFormProps extends CommonProps {
 }
 
 type SignUpFormSchema = {
-    userName: string
+    name: string
     password: string
     email: string
 }
 
 const validationSchema = Yup.object().shape({
-    userName: Yup.string().required('Please enter your user name'),
+    name: Yup.string().required('Please enter your user name')
+                      .matches(/^[a-zA-Z0-9.]+$/, 'Solo se permiten letras, números y el carácter "."')
+                      .min(6, 'El nombre de usuario debe tener al menos 6 caracteres'),
     email: Yup.string()
         .email('Invalid email')
         .required('Please enter your email'),
-    password: Yup.string().required('Please enter your password'),
-    confirmPassword: Yup.string().oneOf(
+    password: Yup.string().required('Please enter your password').min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    confirmPassword: Yup.string().required('Please enter your password').min(6, 'La contraseña debe tener al menos 6 caracteres').oneOf(
         [Yup.ref('password')],
-        'Your passwords do not match'
+        'Tus contraseñas no coinciden'
     ),
 })
 
@@ -40,14 +42,38 @@ const SignUpForm = (props: SignUpFormProps) => {
 
     const [message, setMessage] = useTimeOutMessage()
 
+    const handleKeyDown = (event:any) => {
+        const allowedChars = /^[a-zA-Z0-9]$/;
+        const key = event.key;
+        // Permitir el uso de teclas de control como retroceso y borrar
+        if (event.ctrlKey || event.metaKey || event.altKey || key === "Backspace" || key === "Delete") {
+            return;
+        }
+        if (!allowedChars.test(key)) {
+            event.preventDefault();
+        }
+    };
+    
+    
+    const handlePaste = (event:any) => {
+        event.preventDefault();
+        const text = event.clipboardData.getData('text/plain');
+        const allowedChars = /^[a-zA-Z0-9]+$/;
+        if (!allowedChars.test(text)) {
+            // Si el texto pegado contiene caracteres no permitidos, no lo pega.
+            return;
+        }
+        // Pega el texto.
+        document.execCommand('insertText', false, text);
+    };
+
     const onSignUp = async (
         values: SignUpFormSchema,
         setSubmitting: (isSubmitting: boolean) => void
     ) => {
-        const { userName, password, email } = values
+        const { name, password, email } = values
         setSubmitting(true)
-        const result = await signUp({ userName, password, email })
-
+        const result = await signUp!({ name, password, email })        
         if (result?.status === 'failed') {
             setMessage(result.message)
         }
@@ -64,7 +90,7 @@ const SignUpForm = (props: SignUpFormProps) => {
             )}
             <Formik
                 initialValues={{
-                    userName: 'admin1',
+                    name: 'admin1',
                     password: '123Qwe1',
                     confirmPassword: '123Qwe1',
                     email: 'test@testmail.com',
@@ -83,15 +109,17 @@ const SignUpForm = (props: SignUpFormProps) => {
                         <FormContainer>
                             <FormItem
                                 label="Usuario"
-                                invalid={errors.userName && touched.userName}
-                                errorMessage={errors.userName}
+                                invalid={errors.name && touched.name}
+                                errorMessage={errors.name}
                             >
                                 <Field
                                     type="text"
                                     autoComplete="off"
-                                    name="userName"
-                                    placeholder="User Name"
+                                    name="name"
+                                    placeholder="Nombre de Usuario"
                                     component={Input}
+                                    onKeyDown={(e:any) => handleKeyDown(e)} 
+                                    onPaste={(e:any) => handlePaste(e)} 
                                 />
                             </FormItem>
                             <FormItem
