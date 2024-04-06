@@ -22,7 +22,7 @@ export const protectedRoutes = [
     {
         key: 'products.create',
         path: `${APP_PREFIX_PATH}/product/`,
-        component: lazy(() => import('@/views/sales/ProductForm')),
+        component: lazy(() => import('@/views/sales/ProductNew')),
         authority: [ADMIN, USER],
     },
     {

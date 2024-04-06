@@ -9,6 +9,7 @@ import BasicInformationFields from './BasicInformationFields'
 import PricingFields from './PricingFields'
 import OrganizationFields from './OrganizationFields'
 import ProductImages from './ProductImages'
+import PackageFields from './PackageFields'
 import cloneDeep from 'lodash/cloneDeep'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
@@ -38,6 +39,11 @@ type InitialData = {
     brand?: string
     vendor?: string
     description?: string
+    idCompany?:number
+    sizeL?:number
+    sizeW?:number
+    sizeH?:number
+    weight?:number
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -97,7 +103,7 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
             <ConfirmDialog
                 isOpen={dialogOpen}
                 type="danger"
-                title="Delete product"
+                title="Borrar producto"
                 confirmButtonColor="red-600"
                 onClose={onConfirmDialogClose}
                 onRequestClose={onConfirmDialogClose}
@@ -105,9 +111,9 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 onConfirm={handleConfirm}
             >
                 <p>
-                    Are you sure you want to delete this product? All record
-                    related to this product will be deleted as well. This action
-                    cannot be undone.
+                ¿Estás seguro de que deseas eliminar este producto? Todo los registros
+                     relacionados con este producto también se eliminarán. Esta acción
+                     no se puede deshacer.
                 </p>
             </ConfirmDialog>
         </>
@@ -134,6 +140,11 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             brand: '',
             vendor: '',
             description: '',
+            idCompany:1,
+            sizeL:0,
+            sizeW:0,
+            sizeH:0,
+            weight:0,
         },
         onFormSubmit,
         onDiscard,
@@ -186,6 +197,13 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                         touched={touched}
                                         errors={errors}
                                     />
+
+                                    <PackageFields
+                                        touched={touched}
+                                        errors={errors}
+                                    />
+
+
                                     <OrganizationFields
                                         touched={touched}
                                         errors={errors}

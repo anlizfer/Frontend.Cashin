@@ -30,6 +30,11 @@ type Product = {
     img: string
     category: string
     price: number
+    suggestedPrice:number
+    weight:number
+    sizeL: number
+    sizeM: number
+    sizeH: number
     stock: number
     status: number
     productCategory:ProductCategory[]
@@ -182,12 +187,7 @@ const ProductTable = () => {
                     return <span className="capitalize">{catChain}</span>
                 },
                 
-            },
-            {
-                header: 'Cantidad',
-                accessorKey: 'stock',
-                sortable: true,
-            },
+            },            
             {
                 header: 'Estado',
                 accessorKey: 'status',
@@ -215,6 +215,22 @@ const ProductTable = () => {
                 cell: (props) => {
                     const { price } = props.row.original
                     return <span>${price}</span>
+                },
+            },
+            {
+                header: 'Precio Sugerido',
+                accessorKey: 'suggestedPrice',
+                cell: (props) => {
+                    const { suggestedPrice } = props.row.original
+                    return <span>${suggestedPrice}</span>
+                },
+            },
+            {
+                header: 'Peso',
+                accessorKey: 'weight',
+                cell: (props) => {
+                    const { weight } = props.row.original
+                    return <span>{weight} gr</span>
                 },
             },
             {

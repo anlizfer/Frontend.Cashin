@@ -13,6 +13,7 @@ type Image = {
     id: string
     name: string
     img: string
+    archive : File
 }
 
 type FormModel = {
@@ -162,6 +163,7 @@ const ProductImages = (props: ProductImagesProps) => {
             id: imageId,
             name: files[latestUpload].name,
             img: URL.createObjectURL(files[latestUpload]),
+            file: files[latestUpload],
         }
         const imageList = [...values.imgList, ...[image]]
         console.log('imageList', imageList)

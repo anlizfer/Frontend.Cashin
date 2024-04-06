@@ -1,9 +1,11 @@
 import AdaptableCard from '@/components/shared/AdaptableCard'
 import { FormItem } from '@/components/ui/Form'
+import Checkbox from '@/components/ui/Checkbox'
 import Input from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
 import CreatableSelect from 'react-select/creatable'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
+import { getCategories, GetCategoriesResponse } from '../ProductList/store'
 
 type Options = {
     label: string
@@ -15,6 +17,7 @@ type FormFieldsName = {
     tags: Options
     vendor: string
     brand: string
+    
 }
 
 type OrganizationFieldsProps = {
@@ -27,28 +30,30 @@ type OrganizationFieldsProps = {
     }
 }
 
-const categories = [
-    { label: 'Bolsos', value: 'bags' },
-    { label: 'Ropa', value: 'cloths' },
-    { label: 'Dispositivos', value: 'devices' },
-    { label: 'Zapatos', value: 'shoes' },
-    { label: 'Relojes', value: 'watches' },
-]
+let categories:any = [];
 
-const tags = [
-    { label: 'trend', value: 'trend' },
-    { label: 'unisex', value: 'unisex' },
-]
+const fetchData = async () => {
+    let dataCat:any = await getCategories(); // Se espera a que se resuelva la promesa de getCategories()
+    dataCat.forEach((element:any) => {
+        categories.push({label:element.name, value:element.id});
+   });
+};
 
-const OrganizationFields = (props: OrganizationFieldsProps) => {
+fetchData(); 
+
+
+
+const OrganizationFields = (props: OrganizationFieldsProps) => {   
+
     const { values = { category: '', tags: [] }, touched, errors } = props
+
 
     return (
         <AdaptableCard divider isLastChild className="mb-4">
             <h5>Organización</h5>
             <p className="mb-6">Sección para configurar el atributo del producto.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="col-span-1">
+                <div className="col-span-1">                    
                     <FormItem
                         label="Categorías"
                         invalid={
@@ -63,7 +68,7 @@ const OrganizationFields = (props: OrganizationFieldsProps) => {
                                     form={form}
                                     options={categories}
                                     value={categories.filter(
-                                        (category) =>
+                                        (category:any) =>
                                             category.value === values.category
                                     )}
                                     onChange={(option) =>
@@ -75,6 +80,8 @@ const OrganizationFields = (props: OrganizationFieldsProps) => {
                                 />
                             )}
                         </Field>
+
+                        
                     </FormItem>
                 </div>
                 

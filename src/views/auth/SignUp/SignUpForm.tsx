@@ -24,7 +24,7 @@ type SignUpFormSchema = {
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Please enter your user name')
                       .matches(/^[a-zA-Z0-9.]+$/, 'Solo se permiten letras, números y el carácter "."')
-                      .min(6, 'El nombre de usuario debe tener al menos 6 caracteres'),
+                      .min(5, 'El nombre de usuario debe tener al menos 6 caracteres'),
     email: Yup.string()
         .email('Invalid email')
         .required('Please enter your email'),

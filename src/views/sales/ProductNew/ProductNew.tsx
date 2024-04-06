@@ -11,6 +11,7 @@ const ProductNew = () => {
     const navigate = useNavigate()
 
     const addProduct = async (data: FormModel) => {
+        data.idCompany=1;
         const response = await apiCreateSalesProduct<boolean, FormModel>(data)
         return response.data
     }
@@ -25,17 +26,17 @@ const ProductNew = () => {
         if (success) {
             toast.push(
                 <Notification
-                    title={'Successfuly added'}
+                    title={'Producto añadido exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Product successfuly added
+                    Producto generado correctamente
                 </Notification>,
                 {
                     placement: 'top-center',
                 }
             )
-            navigate('/app/sales/product-list')
+            //navigate('/app/sales/product-list')
         }
     }
 
@@ -48,7 +49,7 @@ const ProductNew = () => {
             <ProductForm
                 type="new"
                 onFormSubmit={handleFormSubmit}
-                onDiscard={handleDiscard}
+                onDiscard={handleDiscard}                
             />
         </>
     )

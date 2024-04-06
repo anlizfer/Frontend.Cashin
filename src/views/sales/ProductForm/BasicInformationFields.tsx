@@ -8,6 +8,7 @@ type FormFieldsName = {
     name: string
     productCode: string
     description: string
+    brand:string
 }
 
 type BasicInformationFields = {
@@ -64,6 +65,19 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                         />
                     )}
                 </Field>
+            </FormItem>
+
+            <FormItem
+                label="Marca"                
+                errorMessage={errors.brand}
+            >
+                <Field
+                    type="text"
+                    autoComplete="off"
+                    name="brand"
+                    placeholder="Marca"
+                    component={Input}
+                />
             </FormItem>
         </AdaptableCard>
     )

@@ -45,7 +45,7 @@ function useAuth() {
         try {
             const resp = await apiSignIn(values)
             
-            if (resp) {
+            if (resp.succeeded) {
                 const  {token}  = resp.data!;
                 
                 dispatch(signInSuccess(token))
@@ -85,6 +85,11 @@ function useAuth() {
                     status: 'success',
                     message: '',
                 }
+            }else{
+                return {
+                    status: 'failed',
+                    message: resp.message,
+                }     
             }
             // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         } catch (errors: any) {
@@ -97,8 +102,7 @@ function useAuth() {
 
     const signUp = async (values: SignUpCredential) => {
         try {
-            const resp = await apiSignUp(values)            
-            debugger
+            const resp = await apiSignUp(values)                        
             if (resp.succeeded) {                
                 const redirectUrl = query.get(REDIRECT_URL_KEY)
                 navigate(

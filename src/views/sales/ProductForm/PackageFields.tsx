@@ -13,27 +13,23 @@ import type { ComponentType } from 'react'
 import type { InputProps } from '@/components/ui/Input'
 
 type FormFieldsName = {    
-    price: number
-    bulkDiscountPrice: number
-    taxRate: number
+    sizeH: number
+    sizeW: number
+    sizeL: number
+    weight: number
 }
 
-type PricingFieldsProps = {
+type PackageFieldsProps = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
 }
 
-const PriceInput = (props: InputProps) => {
-    return <Input {...props} value={props.field.value} prefix="$" />
-}
+
 
 const NumberInput = (props: InputProps) => {
     return <Input {...props} value={props.field.value} />
 }
 
-const TaxRateInput = (props: InputProps) => {
-    return <Input {...props} value={props.field.value} />
-}
 
 const NumericFormatInput = ({
     onValueChange,
@@ -54,30 +50,30 @@ const NumericFormatInput = ({
     )
 }
 
-const PricingFields = (props: PricingFieldsProps) => {
+const PackageFields = (props: PackageFieldsProps) => {
     const { touched, errors } = props
 
     return (
         <AdaptableCard divider className="mb-4">
-            <h5>Precio</h5>
-            <p className="mb-6">Sección para configurar la información de venta del producto.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h5>Paquetería</h5>
+            <p className="mb-6">Sección para configurar el tamaño y el peso del producto, estos valores se deben diligenciar en cms y el peso en gramos (gr)</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div className="col-span-1">
                     <FormItem
-                        label="Precio"
-                        invalid={(errors.price && touched.price) as boolean}
-                        errorMessage={errors.price}
+                        label="Tamaño (Ancho)"
+                        invalid={(errors.sizeW && touched.sizeW) as boolean}
+                        errorMessage={errors.sizeW}
                     >
-                        <Field name="price">
+                        <Field name="sizeW">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput
                                         form={form}
                                         field={field}
-                                        placeholder="Price"
+                                        placeholder="Ancho (cm)"
                                         customInput={
-                                            PriceInput as ComponentType
+                                            NumberInput as ComponentType
                                         }
                                         onValueChange={(e) => {
                                             form.setFieldValue(
@@ -95,22 +91,54 @@ const PricingFields = (props: PricingFieldsProps) => {
                 </div>
                 <div className="col-span-1">
                     <FormItem
-                        label="Precio Sugerido"
+                        label="Tamaño (Alto)"
                         invalid={
-                            (errors.bulkDiscountPrice &&
-                                touched.bulkDiscountPrice) as boolean
+                            (errors.sizeH &&
+                                touched.sizeH) as boolean
                         }
-                        errorMessage={errors.bulkDiscountPrice}
+                        errorMessage={errors.sizeH}
                     >
-                        <Field name="bulkDiscountPrice">
+                        <Field name="sizeH">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput
                                         form={form}
                                         field={field}
-                                        placeholder="Precio sugerido"
+                                        placeholder="Alto (cm)"
                                         customInput={
-                                            PriceInput as ComponentType
+                                            NumberInput as ComponentType
+                                        }
+                                        onValueChange={(e) => {
+                                            form.setFieldValue(
+                                                field.name,
+                                                e.value
+                                            )
+                                        }}
+                                    />
+                                )
+                            }}
+                        </Field>
+                    </FormItem>
+                </div>
+
+                <div className="col-span-1">
+                    <FormItem
+                        label="Tamaño (Largo)"
+                        invalid={
+                            (errors.sizeL &&
+                                touched.sizeL) as boolean
+                        }
+                        errorMessage={errors.sizeL}
+                    >
+                        <Field name="sizeL">
+                            {({ field, form }: FieldProps) => {
+                                return (
+                                    <NumericFormatInput
+                                        form={form}
+                                        field={field}
+                                        placeholder="Largo (cm)"
+                                        customInput={
+                                            NumberInput as ComponentType
                                         }
                                         onValueChange={(e) => {
                                             form.setFieldValue(
@@ -125,27 +153,24 @@ const PricingFields = (props: PricingFieldsProps) => {
                     </FormItem>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div className="col-span-1">
                     <FormItem
-                        label="Impuesto (%)"
-                        invalid={(errors.taxRate && touched.taxRate) as boolean}
-                        errorMessage={errors.taxRate}
+                        label="Peso (gr)"
+                        invalid={(errors.weight && touched.weight) as boolean}
+                        errorMessage={errors.weight}
                     >
-                        <Field name="taxRate">
+                        <Field name="weight">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput
                                         form={form}
                                         field={field}
-                                        placeholder="Impuesto"
+                                        placeholder="Peso (gr) "
                                         customInput={
-                                            TaxRateInput as ComponentType
-                                        }
-                                        isAllowed={({ floatValue }) =>
-                                            (floatValue as number) <= 100
-                                        }
+                                            NumberInput as ComponentType
+                                        }                                        
                                         onValueChange={(e) => {
                                             form.setFieldValue(
                                                 field.name,
@@ -163,4 +188,4 @@ const PricingFields = (props: PricingFieldsProps) => {
     )
 }
 
-export default PricingFields
+export default PackageFields

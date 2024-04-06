@@ -3,6 +3,7 @@ import {
     apiGetSalesProducts,
     apiDeleteSalesProducts,
     apiGetCategories,
+    apiCreateSalesProduct,
 } from '@/services/SalesService'
 import type { TableQueries } from '@/@types/common'
 type Category = {
@@ -19,13 +20,33 @@ type Product = {
     productCode: string
     brand: string
     img: string        
-    size: number
+    sizeL: number
+    sizeM: number
+    sizeH: number
     weight: number
     price: number
+    suggestedPrice: number
     stock: number
     status: number
     idCompany: number
     productCategory:ProductCategory[]
+}
+
+type AddSalesProductsRequest = {
+    id?: string
+    name: string
+    description: string
+    productCode: string
+    brand: string
+    img: string        
+    sizeL: number
+    sizeM: number
+    sizeH: number
+    weight: number
+    price: number
+    stock: number
+    status: number
+    idCompany: number 
 }
 
 type ProductCategory={
@@ -84,6 +105,7 @@ export const getProducts = createAsyncThunk(
         return response
     }
 )
+
 
 
 

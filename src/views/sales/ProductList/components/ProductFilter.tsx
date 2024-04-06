@@ -56,7 +56,8 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                     name:values.name,
                     category:[],
                     status:[],
-                    productStatus:1
+                    productStatus:1,
+                    idCompany:1
                 }
                 
             };
