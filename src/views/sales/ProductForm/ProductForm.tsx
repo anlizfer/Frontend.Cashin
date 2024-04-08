@@ -33,7 +33,7 @@ type InitialData = {
     stock?: number
     status?: number
     costPerItem?: number
-    bulkDiscountPrice?: number
+    suggestedPrice?: number
     taxRate?: number
     tags?: string[]
     brand?: string
@@ -67,10 +67,9 @@ type ProductForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Product Name Required'),
-    price: Yup.number().required('Price Required'),
-    stock: Yup.number().required('SKU Required'),
-    category: Yup.string().required('Category Required'),
+    name: Yup.string().required('El Nombre de Producto es Requerido'),
+    price: Yup.number().required('El Precio Es Requerido'),    
+    category: Yup.string().required('La Catagría es requerida'),
 })
 
 const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -98,7 +97,7 @@ const DeleteProductButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 type="button"
                 onClick={onConfirmDialogOpen}
             >
-                Delete
+                Eliminar
             </Button>
             <ConfirmDialog
                 isOpen={dialogOpen}
@@ -134,8 +133,8 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
             stock: 0,
             status: 0,
             costPerItem: 0,
-            bulkDiscountPrice: 0,
-            taxRate: 6,
+            suggestedPrice: 0,
+            taxRate: 19,
             tags: [],
             brand: '',
             vendor: '',
@@ -153,28 +152,26 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
 
     const newId = useUniqueId('product-')
 
+
+
     return (
         <>
             <Formik
                 innerRef={ref}
                 initialValues={{
                     ...initialData,
-                    tags: initialData?.tags
+                    /*tags: initialData?.tags
                         ? initialData.tags.map((value) => ({
                               label: value,
                               value,
                           }))
-                        : [],
+                        : [],*/
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values: FormModel, { setSubmitting }) => {
+                    
                     const formData = cloneDeep(values)
-                    formData.tags = formData.tags.map((tag) => {
-                        if (typeof tag !== 'string') {
-                            return tag.value
-                        }
-                        return tag
-                    })
+                    
                     if (type === 'new') {
                         formData.id = newId
                         if (formData.imgList && formData.imgList.length > 0) {

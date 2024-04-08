@@ -14,7 +14,7 @@ import type { InputProps } from '@/components/ui/Input'
 
 type FormFieldsName = {    
     price: number
-    bulkDiscountPrice: number
+    suggestedPrice: number
     taxRate: number
 }
 
@@ -97,12 +97,12 @@ const PricingFields = (props: PricingFieldsProps) => {
                     <FormItem
                         label="Precio Sugerido"
                         invalid={
-                            (errors.bulkDiscountPrice &&
-                                touched.bulkDiscountPrice) as boolean
+                            (errors.suggestedPrice &&
+                                touched.suggestedPrice) as boolean
                         }
-                        errorMessage={errors.bulkDiscountPrice}
+                        errorMessage={errors.suggestedPrice}
                     >
-                        <Field name="bulkDiscountPrice">
+                        <Field name="suggestedPrice">
                             {({ field, form }: FieldProps) => {
                                 return (
                                     <NumericFormatInput

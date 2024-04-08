@@ -152,7 +152,8 @@ const ProductImages = (props: ProductImagesProps) => {
         let imageId = '1-img-0'
         const latestUpload = files.length - 1
         if (values.imgList.length > 0) {
-            const prevImgId = values.imgList[values.imgList.length - 1].id
+            debugger
+            const prevImgId = values.imgList[values.imgList.length - 1].name
             const splitImgId = prevImgId.split('-')
             const newIdNumber = parseInt(splitImgId[splitImgId.length - 1]) + 1
             splitImgId.pop()

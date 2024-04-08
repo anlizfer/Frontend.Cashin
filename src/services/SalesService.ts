@@ -64,6 +64,9 @@ export async function apiCreateSalesProduct<
     const productCode:any=data.productCode;
     const brand:any=data.brand;
     const price:any=data.price;
+    const suggestedPrice:any=data.suggestedPrice;
+    const taxRate:any=data.taxRate;
+    
     const sizeH:any=data.sizeH;
     const sizeW:any=data.sizeW;
     const sizeL:any=data.sizeL;
@@ -78,6 +81,10 @@ export async function apiCreateSalesProduct<
     formData.append('description', description);
     formData.append('productCode', productCode);            
     formData.append('price', price);    
+
+    formData.append('suggestedPrice', suggestedPrice);    
+    formData.append('taxRate', taxRate);    
+
     formData.append('brand', brand);
     formData.append('sizeH', sizeH);
     formData.append('sizeW', sizeW);
@@ -86,7 +93,7 @@ export async function apiCreateSalesProduct<
 
     formData.append(`productCategory[0].idCategory`, category);
 
-    debugger    
+    
     for (let index = 0; index < imgList.length; index++) {
         const image = imgList[index];
         const file:File=image.file;
@@ -101,24 +108,6 @@ export async function apiCreateSalesProduct<
 }
 
 
-/*
-public int? Id { get; set; }
-public string? Name { get; set; }
-public int? IdCompany { get; set; }
-public string? Description { get; set; }
-public string? ProductCode { get; set; }
-public string? Brand { get; set; }        
-public double? Price { get; set; }
-public double? SizeH { get; set; }
-public double? SizeW { get; set; }
-public double? SizeL { get; set; }
-public double? Weight { get; set; }
-public int? IdProductParent { get; set; }
-public int? Status { get; set; }
-public ProductCategoryAddDtoRequest[]? ProductCategory {  get; set; }
-public IFormFile[]? Gallery { get; set; }
-*/
-
 
 export async function apiGetCategories<T, U extends Record<string, unknown>>() {
     return ApiServiceFetch.fetchData<T>(
@@ -131,30 +120,35 @@ export async function apiGetCategories<T, U extends Record<string, unknown>>() {
     );
 }
 
+
+
 export async function apiDeleteSalesProducts<
     T,
     U extends Record<string, unknown>
->(data: U) {
-    return ApiService.fetchData<T>({
-        url: '/sales/products/delete',
-        method: 'delete',
-        data,
-    })
+>(data: U) {    
+    const idCompany:any=data.idCompany;
+    const formData = new FormData();    
+    formData.append('idCompany', idCompany);    
+    
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/delete-product/${data.id}`,
+        formData,
+        'DELETE'
+    );
 }
 
-/*export async function apiGetSalesProduct<T, U extends Record<string, unknown>>(params: U) {
-    return ApiService.fetchData<T>({
-        url: '/sales/product',
-        method: 'get',  
-        params,
-    })
-}*/
+
 
 export async function apiGetSalesProduct<T, U extends Record<string, unknown>>(params: U) {
     return ApiServiceFetch.fetchData<T>(
-        `${API_SERVER}${API_SERVER_AUTH_PREFIX}/product/ProductsByFilter`,
-        params,
-        'post'
+        `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/products-by-filter`,
+        {
+            idCompay:1,
+            id:params.id,   
+            pageIndex:1,
+            pageSize:1,  
+        },
+        'POST'
     );
 }
 
@@ -163,11 +157,60 @@ export async function apiGetSalesProduct<T, U extends Record<string, unknown>>(p
 export async function apiPutSalesProduct<T, U extends Record<string, unknown>>(
     data: U
 ) {
-    return ApiService.fetchData<T>({
-        url: '/sales/products/update',
-        method: 'put',
-        data,
-    })
+    debugger
+    const idCompany:any=data.idCompany;
+    const name:any=data.name;
+    const description:any=data.description;
+    const productCode:any=data.productCode;
+    const brand:any=data.brand;
+    const price:any=data.price;
+    const suggestedPrice:any=data.suggestedPrice;
+    const taxRate:any=data.taxRate;
+    
+    const sizeH:any=data.sizeH;
+    const sizeW:any=data.sizeW;
+    const sizeL:any=data.sizeL;
+    const weight:any=data.weight;
+    const category:any=data.category;
+    const imgList:any[]=data.imgList;
+
+    
+    const formData = new FormData();    
+    formData.append('idCompany', idCompany);
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('productCode', productCode);            
+    formData.append('price', price);    
+
+    formData.append('suggestedPrice', suggestedPrice);    
+    formData.append('taxRate', taxRate);    
+
+    formData.append('brand', brand);
+    formData.append('sizeH', sizeH);
+    formData.append('sizeW', sizeW);
+    formData.append('sizeL', sizeL);    
+    formData.append('weight', weight);
+
+    formData.append(`productCategory[0].idCategory`, category);
+
+    
+    for (let index = 0; index < imgList.length; index++) {
+        const image = imgList[index];
+        if(image.file){
+            const file:File=image.file;
+            formData.append(`gallery`, file);
+        }else{
+            formData.append(`imgList[${index}].id`, image.id);
+            formData.append(`imgList[${index}].Img`, image.img);
+        }
+                
+    }
+
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/update-product/${data.id}`,
+        formData,
+        'PUT'
+    );
 }
 
 

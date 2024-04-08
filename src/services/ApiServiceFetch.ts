@@ -9,8 +9,8 @@ const ApiServiceFetch = {
                 headers: {}
             };
 
-            if (method === 'POST') {
-                options.method = 'POST';
+            if (method.toLowerCase() === 'post' || method.toLowerCase() === 'delete'|| method.toLowerCase() === 'put' ) {
+                options.method = method.toUpperCase();
                 if (data instanceof FormData) {
                     //options.headers['Content-Type'] = 'multipart/form-data';
                     options.body = data;

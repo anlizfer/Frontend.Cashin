@@ -39,44 +39,42 @@ const ProductEdit = () => {
         dispatch(getProduct(data))
     }
 
-    const handleFormSubmit = async (
-        values: FormModel,
-        setSubmitting: SetSubmitting
-    ) => {
+    const handleFormSubmit = async (values: FormModel, setSubmitting: SetSubmitting ) => {
+        
         setSubmitting(true)
         const success = await updateProduct(values)
         setSubmitting(false)
         if (success) {
-            popNotification('updated')
+            popNotification('actualizado')
         }
     }
 
     const handleDiscard = () => {
-        navigate('/app/sales/product-list')
+        navigate('/app/product-list')
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
         setDialogOpen(false)
         const success = await deleteProduct({ id: productData.id })
         if (success) {
-            popNotification('deleted')
+            popNotification('eliminado')
         }
     }
 
     const popNotification = (keyword: string) => {
         toast.push(
             <Notification
-                title={`Successfuly ${keyword}`}
+                title={`Proceso de ${keyword}`}
                 type="success"
                 duration={2500}
             >
-                Product successfuly {keyword}
+                El producto fue {keyword} correctamente
             </Notification>,
             {
                 placement: 'top-center',
             }
         )
-        navigate('/app/sales/product-list')
+        navigate('/app/product-list')
     }
 
     useEffect(() => {
@@ -98,7 +96,7 @@ const ProductEdit = () => {
                             initialData={productData}
                             onFormSubmit={handleFormSubmit}
                             onDiscard={handleDiscard}
-                            onDelete={handleDelete}
+                            onDelete={handleDelete}                            
                         />
                     </>
                 )}

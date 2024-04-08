@@ -59,7 +59,7 @@ const inventoryStatusColor: Record<
         dotClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
     },    
-    2: {
+    0: {
         label: 'Inactivo',
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
@@ -182,7 +182,7 @@ const ProductTable = () => {
 
                     let catChain="";
                     row.productCategory.forEach(element => {
-                        catChain+=`${element.name}, `;
+                        catChain+=`${element.name}  `;
                     });                    
                     return <span className="capitalize">{catChain}</span>
                 },

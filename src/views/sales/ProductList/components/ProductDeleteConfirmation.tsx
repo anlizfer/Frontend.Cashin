@@ -27,10 +27,12 @@ const ProductDeleteConfirmation = () => {
 
     const onDelete = async () => {
         dispatch(toggleDeleteConfirmation(false))
-        const success = await deleteProduct({ id: selectedProduct })
+        const success = await deleteProduct({ id: selectedProduct, idCompany:1 })
 
         if (success) {
-            dispatch(getProducts(tableData))
+            //dispatch(getProducts(tableData))
+            location.reload();
+
             toast.push(
                 <Notification
                     title={'Eliminado exitosamente'}

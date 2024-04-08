@@ -15,7 +15,7 @@ type ProductData = {
         name: string
         img: string
     }[]
-    category?: string
+    category?: string    
     price?: number
     stock?: number
     status?: number
@@ -43,8 +43,8 @@ export const getProduct = createAsyncThunk(
         const response = await apiGetSalesProduct<
             GetSalesProductResponse,
             { id: string }
-        >(data)
-        return response.data
+        >(data)        
+        return response.data[0]
     }
 )
 

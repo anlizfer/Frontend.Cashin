@@ -115,10 +115,10 @@ export const getCategories = async () => {
 }
 
 
-export const deleteProduct = async (data: { id: string | string[] }) => {
+export const deleteProduct = async (data: { id: string | string[], idCompany:number }) => {
     const response = await apiDeleteSalesProducts<
         boolean,
-        { id: string | string[] }
+        { id: string | string[], idCompany:number }
     >(data)
     return response.data
 }
