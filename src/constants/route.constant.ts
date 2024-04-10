@@ -12,3 +12,4 @@ export const API_SERVER_PREFIX="/api";
 export const API_SERVER=API_SERVER_IP+":"+API_SERVER_PORT+API_SERVER_PREFIX;
 export const API_SERVER_AUTH_PREFIX = '/security'
 export const API_SERVER_PRODUCT_PREFIX = '/product'
+export const API_SERVER_COMPANY_PREFIX = '/company'

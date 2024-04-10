@@ -165,7 +165,7 @@ const navigationConfig: NavigationTree[] = [
             {
                 key: 'companies',
                 path: '',
-                title: 'Empresas',
+                title: 'Compañías',
                 translateKey: '',
                 icon: 'companies',
                 type: NAV_ITEM_TYPE_COLLAPSE,
@@ -173,7 +173,7 @@ const navigationConfig: NavigationTree[] = [
                 subMenu: [
                     {
                         key: 'companies.list',
-                        path: `${APP_PREFIX_PATH}/company-list`,
+                        path: `${APP_PREFIX_PATH}/companies-list`,
                         title: 'Listado Empresas',
                         translateKey: '',
                         icon: '',
@@ -183,7 +183,7 @@ const navigationConfig: NavigationTree[] = [
                     },{
                         key: 'companies.create',
                         path: `${APP_PREFIX_PATH}/company`,
-                        title: 'Crear Producto',
+                        title: 'Crear Compañía',
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
