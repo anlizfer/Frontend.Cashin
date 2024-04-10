@@ -31,7 +31,26 @@ export const protectedRoutes = [
         component: lazy(() => import('@/views/sales/ProductEdit')),
         authority: [ADMIN, USER],
     },
-    
+    //CATEGORÍAS
+    {
+        key: 'category.list',
+        path: `${APP_PREFIX_PATH}/categories-list`,
+        component: lazy(() => import('@/views/sales/CategoryList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'category.create',
+        path: `${APP_PREFIX_PATH}/category/`,
+        component: lazy(() => import('@/views/sales/CategoryNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'category.edit',
+        path: `${APP_PREFIX_PATH}/category/:categoryId?`,
+        component: lazy(() => import('@/views/sales/CategoryEdit')),
+        authority: [ADMIN, USER],
+    },
+
     {
         key: 'products.inventory',
         path: `${APP_PREFIX_PATH}/inventory`,

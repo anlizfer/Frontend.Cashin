@@ -59,7 +59,7 @@ const ImageList = (props: ImageListProps) => {
         setDeleteConfirmationOpen(false)
     }
 
-    const onDelete = () => {
+    const onDelete = () => {        
         onImageDelete?.(selectedImg)
         setDeleteConfirmationOpen(false)
     }

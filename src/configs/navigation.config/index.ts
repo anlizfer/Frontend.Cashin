@@ -59,8 +59,8 @@ const navigationConfig: NavigationTree[] = [
                         subMenu: [],                
                     },{
                         key: 'products.category',
-                        path: `${APP_PREFIX_PATH}/categories`,
-                        title: 'Categorias',
+                        path: `${APP_PREFIX_PATH}/categories-list`,
+                        title: 'Lista de Categorias',
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,

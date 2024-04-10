@@ -14,15 +14,6 @@ export async function apiGetSalesDashboardData<
     })
 }
 
-// export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
-//     data: U
-// ) {
-//     return ApiService.fetchData<T>({
-//         url: '/sales/products',
-//         method: 'post',
-//         data,
-//     })
-// }
 
 export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
     data: U
@@ -52,12 +43,7 @@ export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
     );
 }
 
-export async function apiCreateSalesProduct<
-    T,
-    U extends Record<string, unknown>
->(data: U) {
-
-    
+export async function apiCreateSalesProduct<T, U extends Record<string, unknown>>(data: U) {    
     const idCompany:any=data.idCompany;
     const name:any=data.name;
     const description:any=data.description;
@@ -73,7 +59,6 @@ export async function apiCreateSalesProduct<
     const weight:any=data.weight;
     const category:any=data.category;
     const imgList:any[]=data.imgList;
-
     
     const formData = new FormData();    
     formData.append('idCompany', idCompany);
@@ -120,12 +105,7 @@ export async function apiGetCategories<T, U extends Record<string, unknown>>() {
     );
 }
 
-
-
-export async function apiDeleteSalesProducts<
-    T,
-    U extends Record<string, unknown>
->(data: U) {    
+export async function apiDeleteSalesProducts<T, U extends Record<string, unknown>>(data: U) {    
     const idCompany:any=data.idCompany;
     const formData = new FormData();    
     formData.append('idCompany', idCompany);    
@@ -136,8 +116,6 @@ export async function apiDeleteSalesProducts<
         'DELETE'
     );
 }
-
-
 
 export async function apiGetSalesProduct<T, U extends Record<string, unknown>>(params: U) {
     return ApiServiceFetch.fetchData<T>(
@@ -154,10 +132,7 @@ export async function apiGetSalesProduct<T, U extends Record<string, unknown>>(p
 
 
 
-export async function apiPutSalesProduct<T, U extends Record<string, unknown>>(
-    data: U
-) {
-    debugger
+export async function apiPutSalesProduct<T, U extends Record<string, unknown>>(data: U) {    
     const idCompany:any=data.idCompany;
     const name:any=data.name;
     const description:any=data.description;
@@ -214,9 +189,7 @@ export async function apiPutSalesProduct<T, U extends Record<string, unknown>>(
 }
 
 
-export async function apiGetSalesOrders<T, U extends Record<string, unknown>>(
-    params: U
-) {
+export async function apiGetSalesOrders<T, U extends Record<string, unknown>>(params: U) {
     return ApiService.fetchData<T>({
         url: '/sales/orders',
         method: 'get',
@@ -224,10 +197,7 @@ export async function apiGetSalesOrders<T, U extends Record<string, unknown>>(
     })
 }
 
-export async function apiDeleteSalesOrders<
-    T,
-    U extends Record<string, unknown>
->(data: U) {
+export async function apiDeleteSalesOrders<T, U extends Record<string, unknown>>(data: U) {
     return ApiService.fetchData<T>({
         url: '/sales/orders/delete',
         method: 'delete',
@@ -235,10 +205,7 @@ export async function apiDeleteSalesOrders<
     })
 }
 
-export async function apiGetSalesOrderDetails<
-    T,
-    U extends Record<string, unknown>
->(params: U) {
+export async function apiGetSalesOrderDetails<T,U extends Record<string, unknown>>(params: U) {
     return ApiService.fetchData<T>({
         url: '/sales/orders-details',
         method: 'get',
