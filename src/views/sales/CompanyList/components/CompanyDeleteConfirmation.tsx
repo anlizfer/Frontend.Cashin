@@ -38,7 +38,7 @@ const CompanyDeleteConfirmation = () => {
                     type="success"
                     duration={2500}
                 >
-                    Categoría eliminado exitosamente
+                    Compañía eliminada exitosamente
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -51,7 +51,7 @@ const CompanyDeleteConfirmation = () => {
         <ConfirmDialog
             isOpen={dialogOpen}
             type="danger"
-            title="Borrar Categoría"
+            title="Borrar Compañía"
             confirmButtonColor="red-600"
             onClose={onDialogClose}
             onRequestClose={onDialogClose}
@@ -59,8 +59,8 @@ const CompanyDeleteConfirmation = () => {
             onConfirm={onDelete}
         >
             <p>
-            ¿Estás seguro de que deseas eliminar esta categoría? También se eliminarán todos 
-            los registros relacionados con este Categoría. 
+            ¿Estás seguro de que deseas eliminar esta Compañía? También se eliminarán todos 
+            los registros relacionados con este Compañía. 
             Esta acción no se puede deshacer.
             </p>
         </ConfirmDialog>

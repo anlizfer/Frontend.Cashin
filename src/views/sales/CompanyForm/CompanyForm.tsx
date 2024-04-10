@@ -10,6 +10,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
+import LocationFields from './LocationFields'
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
@@ -131,6 +132,17 @@ const CompanyForm = forwardRef<FormikRef, CompanyForm>((props, ref) => {
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields
+                                        values={values}
+                                        touched={touched}
+                                        errors={errors}
+                                    />                                    
+                                </div>
+                                
+                            </div>
+
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div className="lg:col-span-2">
+                                    <LocationFields
                                         values={values}
                                         touched={touched}
                                         errors={errors}

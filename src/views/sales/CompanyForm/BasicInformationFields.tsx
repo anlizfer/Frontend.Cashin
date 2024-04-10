@@ -10,8 +10,8 @@ type FormFieldsName = {
     name: string    
     nameRepLegal: string    
     nitCompany: string    
-    personType:string
-    legalForm:string
+    idPersonType:string
+    idLegalForm:string
 }
 
 type Options = {
@@ -23,8 +23,8 @@ type BasicInformationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
     values: {        
-        personType: string
-        legalForm:string
+        idPersonType: string
+        idLegalForm:string
         [key: string]: unknown
     }
 }
@@ -51,7 +51,7 @@ fetchData();
 
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { personType: '', legalForm:''}, touched, errors } = props
+    const { values = { idPersonType: '', idLegalForm:''}, touched, errors } = props
 
     return (
         <AdaptableCard divider className="mb-4">
@@ -112,9 +112,9 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                     <FormItem
                         label="Tipo Persona"
                         invalid={
-                            (errors.personType && touched.personType) as boolean
+                            (errors.idPersonType && touched.idPersonType) as boolean
                         }
-                        errorMessage={errors.personType}
+                        errorMessage={errors.idPersonType}
                     >
                         <Field name="personType">
                             {({ field, form }: FieldProps) => (
@@ -124,7 +124,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                     options={personTypes}
                                     value={personTypes.filter(
                                         (personType:any) =>
-                                            personType.value === values.personType
+                                            personType.value === values.idPersonType
                                     )}
                                     onChange={(option) =>
                                         form.setFieldValue(
@@ -146,9 +146,9 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                     <FormItem
                         label="Forma Legal"
                         invalid={
-                            (errors.legalForm && touched.legalForm) as boolean
+                            (errors.idLegalForm && touched.idLegalForm) as boolean
                         }
-                        errorMessage={errors.legalForm}
+                        errorMessage={errors.idLegalForm}
                     >
                         <Field name="legalForm">
                             {({ field, form }: FieldProps) => (
@@ -158,7 +158,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                     options={legalForms}
                                     value={legalForms.filter(
                                         (legalForm:any) =>
-                                            legalForm.value === values.legalForm
+                                            legalForm.value === values.idLegalForm
                                     )}
                                     onChange={(option) =>
                                         form.setFieldValue(

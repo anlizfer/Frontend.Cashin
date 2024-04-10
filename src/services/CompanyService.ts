@@ -30,11 +30,15 @@ export async function apiGetCompanies<T, U extends Record<string, unknown>>(
 
 export async function apiCreateCompany<T, U extends Record<string, unknown>>(data: U) {        
     const name:any=data.name;
-    const idPersonType:any=data.personType;
-    const idLegalForm:any=data.legalForm;
+    const idPersonType:any=data.idPersonType;
+    const idLegalForm:any=data.idLegalForm;
     const idCity:any=data.idCity;
     const nameRepLegal:any=data.nameRepLegal;
     const nitCompany:any=data.nitCompany;
+    const address:any=data.address;
+    const email:any=data.email;
+    const phone:any=data.phone;
+    const neighborhood:any=data.neighborhood;
     debugger
       
     return ApiServiceFetch.fetchData<T>(
@@ -45,7 +49,12 @@ export async function apiCreateCompany<T, U extends Record<string, unknown>>(dat
             idLegalForm: idLegalForm,
             idCity: idCity,
             nameRepLegal: nameRepLegal,
-            nitCompany: nitCompany
+            nitCompany: nitCompany,
+            address:address,
+            email:email,
+            phone:phone,
+            neighborhood:neighborhood
+
         },
         'POST'
     );
@@ -53,13 +62,12 @@ export async function apiCreateCompany<T, U extends Record<string, unknown>>(dat
 
 
 export async function apiDeleteCompany<T, U extends Record<string, unknown>>(data: U) {    
-    const idCompany:any=data.idCompany;
-    const formData = new FormData();    
-    formData.append('idCompany', idCompany);    
+
+    debugger
     
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_COMPANY_PREFIX}/delete-company/${data.id}`,
-        formData,
+        {},
         'DELETE'
     );
 }
@@ -67,8 +75,7 @@ export async function apiDeleteCompany<T, U extends Record<string, unknown>>(dat
 export async function apiGetCompany<T, U extends Record<string, unknown>>(params: U) {
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_COMPANY_PREFIX}/companies-by-filter`,
-        {
-            idCompay:1,
+        {            
             id:params.id,   
             pageIndex:1,
             pageSize:1,  
@@ -80,15 +87,32 @@ export async function apiGetCompany<T, U extends Record<string, unknown>>(params
 
 
 export async function apiPutCompany<T, U extends Record<string, unknown>>(data: U) {    
-    const idCompany:any=data.idCompany;
-    const name:any=data.name;    
+    const name:any=data.name;
+    const idPersonType:any=data.idPersonType;
+    const idLegalForm:any=data.idLegalForm;
+    const idCity:any=data.idCity;
+    const nameRepLegal:any=data.nameRepLegal;
+    const nitCompany:any=data.nitCompany;
+    const address:any=data.address;
+    const email:any=data.email;
+    const phone:any=data.phone;
+    const neighborhood:any=data.neighborhood;
+    debugger
 
 
     return ApiServiceFetch.fetchData<T>(
-        `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/update-company/${data.id}`,
+        `${API_SERVER}${API_SERVER_COMPANY_PREFIX}/update-company/${data.id}`,
         {
-            idCompany:idCompany,
-            name:name
+            name:name,
+            idPersonType: idPersonType,
+            idLegalForm: idLegalForm,
+            idCity: idCity,
+            nameRepLegal: nameRepLegal,
+            nitCompany: nitCompany,
+            address:address,
+            email:email,
+            phone:phone,
+            neighborhood:neighborhood
         },
         'PUT'
     );
@@ -106,6 +130,23 @@ export async function apiGetPersonType<T>() {
 export async function apiGetLegalForm<T>() {
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_GENERAL_PREFIX}/legal-form`,
+        {},
+        'GET'
+    );
+}
+
+
+export async function apiGetStateForm<T>(id:any) {
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_GENERAL_PREFIX}/states/${id}`,
+        {},
+        'GET'
+    );
+}
+
+export async function apiGetCitiesForm<T>(id:any) {
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_GENERAL_PREFIX}/cities/${id}`,
         {},
         'GET'
     );

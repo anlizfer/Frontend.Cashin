@@ -174,7 +174,7 @@ const navigationConfig: NavigationTree[] = [
                     {
                         key: 'companies.list',
                         path: `${APP_PREFIX_PATH}/companies-list`,
-                        title: 'Listado Empresas',
+                        title: 'Listado de Compañías',
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,

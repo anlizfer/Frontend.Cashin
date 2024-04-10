@@ -4,45 +4,45 @@ import DoubleSidedImage from '@/components/shared/DoubleSidedImage'
 import toast from '@/components/ui/toast'
 import Notification from '@/components/ui/Notification'
 import reducer, {
-    getCategory,
-    updateCategory,
-    deleteCategory,
+    getCompany,
+    updateCompany,
+    deleteCompany,
     useAppSelector,
     useAppDispatch,
 } from './store'
 import { injectReducer } from '@/store'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import CategoryForm, {
+import CompanyForm, {
     FormModel,
     SetSubmitting,
     OnDeleteCallback,
-} from '@/views/sales/CategoryForm'
+} from '@/views/sales/CompanyForm'
 import isEmpty from 'lodash/isEmpty'
 
-injectReducer('salesCategoryEdit', reducer)
+injectReducer('salesCompanyEdit', reducer)
 
-const CategoryEdit = () => {
+const CompanyEdit = () => {
     const dispatch = useAppDispatch()
 
     const location = useLocation()
     const navigate = useNavigate()
 
-    const CategoryData = useAppSelector(
-        (state) => state.salesCategoryEdit.data.CategoryData
+    const CompanyData = useAppSelector(
+        (state) => state.salesCompanyEdit.data.CompanyData
     )
     const loading = useAppSelector(
-        (state) => state.salesCategoryEdit.data.loading
+        (state) => state.salesCompanyEdit.data.loading
     )
 
     const fetchData = (data: { id: string }) => {
-        dispatch(getCategory(data))
+        dispatch(getCompany(data))
     }
 
     const handleFormSubmit = async (values: FormModel, setSubmitting: SetSubmitting ) => {
         
         setSubmitting(true)
-        const success = await updateCategory(values)
+        const success = await updateCompany(values)
         setSubmitting(false)
         if (success) {
             popNotification('actualizada')
@@ -50,12 +50,12 @@ const CategoryEdit = () => {
     }
 
     const handleDiscard = () => {
-        navigate('/app/Category-list')
+        navigate('/app/Company-list')
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {
         setDialogOpen(false)
-        const success = await deleteCategory({ id: CategoryData.id })
+        const success = await deleteCompany({ id: CompanyData.id })
         if (success) {
             popNotification('eliminada')
         }
@@ -68,13 +68,13 @@ const CategoryEdit = () => {
                 type="success"
                 duration={2500}
             >
-                La cateogría fue {keyword} correctamente
+                La compañía fue {keyword} correctamente
             </Notification>,
             {
                 placement: 'top-center',
             }
         )
-        navigate('/app/categories-list')
+        navigate('/app/companies-list')
     }
 
     useEffect(() => {
@@ -89,11 +89,11 @@ const CategoryEdit = () => {
     return (
         <>
             <Loading loading={loading}>
-                {!isEmpty(CategoryData) && (
+                {!isEmpty(CompanyData) && (
                     <>
-                        <CategoryForm
+                        <CompanyForm
                             type="edit"
-                            initialData={CategoryData}
+                            initialData={CompanyData}
                             onFormSubmit={handleFormSubmit}
                             onDiscard={handleDiscard}
                             onDelete={handleDelete}                            
@@ -101,18 +101,18 @@ const CategoryEdit = () => {
                     </>
                 )}
             </Loading>
-            {!loading && isEmpty(CategoryData) && (
+            {!loading && isEmpty(CompanyData) && (
                 <div className="h-full flex flex-col items-center justify-center">
                     <DoubleSidedImage
                         src="/img/others/img-2.png"
                         darkModeSrc="/img/others/img-2-dark.png"
-                        alt="No Category found!"
+                        alt="No Company found!"
                     />
-                    <h3 className="mt-8">No Category found!</h3>
+                    <h3 className="mt-8">No Company found!</h3>
                 </div>
             )}
         </>
     )
 }
 
-export default CategoryEdit
+export default CompanyEdit

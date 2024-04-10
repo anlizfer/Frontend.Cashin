@@ -4,7 +4,9 @@ import {
     apiDeleteCompany,    
     apiCreateCompany,
     apiGetPersonType,
-    apiGetLegalForm
+    apiGetLegalForm,
+    apiGetStateForm,
+    apiGetCitiesForm
 } from '@/services/CompanyService'
 import type { TableQueries } from '@/@types/common'
 
@@ -18,6 +20,9 @@ type Company = {
     idCity: number    
     nameRepLegal: string 
     nitCompany: string     
+    neighborhood:string
+    idState:number
+    addres:string    
 }
 
 type AddCompaniesRequest = {
@@ -28,6 +33,9 @@ type AddCompaniesRequest = {
     idCity: number    
     nameRepLegal: string 
     nitCompany: string
+    neighborhood:string
+    idState:number
+    addres:string    
 }
 
 type MetadataSetting = {
@@ -41,6 +49,11 @@ export type GetCompaniesResponse = {
 }
 
 export type GetPersonTypeResponse={
+    id: string
+    name: string 
+}
+
+export type GetStateResponse={
     id: string
     name: string 
 }
@@ -84,6 +97,18 @@ export const getLegalForm = async () => {
     const response = await apiGetLegalForm<GetPersonTypeResponse>();
     return response.data
 }
+
+export const getStates = async (idCountry:any) => {
+    const response = await apiGetStateForm<GetStateResponse>(idCountry);
+    return response.data
+}
+
+export const getCities = async (idState:any) => {
+    const response = await apiGetCitiesForm<GetStateResponse>(idState);
+    return response.data
+}
+
+
 
 
 

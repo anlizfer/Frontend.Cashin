@@ -1,3 +1,3 @@
-import ProductEdit from './CompanyEdit'
+import CompanyEdit from './CompanyEdit'
 
-export default ProductEdit
+export default CompanyEdit

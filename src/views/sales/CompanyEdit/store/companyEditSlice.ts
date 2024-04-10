@@ -1,69 +1,69 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
-    apiGetCategory,
-    apiPutCategory,
-    apiDeleteCategory,
-} from '@/services/CategoryService'
+    apiGetCompany,
+    apiPutCompany,
+    apiDeleteCompany,
+} from '@/services/CompanyService'
 
-type CategoryData = {
+type CompanyData = {
     id?: string
     name?: string    
     status?: number    
 }
 
-export type SalesCategoryEditState = {
+export type SalesCompanyEditState = {
     loading: boolean
-    CategoryData: CategoryData
+    CompanyData: CompanyData
 }
 
-type GetSalesCategoryResponse = CategoryData
+type GetSalesCompanyResponse = CompanyData
 
-export const SLICE_NAME = 'salesCategoryEdit'
+export const SLICE_NAME = 'salesCompanyEdit'
 
-export const getCategory = createAsyncThunk(
-    SLICE_NAME + '/getCategorys',
+export const getCompany = createAsyncThunk(
+    SLICE_NAME + '/getCompanys',
     async (data: { id: string }) => {
-        const response = await apiGetCategory<
-            GetSalesCategoryResponse,
+        const response = await apiGetCompany<
+            GetSalesCompanyResponse,
             { id: string }
         >(data)        
         return response.data[0]
     }
 )
 
-export const updateCategory = async <T, U extends Record<string, unknown>>(
+export const updateCompany = async <T, U extends Record<string, unknown>>(
     data: U
 ) => {
-    const response = await apiPutCategory<T, U>(data)
+    const response = await apiPutCompany<T, U>(data)
     return response.data
 }
 
-export const deleteCategory = async <T, U extends Record<string, unknown>>(
+export const deleteCompany = async <T, U extends Record<string, unknown>>(
     data: U
 ) => {
-    const response = await apiDeleteCategory<T, U>(data)
+    const response = await apiDeleteCompany<T, U>(data)
     return response.data
 }
 
-const initialState: SalesCategoryEditState = {
+const initialState: SalesCompanyEditState = {
     loading: true,
-    CategoryData: {},
+    CompanyData: {},
 }
 
-const CategoryEditSlice = createSlice({
+const CompanyEditSlice = createSlice({
     name: `${SLICE_NAME}/state`,
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getCategory.fulfilled, (state, action) => {
-                state.CategoryData = action.payload
+            .addCase(getCompany.fulfilled, (state, action) => {
+                state.CompanyData = action.payload
                 state.loading = false
             })
-            .addCase(getCategory.pending, (state) => {
+            .addCase(getCompany.pending, (state) => {
                 state.loading = true
             })
     },
 })
 
-export default CategoryEditSlice.reducer
+export default CompanyEditSlice.reducer

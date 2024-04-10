@@ -1,3 +1,3 @@
-import ProductEdit from './CategoryEdit'
+import CategoryEdit from './CategoryEdit'
 
-export default ProductEdit
+export default CategoryEdit

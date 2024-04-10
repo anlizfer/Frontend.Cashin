@@ -35,12 +35,12 @@ const CompanyNew = () => {
                     placement: 'top-center',
                 }
             )
-            navigate('/app/Company-list')
+            navigate('/app/companies-list')
         }
     }
 
     const handleDiscard = () => {
-        navigate('/app/sales/Company-list')
+        navigate('/app/companies-list')
     }
 
     return (
