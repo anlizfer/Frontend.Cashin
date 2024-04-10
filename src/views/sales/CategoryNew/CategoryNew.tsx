@@ -36,7 +36,7 @@ const CategoryNew = () => {
                     placement: 'top-center',
                 }
             )
-            //navigate('/app/sales/Category-list')
+            navigate('/app/category-list')
         }
     }
 

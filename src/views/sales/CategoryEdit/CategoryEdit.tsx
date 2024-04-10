@@ -74,7 +74,7 @@ const CategoryEdit = () => {
                 placement: 'top-center',
             }
         )
-        navigate('/app/Category-list')
+        navigate('/app/categories-list')
     }
 
     useEffect(() => {

@@ -36,12 +36,12 @@ const ProductNew = () => {
                     placement: 'top-center',
                 }
             )
-            //navigate('/app/sales/product-list')
+            navigate('/app/product-list')
         }
     }
 
     const handleDiscard = () => {
-        navigate('/app/sales/product-list')
+        navigate('/app/product-list')
     }
 
     return (
