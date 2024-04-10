@@ -17,8 +17,7 @@ type FormikRef = FormikProps<any>
 type InitialData = {
     id?: string
     name?: string   
-    status?: number    
-    idCompany?:number    
+    status?: number        
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -31,7 +30,7 @@ export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 type OnDelete = (callback: OnDeleteCallback) => void
 
-type CategoryForm = {
+type CompanyForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard?: () => void
@@ -42,10 +41,10 @@ type CategoryForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required('El Nombre de la categoría es Requerido'),    
+    name: Yup.string().required('El Nombre de la compañía es Requerido'),    
 })
 
-const DeleteCategoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
+const DeleteCompanyButton = ({ onDelete }: { onDelete: OnDelete }) => {
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const onConfirmDialogOpen = () => {
@@ -75,7 +74,7 @@ const DeleteCategoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
             <ConfirmDialog
                 isOpen={dialogOpen}
                 type="danger"
-                title="Borrar categoría"
+                title="Borrar compañía"
                 confirmButtonColor="red-600"
                 onClose={onConfirmDialogClose}
                 onRequestClose={onConfirmDialogClose}
@@ -83,8 +82,8 @@ const DeleteCategoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 onConfirm={handleConfirm}
             >
                 <p>
-                ¿Estás seguro de que deseas eliminar esta categoría? Todo los registros
-                     relacionados con esta categoría también se eliminarán. Esta acción
+                ¿Estás seguro de que deseas eliminar esta compañía? Todo los registros
+                     relacionados con esta compañía también se eliminarán. Esta acción
                      no se puede deshacer.
                 </p>
             </ConfirmDialog>
@@ -92,20 +91,19 @@ const DeleteCategoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
     )
 }
 
-const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref) => {
+const CompanyForm = forwardRef<FormikRef, CompanyForm>((props, ref) => {
     const {
         type,
         initialData = {
             id: '',
-            name: '',           
-            idCompany:1,            
+            name: '',                       
         },
         onFormSubmit,
         onDiscard,
         onDelete,
     } = props
 
-    const newId = useUniqueId('Category-')
+    const newId = useUniqueId('Company-')
 
 
 
@@ -133,6 +131,7 @@ const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref) => {
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields
+                                        values={values}
                                         touched={touched}
                                         errors={errors}
                                     />                                    
@@ -145,7 +144,7 @@ const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref) => {
                             >
                                 <div>
                                     {type === 'edit' && (
-                                        <DeleteCategoryButton
+                                        <DeleteCompanyButton
                                             onDelete={onDelete as OnDelete}
                                         />
                                     )}
@@ -178,6 +177,6 @@ const CategoryForm = forwardRef<FormikRef, CategoryForm>((props, ref) => {
     )
 })
 
-CategoryForm.displayName = 'CategoryForm'
+CompanyForm.displayName = 'CompanyForm'
 
-export default CategoryForm
+export default CompanyForm

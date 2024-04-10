@@ -23,6 +23,9 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         <AdaptableCard divider className="mb-4">
             <h5>Información Producto</h5>
             <p className="mb-6">Sección para configurar la información básica del producto.</p>
+
+            
+
             <FormItem
                 label="Nombre Producto"
                 invalid={(errors.name && touched.name) as boolean}

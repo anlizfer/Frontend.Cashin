@@ -1,18 +1,17 @@
-import CategoryForm, {
+import CompanyForm, {
     FormModel,
     SetSubmitting,
-} from '@/views/sales/CategoryForm'
+} from '@/views/sales/CompanyForm'
 import toast from '@/components/ui/toast'
 import Notification from '@/components/ui/Notification'
 import { useNavigate } from 'react-router-dom'
-import { apiCreateCategory } from '@/services/CategoryService'
+import { apiCreateCompany } from '@/services/CompanyService'
 
-const CategoryNew = () => {
+const CompanyNew = () => {
     const navigate = useNavigate()
 
-    const addCategory = async (data: FormModel) => {
-        data.idCompany=1;
-        const response = await apiCreateCategory<boolean, FormModel>(data)
+    const addCompany = async (data: FormModel) => {        
+        const response = await apiCreateCompany<boolean, FormModel>(data)
         return response.data
     }
 
@@ -21,32 +20,32 @@ const CategoryNew = () => {
         setSubmitting: SetSubmitting
     ) => {
         setSubmitting(true)
-        const success = await addCategory(values)
+        const success = await addCompany(values)
         setSubmitting(false)
         if (success) {
             toast.push(
                 <Notification
-                    title={'Categoría añadida exitosamente'}
+                    title={'Compañía añadida exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Categoría generada correctamente
+                    Compañía generada correctamente
                 </Notification>,
                 {
                     placement: 'top-center',
                 }
             )
-            navigate('/app/category-list')
+            navigate('/app/Company-list')
         }
     }
 
     const handleDiscard = () => {
-        navigate('/app/sales/Category-list')
+        navigate('/app/sales/Company-list')
     }
 
     return (
         <>
-            <CategoryForm
+            <CompanyForm
                 type="new"
                 onFormSubmit={handleFormSubmit}
                 onDiscard={handleDiscard}                
@@ -55,4 +54,4 @@ const CategoryNew = () => {
     )
 }
 
-export default CategoryNew
+export default CompanyNew

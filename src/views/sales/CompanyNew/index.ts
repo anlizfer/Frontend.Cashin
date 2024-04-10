@@ -1,3 +1,3 @@
-import CategoryNew from './CompanyNew'
+import CompanyNew from './CompanyNew'
 
-export default CategoryNew
+export default CompanyNew

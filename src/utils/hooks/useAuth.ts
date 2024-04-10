@@ -52,6 +52,8 @@ function useAuth() {
                 const Companies=getPayloadCompanies(token);                
                 const CompaniesJSON = JSON.parse(Companies);
                 let CompaniesArra:CompanyState[]=[];
+
+                
                 
                 CompaniesJSON.company.forEach((company: { Id: number, Name: string }) => {                    
                     CompaniesArra.push({
@@ -59,6 +61,8 @@ function useAuth() {
                         name:company.Name
                     });
                 });
+
+                debugger
 
                 if (resp.succeeded) {
 

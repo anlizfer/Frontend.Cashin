@@ -3,6 +3,8 @@ import {
     apiGetCompanies,
     apiDeleteCompany,    
     apiCreateCompany,
+    apiGetPersonType,
+    apiGetLegalForm
 } from '@/services/CompanyService'
 import type { TableQueries } from '@/@types/common'
 
@@ -38,6 +40,11 @@ export type GetCompaniesResponse = {
     data: Company[]
 }
 
+export type GetPersonTypeResponse={
+    id: string
+    name: string 
+}
+
 export type FilterQueries = {
     name: string    
     status: number[]    
@@ -66,6 +73,18 @@ export const getCompanies = createAsyncThunk(
         return response
     }
 )
+
+
+export const getPersonType = async () => {
+    const response = await apiGetPersonType<GetPersonTypeResponse>();
+    return response.data
+}
+
+export const getLegalForm = async () => {
+    const response = await apiGetLegalForm<GetPersonTypeResponse>();
+    return response.data
+}
+
 
 
 export const deleteCompany = async (data: { id: string | string[], idCompany:number }) => {
