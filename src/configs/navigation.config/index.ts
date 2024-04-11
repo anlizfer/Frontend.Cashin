@@ -89,7 +89,7 @@ const navigationConfig: NavigationTree[] = [
                 subMenu: [
                     {
                         key: 'customers.list',
-                        path: `${APP_PREFIX_PATH}/customer-list`,
+                        path: `${APP_PREFIX_PATH}/people-list`,
                         title: 'Listado Clientes',
                         translateKey: '',
                         icon: '',
@@ -98,8 +98,8 @@ const navigationConfig: NavigationTree[] = [
                         subMenu: [],                
                     },{
                         key: 'customers.create',
-                        path: `${APP_PREFIX_PATH}/customer`,
-                        title: 'Crear Producto',
+                        path: `${APP_PREFIX_PATH}/people`,
+                        title: 'Crear Cliente',
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,

@@ -4,7 +4,7 @@ import Input from '@/components/ui/Input'
 import Select from '@/components/ui/Select'
 import { FormItem } from '@/components/ui/Form'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
-import { getStates,getCities } from '../CompanyList/store'
+import { getStates,getCities } from '../PeopleList/store'
 
 /*
 
@@ -44,27 +44,16 @@ let cities:any = []
 const fetchData = async () => {
     let dataStates:any = await getStates(1); 
     dataStates.forEach((element:any) => {
-        states.push({label:element.name, value:element.id});
-    });
-
-    /*let dataLegForm:any = await getStates();
-    dataLegForm.forEach((element:any) => {
-        cities.push({label:element.name, value:element.id});
-    });*/
-
+        states.push({label:element.name, value:`${element.id}`});
+    });    
 };
 
 const fetchDataCities = async (idState:any) => {
     let dataCities:any = await getCities(idState);
+    cities=[];
     dataCities.forEach((element:any) => {
-        cities.push({label:element.name, value:element.id});
-    });
-
-    /*let dataLegForm:any = await getStates();
-    dataLegForm.forEach((element:any) => {
-        cities.push({label:element.name, value:element.id});
-    });*/
-
+        cities.push({label:element.name, value:`${element.id}`});
+    });    
 };
 
 
@@ -79,7 +68,7 @@ const LocationFields = (props: LocationFields) => {
     return (
         <AdaptableCard divider className="mb-4">
             <h5>Ubicación y Datos de Contacto</h5>
-            <p className="mb-6">Sección para configurar la ubicación de la empresa y datos de contacto</p>
+            <p className="mb-6">Sección para configurar la ubicación del cliente y datos de contacto</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 

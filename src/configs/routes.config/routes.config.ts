@@ -52,7 +52,7 @@ export const protectedRoutes = [
     },
 
 
-     //CATEGORÍAS
+     //COMPAÑÍA
      {
         key: 'company.list',
         path: `${APP_PREFIX_PATH}/companies-list`,
@@ -69,6 +69,26 @@ export const protectedRoutes = [
         key: 'company.edit',
         path: `${APP_PREFIX_PATH}/company/:companyId?`,
         component: lazy(() => import('@/views/sales/CompanyEdit')),
+        authority: [ADMIN, USER],
+    },
+
+    //COMPAÑÍA
+    {
+        key: 'customers.list',
+        path: `${APP_PREFIX_PATH}/people-list`,
+        component: lazy(() => import('@/views/sales/PeopleList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'customers.create',
+        path: `${APP_PREFIX_PATH}/people/`,
+        component: lazy(() => import('@/views/sales/PeopleNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'customers.edit',
+        path: `${APP_PREFIX_PATH}/people/:peopleId?`,
+        component: lazy(() => import('@/views/sales/PeopleEdit')),
         authority: [ADMIN, USER],
     },
 
