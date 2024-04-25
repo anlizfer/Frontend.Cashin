@@ -87,18 +87,28 @@ export const protectedRoutes = [
     },
     {
         key: 'customers.edit',
-        path: `${APP_PREFIX_PATH}/people/:peopleId?`,
+        path: `${APP_PREFIX_PATH}/people/:peopleId?/:pType?`,
         component: lazy(() => import('@/views/sales/PeopleEdit')),
         authority: [ADMIN, USER],
     },
-
-
     {
         key: 'products.inventory',
         path: `${APP_PREFIX_PATH}/inventory`,
         component: lazy(() => import('@/views/sales/SalesDashboard')),
         authority: [ADMIN, USER],
     }
+    ,
+    {
+        key: 'appsAccount.settings',
+        path: `${APP_PREFIX_PATH}/user/:tab`,
+        component: lazy(() => import('@/views/account/Settings')),
+        authority: [ADMIN, USER],
+        meta: {
+            header: 'Cuenta Cashin',
+            headerContainer: true,
+        },
+    },
+    
     /** Example purpose only, please remove */
     
 ]

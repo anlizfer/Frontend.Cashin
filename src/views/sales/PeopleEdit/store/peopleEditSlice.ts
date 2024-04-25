@@ -35,10 +35,10 @@ export const SLICE_NAME = 'salesPeopleEdit'
 
 export const getPeople = createAsyncThunk(
     SLICE_NAME + '/getPeoples',
-    async (data: { id: string }) => {
+    async (data: { id: string,idTypePeople:string }) => {
         const response = await apiGetPeople<
             GetSalesPeopleResponse,
-            { id: string }
+            { id: string, idTypePeople:string }
         >(data)        
         return response.data[0]
     }

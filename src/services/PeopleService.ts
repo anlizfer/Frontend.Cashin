@@ -20,6 +20,7 @@ export async function apiGetPeoples<T, U extends Record<string, unknown>>(
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_PEOPLE_PREFIX}/peoples-by-filter`,
         {            
+            idCompany:data.idCompany,
             pageIndex:data.pageIndex,
             pageSize:data.pageSize,            
             name:query,            
@@ -68,9 +69,7 @@ export async function apiCreatePeople<T, U extends Record<string, unknown>>(data
 
 
 export async function apiDeletePeople<T, U extends Record<string, unknown>>(data: U) {    
-
-    debugger
-    
+        
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_PEOPLE_PREFIX}/delete-people/${data.id}`,
         {},
@@ -83,6 +82,7 @@ export async function apiGetPeople<T, U extends Record<string, unknown>>(params:
         `${API_SERVER}${API_SERVER_PEOPLE_PREFIX}/peoples-by-filter`,
         {            
             id:params.id,   
+            idTypePeople:params.idTypePeople,
             pageIndex:1,
             pageSize:1,  
         },
@@ -105,7 +105,14 @@ export async function apiPutPeople<T, U extends Record<string, unknown>>(data: U
     const email:any=data.email;
     const phone:any=data.phone;
     const neighborhood:any=data.neighborhood;
-    debugger
+
+    const password:any=data.password;
+    const newPassword:any=data.newPassword;
+    const renewPassword:any=data.renewPassword;
+
+
+    debugger;
+    
 
 
     return ApiServiceFetch.fetchData<T>(
@@ -123,7 +130,10 @@ export async function apiPutPeople<T, U extends Record<string, unknown>>(data: U
             address:address,
             email:email,
             phone:phone,
-            neighborhood:neighborhood
+            neighborhood:neighborhood,
+            password:password,
+            newPassword:newPassword,
+            renewPassword:renewPassword
         },
         'PUT'
     );

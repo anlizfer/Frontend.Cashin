@@ -5,7 +5,8 @@ export const UI_COMPONENTS_PREFIX_PATH = '/ui-components'
 export const PAGES_PREFIX_PATH = '/pages'
 export const DOCS_PREFIX_PATH = '/docs'
 
-
+//export const API_SERVER_IP = 'http://api.wikl.ink'
+//export const API_SERVER_PORT="80";
 export const API_SERVER_IP = 'https://localhost'
 export const API_SERVER_PORT="44332";
 export const API_SERVER_PREFIX="/api";

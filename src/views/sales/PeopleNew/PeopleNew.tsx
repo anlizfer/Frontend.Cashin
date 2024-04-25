@@ -6,12 +6,18 @@ import toast from '@/components/ui/toast'
 import Notification from '@/components/ui/Notification'
 import { useNavigate } from 'react-router-dom'
 import { apiCreatePeople } from '@/services/PeopleService'
+import { useAppDispatch, useAppSelector } from '../SalesDashboard/store'
 
 const PeopleNew = () => {
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+
+    const { companyDefault } = useAppSelector(
+        (state) => state.auth.user
+    )
 
     const addPeople = async (data: FormModel) => {       
-        data.idCompany=1;
+        data.idCompany=companyDefault?.id;
         const response = await apiCreatePeople<boolean, FormModel>(data)
         return response.data
     }
@@ -48,6 +54,7 @@ const PeopleNew = () => {
         <>
             <PeopleForm
                 type="new"
+                pType="customer"
                 onFormSubmit={handleFormSubmit}
                 onDiscard={handleDiscard}                
             />

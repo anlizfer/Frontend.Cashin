@@ -5,6 +5,7 @@ import Select from '@/components/ui/Select'
 import { FormItem } from '@/components/ui/Form'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
 import { getStates,getCities } from '../PeopleList/store'
+import { useEffect,useRef } from 'react'
 
 /*
 
@@ -18,8 +19,8 @@ type FormFieldsName = {
     address: string   
     email:string 
     neighborhood:string
-    idCity: string    
-    idState:string    
+    idCity: number    
+    idState:number    
 }
 
 type Options = {
@@ -31,8 +32,8 @@ type LocationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
     values: {        
-        idCity: string
-        idState:string
+        idCity: number
+        idState: number
         [key: string]: unknown
     }
 }
@@ -44,26 +45,44 @@ let cities:any = []
 const fetchData = async () => {
     let dataStates:any = await getStates(1); 
     dataStates.forEach((element:any) => {
-        states.push({label:element.name, value:`${element.id}`});
-    });    
+        states.push({label:element.name, value:parseInt(element.id)});
+    });           
+    
 };
 
 const fetchDataCities = async (idState:any) => {
     let dataCities:any = await getCities(idState);
     cities=[];
     dataCities.forEach((element:any) => {
-        cities.push({label:element.name, value:`${element.id}`});
+        cities.push({label:element.name, value:parseInt(element.id)});
     });    
 };
-
-
 
 fetchData(); 
 
 
 
+
+
 const LocationFields = (props: LocationFields) => {    
-    const { values = { idState: '', idCity:''}, touched, errors } = props
+    const { values = { idState: 0, idCity:0}, touched, errors } = props
+    
+    useEffect(()=>{
+
+        const fetchCities = async () => {
+            // Simular un retraso de 500ms antes de llamar a fetchDataCities
+            await new Promise(resolve => setTimeout(resolve, 500));    
+            await fetchDataCities(values.idState);
+        };
+    
+        fetchCities();        
+        
+
+       
+    },[values.idState]);
+
+    useEffect(() => {        
+    }, []);
 
     return (
         <AdaptableCard divider className="mb-4">
@@ -79,6 +98,7 @@ const LocationFields = (props: LocationFields) => {
                         errorMessage={errors.phone}
                     >
                         <Field
+                            
                             type="text"
                             autoComplete="off"
                             name="phone"
@@ -121,17 +141,17 @@ const LocationFields = (props: LocationFields) => {
                                     options={states}
                                     value={states.filter(
                                         (state:any) =>
-                                            state.value === values.idState
-                                    )}
-                                    onChange={(option) =>{
-                                            fetchDataCities(option?.value),
-                                            form.setFieldValue(
-                                                field.name,
-                                                option?.value
-                                            )
-                                        }
+                                            state.value == values.idState
+                                    )}  
+
+                                    onChange={(option) => {
+                                        form.setFieldValue(
+                                            field.name,
+                                            option?.value
+                                        );
                                         
-                                    }
+                                        fetchDataCities(option?.value); // Consultar ciudades para el estado seleccionado
+                                    }}
                                 />
                             )}
                         </Field>
@@ -157,7 +177,7 @@ const LocationFields = (props: LocationFields) => {
                                     options={cities}
                                     value={cities.filter(
                                         (city:any) =>
-                                            city.value === values.idCity
+                                            city.value == values.idCity
                                     )}
                                     onChange={(option) =>
                                         form.setFieldValue(

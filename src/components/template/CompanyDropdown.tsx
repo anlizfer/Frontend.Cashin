@@ -2,7 +2,7 @@ import Avatar from '@/components/ui/Avatar'
 import Dropdown from '@/components/ui/Dropdown'
 import withHeaderItem from '@/utils/hoc/withHeaderItem'
 import useAuth from '@/utils/hooks/useAuth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { HiOutlineLogout, HiOutlineUser, HiOutlineOfficeBuilding,HiOutlinePlus } from 'react-icons/hi'
 import type { CommonProps } from '@/@types/common'
@@ -25,6 +25,7 @@ type DropdownList = {
 const _CompanyDropdown = ({ className }: CommonProps) => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
     
 
 
@@ -58,7 +59,7 @@ const _CompanyDropdown = ({ className }: CommonProps) => {
     
 
     const  urlCompany = () => {
-        console.log("'/add-company'");
+        navigate('/app/company');
     }
 
     const setCompanyDefault=(company:CompanyState)=>{
@@ -74,8 +75,8 @@ const _CompanyDropdown = ({ className }: CommonProps) => {
                     }
                 }
             )
-        )
-        window.location.reload();
+        )        
+        navigate('/app/home');
     }
 
     const UserAvatar = (

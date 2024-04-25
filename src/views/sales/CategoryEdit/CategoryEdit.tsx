@@ -35,12 +35,16 @@ const CategoryEdit = () => {
         (state) => state.salesCategoryEdit.data.loading
     )
 
-    const fetchData = (data: { id: string }) => {
+    const { companyDefault } = useAppSelector(
+        (state) => state.auth.user
+    )
+
+    const fetchData = (data: { id: string }) => {        
         dispatch(getCategory(data))
     }
 
     const handleFormSubmit = async (values: FormModel, setSubmitting: SetSubmitting ) => {
-        
+        values.idCompany=companyDefault?.id;
         setSubmitting(true)
         const success = await updateCategory(values)
         setSubmitting(false)

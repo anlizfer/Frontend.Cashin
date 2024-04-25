@@ -9,10 +9,10 @@ import { getLegalForm, getPersonType } from '../PeopleList/store'
 type FormFieldsName = {
     name: string    
     lastName: string    
-    idDocument: string    
-    idDocumentType: string    
-    idPersonType:string
-    idLegalForm:string
+    idDocument: number
+    idDocumentType: number
+    idPersonType:number
+    idLegalForm:number
     
 }
 
@@ -24,6 +24,7 @@ type Options = {
 type BasicInformationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
+    pType?:any
     values: {        
         idDocumentType:string
         idPersonType: string
@@ -35,29 +36,29 @@ type BasicInformationFields = {
 const personTypes:any = [];
 const legalForms:any = [];
 const documentTypes=[
-    {label:"CC - Cédula de ciudadanía",value:"1"},
-    {label:"NIT - Número de Identificación Tributaria",value:"2"},
-    {label:"PSPT - Pasaporte ",value:"3"},
-    {label:"TE - Tarjeta de extranjería ",value:"4"},
-    {label:"CE - Cédula de extranjería",value:"5"},
-    {label:"DIE - Documento de identificación extranjero ",value:"6"},
-    {label:"PEP - Permiso especial de permanencia ",value:"7"},
-    {label:"TI - Tarjeta de identidad",value:"8"},
-    {label:"RC - Registro civil",value:"9"},
-    {label:"PPT - Permiso por Protección Temporal",value:"10"},
-    {label:"RIF - Registro Único de Información Fiscal",value:"11"},
+    {label:"CC - Cédula de ciudadanía",value:1},
+    {label:"NIT - Número de Identificación Tributaria",value:2},
+    {label:"PSPT - Pasaporte ",value:3},
+    {label:"TE - Tarjeta de extranjería ",value:4},
+    {label:"CE - Cédula de extranjería",value:5},
+    {label:"DIE - Documento de identificación extranjero ",value:6},
+    {label:"PEP - Permiso especial de permanencia ",value:7},
+    {label:"TI - Tarjeta de identidad",value:8},
+    {label:"RC - Registro civil",value:9},
+    {label:"PPT - Permiso por Protección Temporal",value:10},
+    {label:"RIF - Registro Único de Información Fiscal",value:11},
 ];
 
 
 const fetchData = async () => {
     let dataPer:any = await getPersonType(); // Se espera a que se resuelva la promesa de getCategories()
     dataPer.forEach((element:any) => {
-        personTypes.push({label:element.name, value:`${element.id}`});
+        personTypes.push({label:element.name, value:parseInt(element.id)});
     });
 
     let dataLegForm:any = await getLegalForm();
     dataLegForm.forEach((element:any) => {
-        legalForms.push({label:element.name, value:`${element.id}`});
+        legalForms.push({label:element.name, value:parseInt(element.id)});
     });
 
 };
@@ -67,18 +68,18 @@ fetchData();
 
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { idPersonType: '', idLegalForm:'', idDocumentType:''}, touched, errors } = props
+    const { values = { idPersonType: '', idLegalForm:'', idDocumentType:''}, touched, errors,pType } = props
 
     return (
         <AdaptableCard divider className="mb-4">
-            <h5>Información Cliente</h5> 
+            <h5>Información {(pType=='account')?'Usuario':'Cliente'}</h5> 
             <p className="mb-6">Sección para configurar la información básica de la  Cliente.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 <div className="col-span-1">
                     <FormItem
-                        label="Nombre Cliente"
+                        label="Nombres"
                         invalid={(errors.name && touched.name) as boolean}
                         errorMessage={errors.name}
                     >
@@ -177,7 +178,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                     options={personTypes}
                                     value={personTypes.filter(
                                         (personType:any) =>
-                                            personType.value === values.idPersonType
+                                            parseInt(personType.value) === parseInt(values.idPersonType)
                                     )}
                                     onChange={(option) =>
                                         form.setFieldValue(

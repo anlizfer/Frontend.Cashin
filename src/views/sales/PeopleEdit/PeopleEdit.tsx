@@ -11,7 +11,7 @@ import reducer, {
     useAppDispatch,
 } from './store'
 import { injectReducer } from '@/store'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 import PeopleForm, {
     FormModel,
@@ -24,6 +24,7 @@ injectReducer('salesPeopleEdit', reducer)
 
 const PeopleEdit = () => {
     const dispatch = useAppDispatch()
+    const { peopleId,pType } = useParams();
 
     const location = useLocation()
     const navigate = useNavigate()
@@ -35,17 +36,21 @@ const PeopleEdit = () => {
         (state) => state.salesPeopleEdit.data.loading
     )
 
-    const fetchData = (data: { id: string }) => {
+    const { companyDefault } = useAppSelector(
+        (state) => state.auth.user
+    )
+
+    const fetchData = (data: { id: string,idTypePeople:string }) => {
         dispatch(getPeople(data))
     }
 
     const handleFormSubmit = async (values: FormModel, setSubmitting: SetSubmitting ) => {
-        
+        values.idCompany=companyDefault?.id;
         setSubmitting(true)
         const success = await updatePeople(values)
         setSubmitting(false)
         if (success) {
-            popNotification('actualizada')
+            popNotification('actualizado')
         }
     }
 
@@ -57,7 +62,7 @@ const PeopleEdit = () => {
         setDialogOpen(false)
         const success = await deletePeople({ id: PeopleData.id })
         if (success) {
-            popNotification('eliminada')
+            popNotification('eliminado')
         }
     }
 
@@ -68,31 +73,40 @@ const PeopleEdit = () => {
                 type="success"
                 duration={2500}
             >
-                La compañía fue {keyword} correctamente
+                {(pType=="account")?'La cuenta':'El cliente'} fue {keyword} correctamente
             </Notification>,
             {
                 placement: 'top-center',
             }
         )
-        navigate('/app/people-list')
+        if(pType=="account"){
+            navigate('/app/home')
+        }else{
+            navigate('/app/people-list')
+        }
+        
     }
 
     useEffect(() => {
-        const path = location.pathname.substring(
+        /*const path = location.pathname.substring(
             location.pathname.lastIndexOf('/') + 1
-        )
-        const rquestParam = { id: path }
+        )*/
+        const path:any=peopleId;
+        const rquestParam = { id: path, idTypePeople:(pType=="account")?"1":"2"}
+        
         fetchData(rquestParam)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
     return (
         <>
+            
             <Loading loading={loading}>
                 {!isEmpty(PeopleData) && (
                     <>
                         <PeopleForm
                             type="edit"
+                            pType={pType}
                             initialData={PeopleData}
                             onFormSubmit={handleFormSubmit}
                             onDiscard={handleDiscard}

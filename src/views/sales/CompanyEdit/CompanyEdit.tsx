@@ -50,7 +50,7 @@ const CompanyEdit = () => {
     }
 
     const handleDiscard = () => {
-        navigate('/app/Company-list')
+        navigate('/app/company-list')
     }
 
     const handleDelete = async (setDialogOpen: OnDeleteCallback) => {

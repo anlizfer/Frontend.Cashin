@@ -6,12 +6,16 @@ import toast from '@/components/ui/toast'
 import Notification from '@/components/ui/Notification'
 import { useNavigate } from 'react-router-dom'
 import { apiCreateCategory } from '@/services/CategoryService'
+import { useAppSelector } from '../SalesDashboard/store'
 
 const CategoryNew = () => {
     const navigate = useNavigate()
+    const { companyDefault } = useAppSelector(
+        (state) => state.auth.user
+    )
 
     const addCategory = async (data: FormModel) => {
-        data.idCompany=1;
+        data.idCompany=companyDefault?.id;
         const response = await apiCreateCategory<boolean, FormModel>(data)
         return response.data
     }

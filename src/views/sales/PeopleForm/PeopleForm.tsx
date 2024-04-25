@@ -11,20 +11,30 @@ import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
 import LocationFields from './LocationFields'
+import AccountInformationFields from './AccountInformationFields'
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
 type InitialData = {
     id?: string
-    name?: string   
+    name?: string    
     lastName?: string   
     idDocumentType?: string    
     idPersonType?:string
     idLegalForm?:string
-    idDocument: string    
+    idDocument?: string    
     status?: number     
     idCompany?:number   
+    idTypePeople?:number
+    idCity?:number
+    address?: string    
+    email?: string    
+    phone?: string    
+    neighborhood?: string       
+    password?:string
+    newPassword?:string
+    renewPassword?:string
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -40,6 +50,7 @@ type OnDelete = (callback: OnDeleteCallback) => void
 type PeopleForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
+    pType?:string
     onDiscard?: () => void
     onDelete?: OnDelete
     onFormSubmit: (formData: FormModel, setSubmitting: SetSubmitting) => void
@@ -53,6 +64,10 @@ const validationSchema = Yup.object().shape({
     idDocumentType: Yup.string().required('Tipo de documento es Requerido'),    
     idPersonType: Yup.string().required('Tipo Persona es Requerido'),    
     idDocument: Yup.string().required('El Documento de Identidad es Requerido'),    
+    renewPassword: Yup.string().oneOf(
+        [Yup.ref('newPassword')],
+        'Las contraseñas no coinciden'
+    ),
 })
 
 const DeletePeopleButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -80,7 +95,7 @@ const DeletePeopleButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 type="button"
                 onClick={onConfirmDialogOpen}
             >
-                Eliminar
+                Eliminar 
             </Button>
             <ConfirmDialog
                 isOpen={dialogOpen}
@@ -104,6 +119,7 @@ const DeletePeopleButton = ({ onDelete }: { onDelete: OnDelete }) => {
 
 const PeopleForm = forwardRef<FormikRef, PeopleForm>((props, ref) => {
     const {
+        pType,
         type,
         initialData = {
             id: '',
@@ -143,13 +159,14 @@ const PeopleForm = forwardRef<FormikRef, PeopleForm>((props, ref) => {
             >
                 {({ values, touched, errors, isSubmitting }) => (
                     <Form>
-                        <FormContainer>
+                        <FormContainer>                            
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInformationFields
                                         values={values}
                                         touched={touched}
                                         errors={errors}
+                                        pType={pType}
                                     />                                    
                                 </div>
                                 
@@ -165,12 +182,29 @@ const PeopleForm = forwardRef<FormikRef, PeopleForm>((props, ref) => {
                                 </div>
                                 
                             </div>
+
+
+                            {(pType=="account")?
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <div className="lg:col-span-2">
+                                    <AccountInformationFields
+                                        values={values}
+                                        touched={touched}
+                                        errors={errors}
+                                        pType={pType}
+                                    />                                    
+                                </div>                                
+                            </div>
+                            :null
+                            }
+
+
                             <StickyFooter
                                 className="-mx-8 px-8 flex items-center justify-between py-4"
                                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                             >
                                 <div>
-                                    {type === 'edit' && (
+                                    {(type === 'edit' && pType!=="account") && (
                                         <DeletePeopleButton
                                             onDelete={onDelete as OnDelete}
                                         />

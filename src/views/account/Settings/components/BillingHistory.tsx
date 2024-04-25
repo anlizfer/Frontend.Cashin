@@ -1,7 +1,5 @@
-import { Fragment } from 'react'
-import AdaptableCard from '@/components/shared/AdaptableCard'
 import Table from '@/components/ui/Table'
-import Avatar from '@/components/ui/Avatar'
+import Badge from '@/components/ui/Badge'
 import {
     useReactTable,
     getCoreRowModel,
@@ -9,90 +7,89 @@ import {
     createColumnHelper,
 } from '@tanstack/react-table'
 import { NumericFormat } from 'react-number-format'
-import isLastChild from '@/utils/isLastChild'
+import dayjs from 'dayjs'
 
-type Product = {
+type Bill = {
     id: string
-    name: string
-    productCode: string
-    img: string
-    price: number
-    quantity: number
-    total: number
-    details: Record<string, string[]>
+    item: string
+    status: string
+    amount: number
+    date: number
 }
 
-type OrderProductsProps = {
-    data?: Product[]
+type BillingHistoryProps = {
+    data: Bill[]
+    className?: string
 }
 
 const { Tr, Th, Td, THead, TBody } = Table
 
-const columnHelper = createColumnHelper<Product>()
-
-const ProductColumn = ({ row }: { row: Product }) => {
-    return (
-        <div className="flex">
-            <Avatar size={90} src={row.img} />
-            <div className="ltr:ml-2 rtl:mr-2">
-                <h6 className="mb-2">{row.name}</h6>
-                {Object.keys(row.details).map((key, i) => (
-                    <div key={key + i} className="mb-1">
-                        <span className="capitalize">{key}: </span>
-                        {row.details[key].map((item, j) => (
-                            <Fragment key={item + j}>
-                                <span className="font-semibold">{item}</span>
-                                {!isLastChild(row.details[key], j) && (
-                                    <span>, </span>
-                                )}
-                            </Fragment>
-                        ))}
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
+const statusColor: Record<string, string> = {
+    paid: 'bg-emerald-500',
+    pending: 'bg-amber-400',
 }
 
-const PriceAmount = ({ amount }: { amount: number }) => {
-    return (
-        <NumericFormat
-            displayType="text"
-            value={(Math.round(amount * 100) / 100).toFixed(2)}
-            prefix={'$'}
-            thousandSeparator={true}
-        />
-    )
-}
+const columnHelper = createColumnHelper<Bill>()
 
 const columns = [
-    columnHelper.accessor('name', {
+    columnHelper.accessor('id', {
+        header: 'Reference',
+        cell: (props) => {
+            const row = props.row.original
+            return (
+                <div>
+                    <span className="cursor-pointer">{row.id}</span>
+                </div>
+            )
+        },
+    }),
+    columnHelper.accessor('item', {
         header: 'Product',
+    }),
+    columnHelper.accessor('status', {
+        header: 'Status',
         cell: (props) => {
             const row = props.row.original
-            return <ProductColumn row={row} />
+            return (
+                <div className="flex items-center">
+                    <Badge className={statusColor[row.status]} />
+                    <span className="ml-2 rtl:mr-2 capitalize">
+                        {row.status}
+                    </span>
+                </div>
+            )
         },
     }),
-    columnHelper.accessor('price', {
-        header: 'Price',
+    columnHelper.accessor('date', {
+        header: 'Date',
         cell: (props) => {
             const row = props.row.original
-            return <PriceAmount amount={row.price} />
+            return (
+                <div className="flex items-center">
+                    {dayjs.unix(row.date).format('MM/DD/YYYY')}
+                </div>
+            )
         },
     }),
-    columnHelper.accessor('quantity', {
-        header: 'Quantity',
-    }),
-    columnHelper.accessor('total', {
-        header: 'Total',
+    columnHelper.accessor('amount', {
+        header: 'Amount',
         cell: (props) => {
             const row = props.row.original
-            return <PriceAmount amount={row.price} />
+            return (
+                <div className="flex items-center">
+                    <NumericFormat
+                        displayType="text"
+                        value={(Math.round(row.amount * 100) / 100).toFixed(2)}
+                        prefix={'$'}
+                        thousandSeparator={true}
+                    />
+                </div>
+            )
         },
     }),
 ]
 
-const OrderProducts = ({ data = [] }: OrderProductsProps) => {
+const BillingHistory = ({ data = [], ...rest }: BillingHistoryProps) => {
     const table = useReactTable({
         data,
         columns,
@@ -100,9 +97,9 @@ const OrderProducts = ({ data = [] }: OrderProductsProps) => {
     })
 
     return (
-        <AdaptableCard className="mb-4">
+        <div {...rest}>
             <Table>
-                <THead>
+                <THead className="!bg-transparent">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <Tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
@@ -140,8 +137,8 @@ const OrderProducts = ({ data = [] }: OrderProductsProps) => {
                     })}
                 </TBody>
             </Table>
-        </AdaptableCard>
+        </div>
     )
 }
 
-export default OrderProducts
+export default BillingHistory
