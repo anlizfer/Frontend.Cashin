@@ -91,6 +91,29 @@ export const protectedRoutes = [
         component: lazy(() => import('@/views/sales/PeopleEdit')),
         authority: [ADMIN, USER],
     },
+
+
+    //COMPAÑÍA
+    {
+        key: 'order.list',
+        path: `${APP_PREFIX_PATH}/order-list`,
+        component: lazy(() => import('@/views/sales/OrderList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'order.create',
+        path: `${APP_PREFIX_PATH}/order/`,
+        component: lazy(() => import('@/views/sales/OrderNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'order.edit',
+        path: `${APP_PREFIX_PATH}/order/:peopleId?/:pType?`,
+        component: lazy(() => import('@/views/sales/PeopleEdit')),
+        authority: [ADMIN, USER],
+    },
+
+
     {
         key: 'products.inventory',
         path: `${APP_PREFIX_PATH}/inventory`,

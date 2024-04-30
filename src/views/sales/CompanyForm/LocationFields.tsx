@@ -47,11 +47,6 @@ const fetchData = async () => {
         states.push({label:element.name, value:element.id});
     });
 
-    /*let dataLegForm:any = await getStates();
-    dataLegForm.forEach((element:any) => {
-        cities.push({label:element.name, value:element.id});
-    });*/
-
 };
 
 const fetchDataCities = async (idState:any) => {
@@ -59,12 +54,6 @@ const fetchDataCities = async (idState:any) => {
     dataCities.forEach((element:any) => {
         cities.push({label:element.name, value:element.id});
     });
-
-    /*let dataLegForm:any = await getStates();
-    dataLegForm.forEach((element:any) => {
-        cities.push({label:element.name, value:element.id});
-    });*/
-
 };
 
 

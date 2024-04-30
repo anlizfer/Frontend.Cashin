@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import Input from '@/components/ui/Input'
 import { HiOutlineSearch } from 'react-icons/hi'
 import {
-    getCompanies,
+    getOrders,
     setTableData,
     useAppSelector,
     useAppDispatch,
@@ -12,13 +12,13 @@ import cloneDeep from 'lodash/cloneDeep'
 import type { TableQueries } from '@/@types/common'
 import type { ChangeEvent } from 'react'
 
-const CompanyTableSearch = () => {
+const OrderTableSearch = () => {
     const dispatch = useAppDispatch()
 
     const searchInput = useRef(null)
 
     const tableData = useAppSelector(
-        (state) => state.salesCompanyList.data.tableData
+        (state) => state.salesOrderList.data.tableData
     )
 
     const debounceFn = debounce(handleDebounceFn, 500)
@@ -38,7 +38,7 @@ const CompanyTableSearch = () => {
 
     const fetchData = (data: TableQueries) => {
         dispatch(setTableData(data))
-        dispatch(getCompanies(data))
+        dispatch(getOrders(data))
     }
 
     const onEdit = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,11 +50,11 @@ const CompanyTableSearch = () => {
             ref={searchInput}
             className="max-w-md md:w-52 md:mb-0 mb-4"
             size="sm"
-            placeholder="Buscar Compañías"
+            placeholder="Buscar Órdenes"
             prefix={<HiOutlineSearch className="text-lg" />}
             onChange={onEdit}
         />
     )
 }
 
-export default CompanyTableSearch
+export default OrderTableSearch

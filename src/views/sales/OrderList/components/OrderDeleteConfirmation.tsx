@@ -3,21 +3,21 @@ import Notification from '@/components/ui/Notification'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import {
     toggleDeleteConfirmation,
-    deleteCompany,
+    deleteOrder,
     useAppDispatch,
     useAppSelector,
 } from '../store'
 
-const CompanyDeleteConfirmation = () => {
+const OrderDeleteConfirmation = () => {
     const dispatch = useAppDispatch()
     const dialogOpen = useAppSelector(
-        (state) => state.salesCompanyList.data.deleteConfirmation
+        (state) => state.salesOrderList.data.deleteConfirmation
     )
-    const selectedCompany = useAppSelector(
-        (state) => state.salesCompanyList.data.selectedCompany
+    const selectedOrder = useAppSelector(
+        (state) => state.salesOrderList.data.selectedOrder
     )
     const tableData = useAppSelector(
-        (state) => state.salesCompanyList.data.tableData
+        (state) => state.salesOrderList.data.tableData
     )
 
     const onDialogClose = () => {
@@ -26,10 +26,10 @@ const CompanyDeleteConfirmation = () => {
 
     const onDelete = async () => {
         dispatch(toggleDeleteConfirmation(false))
-        const success = await deleteCompany({ id: selectedCompany, idCompany:1 })
+        const success = await deleteOrder({ id: selectedOrder, idOrder:1 })
 
         if (success) {
-            //dispatch(getCompanies(tableData))
+            //dispatch(getOrders(tableData))
             location.reload();
 
             toast.push(
@@ -67,4 +67,4 @@ const CompanyDeleteConfirmation = () => {
     )
 }
 
-export default CompanyDeleteConfirmation
+export default OrderDeleteConfirmation

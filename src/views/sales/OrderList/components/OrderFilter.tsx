@@ -1,13 +1,13 @@
 import { useState, useRef, forwardRef, useEffect } from 'react'
 import { HiOutlineFilter, HiOutlineSearch } from 'react-icons/hi'
 import {
-    getCompanies,
+    getOrders,
     setFilterData,
     initialTableData,
     useAppDispatch,
     useAppSelector,    
-    GetCompaniesResponse,
-    GetCompaniesRequest,    
+    GetOrdersResponse,
+    GetOrdersRequest,    
 } from '../store'
 import { FormItem, FormContainer } from '@/components/ui/Form'
 import Input from '@/components/ui/Input'
@@ -15,14 +15,17 @@ import Button from '@/components/ui/Button'
 import Checkbox from '@/components/ui/Checkbox'
 import Radio from '@/components/ui/Radio'
 import Drawer from '@/components/ui/Drawer'
+import Select from '@/components/ui/Select'
 import { Field, Form, Formik, FormikProps, FieldProps } from 'formik'
 import type { MouseEvent } from 'react'
 import { TableQueries } from '@/@types/common'
+import { apiGetStatusOrder } from '@/services/OrderServices'
 
 type FormModel = {
     name: string    
-    status: number[]
-    Companiestatus: number
+    status: number[]    
+    idStatusOrder:number
+    
 }
 
 type FilterFormProps = {
@@ -37,32 +40,51 @@ type DrawerFooterProps = {
 
 const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
     ({ onSubmitComplete,dataCat}, ref) => {
+        const [statusOrder,setStatusOrder] = useState([]);
+        useEffect(()=>{
+            fetchStatusOrder();            
+        },[]);
+
+        const fetchStatusOrder=async ()=>{            
+            let dataStatusOrder:any = await apiGetStatusOrder();
+            let statusOrd:any=[];            
+            dataStatusOrder=dataStatusOrder.data;
+            dataStatusOrder.forEach((element:any) => {
+                statusOrd.push({label:element.name, value:element.id});
+            });
+            
+            setStatusOrder(statusOrd);
+        };
+
+        
+
         const dispatch = useAppDispatch()
 
         const filterData = useAppSelector(
-            (state) => state.salesCompanyList.data.filterData
+            (state) => state.salesOrderList.data.filterData
         )        
 
         const handleSubmit = (values: FormModel) => {
             onSubmitComplete?.()            
             dispatch(setFilterData(values))
-            let filterDataCompany:GetCompaniesRequest={
+            let filterDataOrder:GetOrdersRequest={
                 pageIndex:1,
                 pageSize:10,
                 query:"",
                 filterData:{
                     name:values.name,                    
-                    status:[],
-                    Companiestatus:1,
-                    idCompany:1
+                    status:[],                    
+                    idOrder:1,
+                    idStatusOrder:0
+
                 }
                 
             };
             
-            dispatch(getCompanies(filterDataCompany))
+            dispatch(getOrders(filterDataOrder))
         }
 
-        const getCompanyComponent=()=>{
+        const getOrderComponent=()=>{
             
             
         }
@@ -97,21 +119,49 @@ const FilterForm = forwardRef<FormikProps<FormModel>, FilterFormProps>(
                                     }
                                 />
                             </FormItem>
+
+
+                            <FormItem
+                                label="Estado Orden"
+                                invalid={
+                                    (errors.idStatusOrder && touched.idStatusOrder) as boolean
+                                }
+                                errorMessage={errors.idStatusOrder}
+                            >
+                                <Field name="idStatusOrder">
+                                    {({ field, form }: FieldProps) => (
+                                        <Select
+                                            field={field}
+                                            form={form}
+                                            options={statusOrder}                                           
+                                            
+                                            onChange={(val) =>
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    val
+                                                )
+                                            }
+                                        />
+                                    )}
+                                </Field>
+
+                                
+                            </FormItem>
                             
                             
                             <FormItem
                                 invalid={
-                                    errors.Companiestatus &&
-                                    touched.Companiestatus
+                                    errors.status &&
+                                    touched.status
                                 }
-                                errorMessage={errors.Companiestatus}
+                                errorMessage={errors.status?.toString()}
                             >
-                                <h6 className="mb-4">Estado Compañías</h6>
-                                <Field name="Companiestatus">
+                                <h6 className="mb-4">Estado</h6>
+                                <Field name="status">
                                     {({ field, form }: FieldProps) => (
                                         <Radio.Group
                                             vertical
-                                            value={values.Companiestatus}
+                                            value={values.status}
                                             onChange={(val) =>
                                                 form.setFieldValue(
                                                     field.name,
@@ -146,10 +196,10 @@ const DrawerFooter = ({ onSaveClick, onCancel }: DrawerFooterProps) => {
     )
 }
 
-const CompanyFilter = () => {
+const OrderFilter = () => {
     const formikRef = useRef<FormikProps<FormModel>>(null)
 
-    const [dataCompany,setDataCompany]=useState<GetCompaniesResponse>();
+    const [dataOrder,setDataOrder]=useState<GetOrdersResponse>();
         
 
     const [isOpen, setIsOpen] = useState(false)
@@ -177,7 +227,7 @@ const CompanyFilter = () => {
                 Filtrar
             </Button>
             <Drawer
-                title="Filtro Categorias"
+                title="Filtro Órdenes"
                 isOpen={isOpen}
                 footer={
                     <DrawerFooter
@@ -188,7 +238,7 @@ const CompanyFilter = () => {
                 onClose={onDrawerClose}
                 onRequestClose={onDrawerClose}
             >
-                <FilterForm ref={formikRef} onSubmitComplete={onDrawerClose} dataCat={dataCompany} />
+                <FilterForm ref={formikRef} onSubmitComplete={onDrawerClose} dataCat={dataOrder} />
             </Drawer>
         </>
     )
@@ -196,4 +246,4 @@ const CompanyFilter = () => {
 
 FilterForm.displayName = 'FilterForm'
 
-export default CompanyFilter
+export default OrderFilter

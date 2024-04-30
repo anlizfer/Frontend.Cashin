@@ -5,16 +5,16 @@ import DataTable from '@/components/shared/DataTable'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import { FiPackage } from 'react-icons/fi'
 import {
-    getCompanies,
+    getOrders,
     setTableData,
-    setSelectedCompany,
+    setSelectedOrder,
     toggleDeleteConfirmation,
     useAppDispatch,
     useAppSelector,
-    GetCompaniesRequest,
+    GetOrdersRequest,
 } from '../store'
 import useThemeClass from '@/utils/hooks/useThemeClass'
-import CompanyDeleteConfirmation from './CompanyDeleteConfirmation'
+import OrderDeleteConfirmation from './OrderDeleteConfirmation'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type {
@@ -23,17 +23,30 @@ import type {
     ColumnDef,
 } from '@/components/shared/DataTable'
 
-type Company = {
-    id: string    
-    name: string    
-    idPersonType: number
-    idLegalForm: number
-    idCity: number    
-    nameRepLegal: string 
-    nitCompany: string
-    status: number    
-
+type Order = {
+    id: string        
+    date:string
+    idPeople: number
+    idCompany: number
+    idAppUser: number
+    idStatusOrder: number
+    nameCustomer:string
+    lastnameCustomer:string
+    emailCustomer:string
+    genderCustomer:string
+    phoneCustomer:string
+    identifyCustomer:string
+    addressCustomer:string
+    observation:string
+    idStore:number
+    total:number
+    shippingWithCollection:number
+    codeOrder:string
+    status:number
 }
+/*
+public List<OrderLineDtoResponse>? OrderLines { get; set; }
+*/
 
 
 const inventoryStatusColor: Record<
@@ -56,18 +69,18 @@ const inventoryStatusColor: Record<
     },
 }
 
-const ActionColumn = ({ row }: { row: Company }) => {
+const ActionColumn = ({ row }: { row: Order }) => {
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
     const navigate = useNavigate()
 
     const onEdit = () => {
-        navigate(`/app/company/${row.id}`)
+        navigate(`/app/order/${row.id}`)
     }
 
     const onDelete = () => {
         dispatch(toggleDeleteConfirmation(true))
-        dispatch(setSelectedCompany(row.id))
+        dispatch(setSelectedOrder(row.id))
     }
 
     return (
@@ -88,16 +101,16 @@ const ActionColumn = ({ row }: { row: Company }) => {
     )
 }
 
-const CompanyColumn = ({ row }: { row: Company }) => {
+const OrderColumn = ({ row }: { row: Order }) => {
    
     return (
         <div className="flex items-center">   
-            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.name}</span>
+            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.nameCustomer+' '+row.lastnameCustomer}</span>
         </div>
     )
 }
 
-const CompanyTable = () => {
+const OrderTable = () => {
     const tableRef = useRef<DataTableResetHandle>(null)
 
     const dispatch = useAppDispatch()
@@ -108,19 +121,19 @@ const CompanyTable = () => {
     
 
     const { pageIndex, pageSize, sort, query, total } = useAppSelector(
-        (state) => state.salesCompanyList.data.tableData
+        (state) => state.salesOrderList.data.tableData
     )
 
     const filterData = useAppSelector(
-        (state) => state.salesCompanyList.data.filterData
+        (state) => state.salesOrderList.data.filterData
     )
 
     const loading = useAppSelector(
-        (state) => state.salesCompanyList.data.loading
+        (state) => state.salesOrderList.data.loading
     )
 
     const data = useAppSelector(
-        (state) => state.salesCompanyList.data.CompanyList
+        (state) => state.salesOrderList.data.OrderList
     )
 
     useEffect(() => {
@@ -140,36 +153,73 @@ const CompanyTable = () => {
     )
 
     const fetchData = () => { 
-        let pageParams:GetCompaniesRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
-        dispatch(getCompanies(pageParams))
+        let pageParams:GetOrdersRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
+        dispatch(getOrders(pageParams))
     }
 
-    const columns: ColumnDef<Company>[] = useMemo(
+    const columns: ColumnDef<Order>[] = useMemo(
         () => [
             {
-                header: 'Compañía',
-                accessorKey: 'name',
+                header: 'Ref',
+                accessorKey: 'codeOrder',
                 cell: (props) => {
-                    const row = props.row.original
-                    return <CompanyColumn row={row} />
+                    const { codeOrder } = props.row.original
+                    return <span>{codeOrder}</span>
                 },
             },
             {
-                header: 'Nit',
-                accessorKey: 'nitCompany',
+                header: 'Fecha',
+                accessorKey: 'date',
                 cell: (props) => {
-                    const { nitCompany } = props.row.original
-                    return <span>{nitCompany}</span>
+                    const { date } = props.row.original
+                    return <span>{date}</span>
+                },
+            },
+
+            {
+                header: 'Estado Pedido',
+                accessorKey: 'idStatusOrder',
+                cell: (props) => {
+                    const { idStatusOrder } = props.row.original
+                    return <span>{idStatusOrder}</span>
+                },
+            },
+
+            {
+                header: 'Id. Cliente',
+                accessorKey: 'identifyCustomer',
+                cell: (props) => {
+                    const { identifyCustomer } = props.row.original
+                    return <span>{identifyCustomer}</span>
                 },
             },
             {
-                header: 'Rep. Legal',
+                header: 'Cliente',
                 accessorKey: 'nameRepLegal',
                 cell: (props) => {
-                    const { nameRepLegal } = props.row.original
-                    return <span>{nameRepLegal}</span>
+                    const row = props.row.original
+                    return <OrderColumn row={row} />
                 },
             },
+
+            {
+                header: 'Envío con Recaudo',
+                accessorKey: 'shippingWithCollection',
+                cell: (props) => {
+                    const { shippingWithCollection } = props.row.original
+                    return <span>{(shippingWithCollection==1)?'SI':'NO'}</span>
+                },
+            },
+
+            {
+                header: 'Total',
+                accessorKey: 'total',
+                cell: (props) => {
+                    const { total } = props.row.original
+                    return <span>${total}</span>
+                },
+            },
+
             {
                 header: 'Estado',
                 accessorKey: 'status',
@@ -237,9 +287,9 @@ const CompanyTable = () => {
                 onSelectChange={onSelectChange}
                 onSort={onSort}
             />
-            <CompanyDeleteConfirmation />
+            <OrderDeleteConfirmation />
         </>
     )
 }
 
-export default CompanyTable
+export default OrderTable
