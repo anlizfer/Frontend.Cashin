@@ -30,20 +30,89 @@ export async function apiGetOrders<T, U extends Record<string, unknown>>(
 
 export async function apiCreateOrder<T, U extends Record<string, unknown>>(data: U) {        
     
-    const idPersonContact:any=data.idPersonContact;
-    const idPerson:any=data.idPerson;
+    const idPeopleContact:any=data.idPeopleContact;
+    const IdPeople:any=data.idPeople;
+    const idCompany:any=data.idCompany;
     const date:any=data.date;
     const idBranch:any=data.idBranch;
     const idStore:any=data.idStore;
-    const shippingWithCollection:any=data.shippingWithCollection;
-    const observation:any=data.observation;
+    const shippingWithCollection:any=(data.shippingWithCollection)?1:0;
+    const observation:any=(data.observation!=undefined)?data.observation:'';
+    const lineProducts:any=data.lineProducts;
+    let totalOrder=0;
+    debugger
+
+    const formData = new FormData();    
+    formData.append('idPeopleContact', idPeopleContact);
+    formData.append('IdPeople', IdPeople);
+    formData.append('idCompany', idCompany);
+    formData.append('date', date);
+    formData.append('idBranch', idBranch);
+    formData.append('idStore', idStore);
+    formData.append('shippingWithCollection', shippingWithCollection);
+    formData.append('observation', observation);
+    
+    /*       
+    
+    lineProducts:lineOrderLine,
+    total:totalOrder
+    */
+
+    /*
+    formData.append(`productCategory[0].idCategory`, category);
+    */
+
+    let lineOrderLine:any[]=[];
+    lineProducts.forEach((element:any,indx:any) => {
+        lineOrderLine.push({
+            idProduct:element.idProductLine,
+            refProduct:element.productCodeLine,
+            valueProduct:element.priceProductLine,
+            totalLine:element.totalLine,
+            discount:element.discountProductLine,
+            taxes:element.taxPriceProductLine,
+            quantity:element.cantLine,
+            idTaxes:element.idTaxes,
+        });
+
+        formData.append(`productCategory[${indx}].idProduct`, element.idProductLine);
+        formData.append(`productCategory[${indx}].refProduct`, element.productCodeLine);
+        formData.append(`productCategory[${indx}].valueProduct`, element.priceProductLine);
+        formData.append(`productCategory[${indx}].totalLine`, element.totalLine);
+        formData.append(`productCategory[${indx}].discount`, element.discountProductLine);
+        formData.append(`productCategory[${indx}].taxes`, element.taxPriceProductLine);
+        formData.append(`productCategory[${indx}].quantity`, element.cantLine);
+        formData.append(`productCategory[${indx}].idTaxes`, element.idTaxes);
+
+        totalOrder+=parseFloat(element.totalLine);
+    });
+
+    formData.append('total', totalOrder.toString());
+
+    /*
+    nameProductLine
+    brutoProductLine
+    */
     
       
     return ApiServiceFetch.fetchData<T>(
-        `${API_SERVER}${API_SERVER_ORDER_PREFIX}/create-Order`,
+        `${API_SERVER}${API_SERVER_ORDER_PREFIX}/create-order`,
+        //formData
+        
         {   
-
-        },
+            idPeopleContact:idPeopleContact,
+            idPeople:IdPeople,
+            date:date,
+            idBranch:idBranch,
+            idStore:idStore,
+            shippingWithCollection:shippingWithCollection,
+            observation:observation,
+            idCompany:idCompany,
+            lineProducts:lineOrderLine,
+            total:totalOrder
+        }
+        
+        ,
         'POST'
     );
 }

@@ -108,7 +108,7 @@ export const protectedRoutes = [
     },
     {
         key: 'order.edit',
-        path: `${APP_PREFIX_PATH}/order/:peopleId?/:pType?`,
+        path: `${APP_PREFIX_PATH}/order/:orderId?/`,
         component: lazy(() => import('@/views/sales/PeopleEdit')),
         authority: [ADMIN, USER],
     },

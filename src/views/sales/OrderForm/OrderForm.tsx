@@ -18,9 +18,16 @@ type FormikRef = FormikProps<any>
 
 type InitialData = {
     id?: string
-    name?: string   
+    idBranch:string
+    idStore:string
+    shippingWithCollection:number
+    date?: string   
     status?: number    
-    idCompany?:number    
+    idCompany?:number  
+    idPeople:string
+    observation:string
+    idPeopleContact:string
+    lineProducts?:any[]
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -44,7 +51,7 @@ type OrderForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required('El Nombre de la categoría es Requerido'),    
+    date: Yup.string().required('La fecha de entrega  es requerida'),
 
 })
 

@@ -216,7 +216,7 @@ const ProductForm = forwardRef<FormikRef, ProductForm>((props, ref) => {
                                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                             >
                                 <div>
-                                    {type === 'edit' && (
+                                    {(type === 'edit' || type) && (
                                         <DeleteProductButton
                                             onDelete={onDelete as OnDelete}
                                         />

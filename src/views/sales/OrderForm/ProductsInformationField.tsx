@@ -191,7 +191,9 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                 type={type}
             >
                 {message}
-            </Notification>
+            </Notification>,{
+                    placement: 'top-center',
+                }
         )
     }
     
@@ -244,13 +246,15 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                        brutoProductLine:values.valorBruto,
                        discountProductLine:(values.discount!="")?values.discount:"0.00",
                        taxPriceProductLine:values.taxValor,
-                       totalLine:values.valorTotal
+                       totalLine:values.valorTotal,
+                       idTaxes:values.idTaxes
                     });
         setLineProduct([...lineProd,...lineProduct]);        
         cleanData();
         
     }
     useEffect(()=>{
+        values.lineProducts=lineProduct;
         CalcTotal();
     },[lineProduct])
 
@@ -281,7 +285,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     const cleanData=()=>{
         setProductSel({});
         values.idProduct='';
-        values.idTaxes='';
+        values.idTaxes='0';
         values.cant="1";
         values.valorBruto="0.00";
         values.valorUnit="0.00";
@@ -298,6 +302,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                 return(index!==indx)
             })
         );
+        calcTotal();        
     };
 
    

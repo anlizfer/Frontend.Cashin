@@ -14,9 +14,29 @@ const OrderNew = () => {
         (state) => state.auth.user
     )
 
-    const addOrder = async (data: FormModel) => {
-        debugger
+    const addOrder = async (data: FormModel) => {        
         data.idCompany=companyDefault?.id;
+
+        if(data.lineProducts?.length==0){
+            openNotification('warning','Líneas de Productos','Debes agregar por lo menos 1 línea de producto.');
+            return;
+        }
+
+        if(data.date=="" || data.date==undefined){
+            openNotification('warning','Fecha de Entrega','Debes seleccionar una fecha de entrega');
+            return;
+        }
+
+        if(data.idPeople=="" || data.idPeople==undefined){
+            openNotification('warning','Cliente','Debes seleccionar un cliente');
+            return;
+        }
+
+        if(data.idPeopleContact=="" || data.idPeopleContact==undefined){
+            openNotification('warning','Dirección de Envío','Debes seleccionar la dirección de envío');
+            return;
+        }        
+
         const response = await apiCreateOrder<boolean, FormModel>(data)
         return response.data
     }
@@ -35,7 +55,7 @@ const OrderNew = () => {
                     type="success"
                     duration={2500}
                 >
-                    ORden generada correctamente
+                    Orden generada correctamente
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -43,6 +63,19 @@ const OrderNew = () => {
             )
             navigate('/app/order-list')
         }
+    }
+
+    const openNotification = (type: 'success' | 'warning' | 'danger' | 'info', title:string, message:string ) => {
+        toast.push(
+            <Notification
+                title={title}
+                type={type}
+            >
+                {message}
+            </Notification>,{
+                    placement: 'top-center',
+                }
+        )
     }
 
     const handleDiscard = () => {

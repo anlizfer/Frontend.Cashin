@@ -130,7 +130,7 @@ const navigationConfig: NavigationTree[] = [
                         key: 'orders.create',
                         path: `${APP_PREFIX_PATH}/order`,
                         title: 'Crear Orden',
-                        translateKey: 'nav.submenu.newproduct',
+                        translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
                         authority: [ADMIN, USER],

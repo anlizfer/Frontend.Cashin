@@ -81,7 +81,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                         <Field
                             type="date"
                             autoComplete="off"
-                            name="name"
+                            name="date"
                             placeholder="Fecha"
                             component={Input}
                         />

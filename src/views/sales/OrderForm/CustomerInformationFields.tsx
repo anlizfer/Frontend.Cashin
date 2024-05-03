@@ -9,18 +9,17 @@ import { useEffect, useState } from 'react'
 import { apiGetBranchOrder, apiGetStatusOrder, apiGetStoreOrder } from '@/services/OrderServices'
 import { apiGetPeoples } from '@/services/PeopleService'
 
-type FormFieldsName = {
-    date: string    
-    idPeople:string
-    idPeopleContact:string
+type FormFieldsName = {    
+    idPeople:number
+    idPeopleContact:number
 }
 
 type CustomerInformationFields = {
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
     values: {        
-        idPeople: string
-        idPeopleContact:string
+        idPeople: number
+        idPeopleContact:number
         [key: string]: unknown
     }
 }
@@ -96,7 +95,8 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
                                         (state:any) =>
                                             state.value === values.idPeople
                                     )}
-                                    onChange={(option) =>{                        
+                                    onChange={(option) =>{         
+                                        console.log(field.name,option?.value);               
                                         form.setFieldValue(
                                                     field.name,
                                                     option?.value
