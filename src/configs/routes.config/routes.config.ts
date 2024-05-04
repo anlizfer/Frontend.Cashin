@@ -109,7 +109,7 @@ export const protectedRoutes = [
     {
         key: 'order.edit',
         path: `${APP_PREFIX_PATH}/order/:orderId?/`,
-        component: lazy(() => import('@/views/sales/PeopleEdit')),
+        component: lazy(() => import('@/views/sales/OrderEdit')),
         authority: [ADMIN, USER],
     },
 

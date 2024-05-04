@@ -20,6 +20,7 @@ type InitialData = {
     id?: string
     idBranch:string
     idStore:string
+    idDeliveryCompany:string
     shippingWithCollection:number
     date?: string   
     status?: number    

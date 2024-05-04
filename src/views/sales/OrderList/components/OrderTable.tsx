@@ -26,6 +26,7 @@ import type {
 type Order = {
     id: string        
     date:string
+    dateDelivery:string
     idPeople: number
     idCompany: number
     idAppUser: number
@@ -43,6 +44,7 @@ type Order = {
     shippingWithCollection:number
     codeOrder:string
     status:number
+    statusOrder:string
 }
 /*
 public List<OrderLineDtoResponse>? OrderLines { get; set; }
@@ -169,19 +171,19 @@ const OrderTable = () => {
             },
             {
                 header: 'Fecha',
-                accessorKey: 'date',
+                accessorKey: 'dateDelivery',
                 cell: (props) => {
-                    const { date } = props.row.original
-                    return <span>{date}</span>
+                    const { dateDelivery } = props.row.original
+                    return <span>{dateDelivery}</span>
                 },
             },
 
             {
                 header: 'Estado Pedido',
-                accessorKey: 'idStatusOrder',
+                accessorKey: 'statusOrder',
                 cell: (props) => {
-                    const { idStatusOrder } = props.row.original
-                    return <span>{idStatusOrder}</span>
+                    const { statusOrder } = props.row.original
+                    return <span>{statusOrder}</span>
                 },
             },
 

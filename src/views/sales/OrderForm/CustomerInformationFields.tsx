@@ -35,11 +35,25 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
     const [contactInfo,setContactInfo]=useState<any>([]);
     
     useEffect(()=>{
-        GetPeople();
+
+        const fetchData = async () => {
+            await GetPeople();
+        }        
+          // call the function
+        fetchData();
+
+        
     },[]);
 
-    useEffect(()=>{
-        GetContactInfo(values.idPeople);
+    useEffect( ()=>  {
+
+        const fetchData = async () => {
+            await GetContactInfo(values.idPeople);        
+        }        
+          // call the function
+        fetchData();
+
+        
     },[values.idPeople]);
 
     const GetPeople = async ()=>{
@@ -64,10 +78,11 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
         setPeople(peopleD);
     };
 
-    const GetContactInfo = async (idCustomer:any)=>{
+    const GetContactInfo = (idCustomer:any)=>{        
         people.forEach((element:any) => {
-            if(idCustomer== element.value){
+            if(idCustomer== element.value){                
                 setContactInfo(element.contactInfo);
+                
                 return;
             }
         });

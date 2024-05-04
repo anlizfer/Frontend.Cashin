@@ -6,14 +6,15 @@ import Select from '@/components/ui/Select'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
 import { useAppSelector,useAppDispatch,setUser, CompanyState } from '@/store'
 import { useEffect, useState } from 'react'
-import { apiGetBranchOrder, apiGetStatusOrder, apiGetStoreOrder } from '@/services/OrderServices'
+import { apiGetBranchOrder, apiGetDeliveryCompanies, apiGetStatusOrder, apiGetStoreOrder } from '@/services/OrderServices'
 import Checkbox from '@/components/ui/Checkbox/Checkbox'
 
 type FormFieldsName = {
-    date: string    
+    dateDelivery: string    
     idBranch:string
     idStore:string
     shippingWithCollection:number
+    idDeliveryCompany:string
 }
 
 type BasicInformationFields = {
@@ -23,12 +24,13 @@ type BasicInformationFields = {
         idBranch: string
         idStore:string
         shippingWithCollection:number
+        idDeliveryCompany:string
         [key: string]: unknown
     }
 }
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { idBranch: '', idStore:'',shippingWithCollection:0}, touched, errors } = props
+    const { values = { idBranch: '', idStore:'',shippingWithCollection:0, idDeliveryCompany:'', dateDelivery:''}, touched, errors } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
         (state) => state.auth.user
@@ -36,9 +38,11 @@ const BasicInformationFields = (props: BasicInformationFields) => {
 
     const [branch,setBranch] = useState<any>([]);
     const [store,setStore]=useState<any>([]);
+    const [deliveryCompanies,setDeliveryCompanies]=useState<any>([]);
     
     useEffect(()=>{
-        GetBranches();        
+        GetBranches();     
+        GetDeliveryCompanies();   
     },[]);
 
     useEffect(()=>{
@@ -52,7 +56,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         dataBranch.forEach((element:any) => {
             branchD.push({label:element.name, value:element.id});
         });            
-        setBranch(branchD);
+        setBranch(branchD);        
     };
 
     const GetStores = async (idBr:any)=>{
@@ -66,29 +70,40 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         setStore(storeD);
     };
 
+    const GetDeliveryCompanies=async ()=>{
+        let dataDeliveryCompany:any = await apiGetDeliveryCompanies();
+        let deliveryCompany:any=[];
+
+        dataDeliveryCompany=dataDeliveryCompany.data;
+        dataDeliveryCompany.forEach((element:any) => {
+            deliveryCompany.push({label:element.name, value:element.id});
+        });      
+        setDeliveryCompanies(deliveryCompany);
+    };
+
     return (
         <AdaptableCard>
             <h5>Nueva Orden</h5>
             <br />
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
 
-                <div className="col-span-1">
+                <div className="col-span-2">
                     <FormItem
                         label="Fecha de Entrega"
-                        invalid={(errors.date && touched.date) as boolean}
-                        errorMessage={errors.date}
+                        invalid={(errors.dateDelivery && touched.dateDelivery) as boolean}
+                        errorMessage={errors.dateDelivery}
                     >   
                         <Field
                             type="date"
                             autoComplete="off"
-                            name="date"
+                            name="dateDelivery"
                             placeholder="Fecha"
                             component={Input}
                         />
                     </FormItem>
                 </div>
 
-                <div className="col-span-1">
+                <div className="col-span-3">
 
                     <FormItem
                         label="Sucursal"
@@ -121,7 +136,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                     </FormItem>
                 </div>
 
-                <div className="col-span-1">
+                <div className="col-span-3">
                     <FormItem
                         label="Bodega"
                         invalid={
@@ -153,7 +168,41 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                     </FormItem>
                 </div>
 
-                <div className="col-span-1">
+                
+
+                <div className="col-span-2">
+                    <FormItem
+                        label="Transportadora"
+                        invalid={
+                                (errors.idDeliveryCompany && touched.idDeliveryCompany) as boolean
+                        }
+                            errorMessage={errors.idDeliveryCompany}
+                        >
+                        <Field name="idDeliveryCompany">
+                            {({ field, form }: FieldProps) => (
+                                <Select
+                                    field={field}
+                                    form={form}
+                                    options={deliveryCompanies}
+                                    value={deliveryCompanies.filter(
+                                        (state:any) =>
+                                            state.value === values.idDeliveryCompany
+                                    )}
+                                    onChange={(option) =>{                        
+                                        form.setFieldValue(
+                                                    field.name,
+                                                    option?.value
+                                                )
+                                        }
+                                           
+                                    }
+                                />
+                            )}
+                        </Field>
+                    </FormItem>
+                </div>
+
+                <div className="col-span-2">
                     <FormItem
                         label="Envío con Recaudo"
                         invalid={(errors.shippingWithCollection && touched.shippingWithCollection) as boolean}

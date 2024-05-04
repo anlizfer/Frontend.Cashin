@@ -33,9 +33,10 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
     const idPeopleContact:any=data.idPeopleContact;
     const IdPeople:any=data.idPeople;
     const idCompany:any=data.idCompany;
-    const date:any=data.date;
+    const date:any=data.dateDelivery;
     const idBranch:any=data.idBranch;
     const idStore:any=data.idStore;
+    const idDeliveryCompany:any=data.idDeliveryCompany;
     const shippingWithCollection:any=(data.shippingWithCollection)?1:0;
     const observation:any=(data.observation!=undefined)?data.observation:'';
     const lineProducts:any=data.lineProducts;
@@ -44,8 +45,10 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
 
     const formData = new FormData();    
     formData.append('idPeopleContact', idPeopleContact);
-    formData.append('IdPeople', IdPeople);
+    formData.append('idPeople', IdPeople);
     formData.append('idCompany', idCompany);
+    formData.append('idDeliveryCompany', idDeliveryCompany);
+    
     formData.append('date', date);
     formData.append('idBranch', idBranch);
     formData.append('idStore', idStore);
@@ -64,7 +67,7 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
 
     let lineOrderLine:any[]=[];
     lineProducts.forEach((element:any,indx:any) => {
-        lineOrderLine.push({
+        lineOrderLine.push({            
             idProduct:element.idProductLine,
             refProduct:element.productCodeLine,
             valueProduct:element.priceProductLine,
@@ -105,6 +108,7 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
             date:date,
             idBranch:idBranch,
             idStore:idStore,
+            idDeliveryCompany:idDeliveryCompany,
             shippingWithCollection:shippingWithCollection,
             observation:observation,
             idCompany:idCompany,
@@ -216,3 +220,11 @@ export async function apiGetTaxes<T>() {
     );
 }
 
+
+export async function apiGetDeliveryCompanies<T>() {
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_GENERAL_PREFIX}/delivery-companies`,
+        {},
+        'GET'
+    );
+}

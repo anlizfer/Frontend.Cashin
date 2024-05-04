@@ -37,6 +37,11 @@ const OrderNew = () => {
             return;
         }        
 
+        if(data.idDeliveryCompany=="" || data.idDeliveryCompany==undefined){
+            openNotification('warning','Transportadora','Debes seleccionar una transportadora');
+            return;
+        }       
+
         const response = await apiCreateOrder<boolean, FormModel>(data)
         return response.data
     }
@@ -51,7 +56,7 @@ const OrderNew = () => {
         if (success) {
             toast.push(
                 <Notification
-                    title={'Categoría añadida exitosamente'}
+                    title={'Orden añadida exitosamente'}
                     type="success"
                     duration={2500}
                 >

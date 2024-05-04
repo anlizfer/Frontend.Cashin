@@ -110,6 +110,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     const [lineProduct,setLineProduct]=useState<any>([]);    
     const [productSel,setProductSel]=useState<any>({});
     
+    
     //tabla totales
     const [totalBruto,setTotalBruto]=useState<any>("0.00");
     const [totalDescuento,setTotalDescuento]=useState<any>("0.00");
@@ -129,8 +130,31 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     
     
     useEffect(()=>{
+        
         cleanData();
         GetFetchData();
+
+        if(values.lineProducts.length>0){
+            const lines=values.lineProducts;
+            let arraLines:any=[];
+            lines.forEach((element:any) => {
+                arraLines.push({
+                    productCodeLine:element.refProduct,
+                    nameProductLine:element.nameProduct,
+                    idProductLine:element.idProduct,
+                    cantLine:element.quantity,
+                    priceProductLine:element.valueProduct,
+                    brutoProductLine:(element.valueProduct)*element.quantity,
+                    discountProductLine:(element.discount!="")?element.discount:"0.00",
+                    taxPriceProductLine:element.taxes,
+                    totalLine:element.totalLine,
+                    idTaxes:element.idTaxes
+                });
+            });
+
+            setLineProduct(arraLines);
+        }
+
     },[]);
 
     useEffect(()=>{        

@@ -19,6 +19,8 @@ type Order = {
     neighborhood:string
     idState:number
     addres:string    
+    statusOrder:string
+    dateDelivery:string
 }
 
 type AddOrdersRequest = {
