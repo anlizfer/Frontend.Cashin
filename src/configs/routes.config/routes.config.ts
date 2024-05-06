@@ -93,7 +93,7 @@ export const protectedRoutes = [
     },
 
 
-    //COMPAÑÍA
+    //ORDER
     {
         key: 'order.list',
         path: `${APP_PREFIX_PATH}/order-list`,
@@ -110,6 +110,45 @@ export const protectedRoutes = [
         key: 'order.edit',
         path: `${APP_PREFIX_PATH}/order/:orderId?/`,
         component: lazy(() => import('@/views/sales/OrderEdit')),
+        authority: [ADMIN, USER],
+    },
+
+    //SUCURSAL
+    {
+        key: 'branch.list',
+        path: `${APP_PREFIX_PATH}/branch-list`,
+        component: lazy(() => import('@/views/sales/BranchList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'branch.create',
+        path: `${APP_PREFIX_PATH}/branch/`,
+        component: lazy(() => import('@/views/sales/BranchNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'branch.edit',
+        path: `${APP_PREFIX_PATH}/branch/:branchId?/`,
+        component: lazy(() => import('@/views/sales/BranchEdit')),
+        authority: [ADMIN, USER],
+    },
+    //BODEGA
+    {
+        key: 'store.list',
+        path: `${APP_PREFIX_PATH}/store-list/:branchId/`,
+        component: lazy(() => import('@/views/sales/StoreList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'store.create',
+        path: `${APP_PREFIX_PATH}/store/:branchId/`,
+        component: lazy(() => import('@/views/sales/StoreNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'store.edit',
+        path: `${APP_PREFIX_PATH}/store/:branchId/:storeId?`,
+        component: lazy(() => import('@/views/sales/StoreEdit')),
         authority: [ADMIN, USER],
     },
 

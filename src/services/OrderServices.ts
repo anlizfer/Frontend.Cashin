@@ -192,9 +192,7 @@ export async function apiGetBranchOrder<T, U extends Record<string, unknown>>(pa
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_BRANCH_PREFIX}/branches-by-filter`,
         {
-            idCompany:params.idCompany,
-            pageIndex:1,
-            pageSize:1, 
+            idCompany:params.idCompany             
         },
         'POST'
     );
@@ -204,9 +202,7 @@ export async function apiGetStoreOrder<T, U extends Record<string, unknown>>(par
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_STORES_PREFIX}/stores-by-filter`,
         {
-            idBranch:params.idBranch,
-            pageIndex:1,
-            pageSize:1, 
+            idBranch:params.idBranch
         },
         'POST'
     );

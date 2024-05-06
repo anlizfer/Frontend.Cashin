@@ -45,6 +45,7 @@ type FormFieldsName = {
 }
 
 type ProductsInformationFields = {
+    type:string
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
     values: {        
@@ -98,7 +99,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     const { values = { idProduct: '', idTaxes:'', cant:"", valorBruto:"", 
                         valorUnit:"", taxRate:"",valorTotal:"", discount:"",
                         taxValor:"",lineProducts:[]
-                    }, touched, errors } = props
+                    }, touched, errors, type } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
         (state) => state.auth.user
@@ -134,7 +135,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         cleanData();
         GetFetchData();
 
-        if(values.lineProducts.length>0){
+        if(type=="edit"){
             const lines=values.lineProducts;
             let arraLines:any=[];
             lines.forEach((element:any) => {
