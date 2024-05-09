@@ -1,24 +1,22 @@
-import StoreForm, {
+import BankAccountForm, {
     FormModel,
     SetSubmitting,
-} from '@/views/sales/StoreForm'
+} from '@/views/sales/BankAccountForm'
 import toast from '@/components/ui/toast'
 import Notification from '@/components/ui/Notification'
-import { useNavigate, useParams } from 'react-router-dom'
-import { apiCreateStore } from '@/services/StoreService'
+import { useNavigate } from 'react-router-dom'
+import { apiCreateBankAccount } from '@/services/BankAccountServices'
 import { useAppSelector } from '../SalesDashboard/store'
 
-const StoreNew = () => {
+const BankAccountNew = () => {
     const navigate = useNavigate()
     const { companyDefault } = useAppSelector(
         (state) => state.auth.user
     )
 
-    const {branchId}=useParams();
-
-    const addStore = async (data: FormModel) => {
-        data.idBranch=branchId;
-        const response = await apiCreateStore<boolean, FormModel>(data)
+    const addBankAccount = async (data: FormModel) => {
+        data.idCompany=companyDefault?.id;
+        const response = await apiCreateBankAccount<boolean, FormModel>(data)
         return response.data
     }
 
@@ -27,32 +25,32 @@ const StoreNew = () => {
         setSubmitting: SetSubmitting
     ) => {
         setSubmitting(true)
-        const success = await addStore(values)
+        const success = await addBankAccount(values)
         setSubmitting(false)
         if (success) {
             toast.push(
                 <Notification
-                    title={'Bodega añadida exitosamente'}
+                    title={'Sucursal añadida exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Bodega generada correctamente
+                    Sucursal generada correctamente
                 </Notification>,
                 {
                     placement: 'top-center',
                 }
             )
-            navigate('/app/Store-list')
+            navigate('/app/BankAccount-list')
         }
     }
 
     const handleDiscard = () => {
-        navigate('/app/sales/Store-list')
+        navigate('/app/sales/BankAccount-list')
     }
 
     return (
         <>
-            <StoreForm
+            <BankAccountForm
                 type="new"
                 onFormSubmit={handleFormSubmit}
                 onDiscard={handleDiscard}                
@@ -61,4 +59,4 @@ const StoreNew = () => {
     )
 }
 
-export default StoreNew
+export default BankAccountNew

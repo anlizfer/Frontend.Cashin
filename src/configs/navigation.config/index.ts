@@ -208,7 +208,17 @@ const navigationConfig: NavigationTree[] = [
                         type: NAV_ITEM_TYPE_ITEM,
                         authority: [ADMIN, USER],
                         subMenu: [],                
+                    },{
+                        key: 'bankaccount.list',
+                        path: `${APP_PREFIX_PATH}/bank-account-list`,
+                        title: 'Cuentas Bancarias',
+                        translateKey: '',
+                        icon: '',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        subMenu: [],                
                     }
+
                 ],
             },
             {
@@ -238,15 +248,6 @@ const navigationConfig: NavigationTree[] = [
                         type: NAV_ITEM_TYPE_ITEM,
                         authority: [ADMIN, USER],
                         subMenu: [],
-                    },{
-                        key: 'users.bankaccount',
-                        path: `${APP_PREFIX_PATH}/bank-accounts`,
-                        title: 'Cuentas Bancarias',
-                        translateKey: '',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],                
                     }
                 ],
             },

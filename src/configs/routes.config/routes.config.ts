@@ -153,6 +153,27 @@ export const protectedRoutes = [
     },
 
 
+    //SUCURSAL
+    {
+        key: 'bankaccount.list',
+        path: `${APP_PREFIX_PATH}/bank-account-list`,
+        component: lazy(() => import('@/views/sales/BankAccountList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'bankaccount.create',
+        path: `${APP_PREFIX_PATH}/bank-account/`,
+        component: lazy(() => import('@/views/sales/BankAccountNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'bankaccount.edit',
+        path: `${APP_PREFIX_PATH}/bank-account/:bankAccountId?/`,
+        component: lazy(() => import('@/views/sales/BankAccountEdit')),
+        authority: [ADMIN, USER],
+    },
+
+
     {
         key: 'products.inventory',
         path: `${APP_PREFIX_PATH}/inventory`,
