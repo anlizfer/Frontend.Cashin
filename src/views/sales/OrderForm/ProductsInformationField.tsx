@@ -59,7 +59,7 @@ type ProductsInformationFields = {
         valorTotal:string
         discount:string
         observation:string
-        lineProducts:any[]        
+        lineProducts:any[] 
         [key: string]: unknown
     }
 }
@@ -98,7 +98,7 @@ const PriceInput = (props: InputProps) => {
 const ProductsInformationFields = (props: ProductsInformationFields) => {    
     const { values = { idProduct: '', idTaxes:'', cant:"", valorBruto:"", 
                         valorUnit:"", taxRate:"",valorTotal:"", discount:"",
-                        taxValor:"",lineProducts:[]
+                        taxValor:"",lineProducts:[], observation:""
                     }, touched, errors, type } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
@@ -130,14 +130,15 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     const tableData = {};
     
     
-    useEffect(()=>{
+     useEffect(()=>{
         
-        cleanData();
-        GetFetchData();
+        
+         
 
         if(type=="edit"){
             const lines=values.lineProducts;
             let arraLines:any=[];
+            console.log("ENTRO ESTA MONDA");
             lines.forEach((element:any) => {
                 arraLines.push({
                     productCodeLine:element.refProduct,
@@ -155,8 +156,10 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
 
             setLineProduct(arraLines);
         }
+        GetFetchData();
+        //cleanData();
 
-    },[]);
+     },[]);
 
     useEffect(()=>{        
         
@@ -203,9 +206,13 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         values.taxValor=((valorBruto*(convTax-1)).toFixed(2)).toString();
         values.valorTotal=subTotal.toFixed(2).toString();
 
-        values.lineProducts=lineProduct;
+        if(type!="edit"){
+            values.lineProducts=lineProduct;
+            //setProductSel({cantLine:values.cant,...productSel});
+        }
+        
 
-        //setProductSel({cantLine:values.cant,...productSel});
+        //
 
     }
 
@@ -279,7 +286,9 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         
     }
     useEffect(()=>{
-        values.lineProducts=lineProduct;
+        if(type!="edit"){
+            values.lineProducts=lineProduct;
+        }
         CalcTotal();
     },[lineProduct])
 
@@ -384,6 +393,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                             style={{textAlign:"center"}}
                         />
                     </FormItem>
+                    <small>Inv: 5</small>
                 </div>
 
                 <div className="col-span-2">

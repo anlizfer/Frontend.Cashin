@@ -123,8 +123,6 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
 
 
 export async function apiDeleteOrder<T, U extends Record<string, unknown>>(data: U) {    
-
-    debugger
     
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_ORDER_PREFIX}/delete-order/${data.id}`,
@@ -132,6 +130,19 @@ export async function apiDeleteOrder<T, U extends Record<string, unknown>>(data:
         'DELETE'
     );
 }
+
+export async function apiChangeStatusOrder<T, U extends Record<string, unknown>>(data: U) {  
+    
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_ORDER_PREFIX}/change-order-status/${data.id}`,
+        {
+            idStatusOrder:data.idStatusOrder
+        },
+        'POST'
+    );
+}
+
+
 
 export async function apiGetOrder<T, U extends Record<string, unknown>>(params: U) {
     return ApiServiceFetch.fetchData<T>(

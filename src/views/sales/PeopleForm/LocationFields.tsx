@@ -71,8 +71,11 @@ const LocationFields = (props: LocationFields) => {
 
         const fetchCities = async () => {
             // Simular un retraso de 500ms antes de llamar a fetchDataCities
-            await new Promise(resolve => setTimeout(resolve, 500));    
-            await fetchDataCities(values.idState);
+            if(values.idState!=undefined || values.idState>0){
+                await new Promise(resolve => setTimeout(resolve, 500));    
+                await fetchDataCities(values.idState);
+            }
+           
         };
     
         fetchCities();        

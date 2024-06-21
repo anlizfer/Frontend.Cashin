@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 
 type Order = {
     id: string
+    codeOrder:string
     date: number
     customer: string
     status: number
@@ -61,7 +62,7 @@ const OrderColumn = ({ row }: OrderColumnPros) => {
     const navigate = useNavigate()
 
     const onView = useCallback(() => {
-        navigate(`/app/sales/order-details/${row.id}`)
+        navigate(`/app/order/${row.id}`)
     }, [navigate, row])
 
     return (
@@ -69,7 +70,7 @@ const OrderColumn = ({ row }: OrderColumnPros) => {
             className={`cursor-pointer select-none font-semibold hover:${textTheme}`}
             onClick={onView}
         >
-            #{row.id}
+            #{row.codeOrder}
         </span>
     )
 }
@@ -77,7 +78,7 @@ const OrderColumn = ({ row }: OrderColumnPros) => {
 const columnHelper = createColumnHelper<Order>()
 
 const columns = [
-    columnHelper.accessor('id', {
+    columnHelper.accessor('codeOrder', {
         header: 'Orden',
         cell: (props) => <OrderColumn row={props.row.original} />,
     }),
@@ -87,11 +88,11 @@ const columns = [
             const { status } = props.row.original
             return (
                 <div className="flex items-center">
-                    <Badge className={orderStatusColor[status].dotClass} />
+                    
                     <span
-                        className={`ml-2 rtl:mr-2 capitalize font-semibold ${orderStatusColor[status].textClass}`}
+                        className={`ml-2 rtl:mr-2 capitalize font-semibold`}
                     >
-                        {orderStatusColor[status].label}
+                        {status}
                     </span>
                 </div>
             )
@@ -101,7 +102,7 @@ const columns = [
         header: 'Fecha',
         cell: (props) => {
             const row = props.row.original
-            return <span>{dayjs.unix(row.date).format('DD/MM/YYYY')}</span>
+            return <span>{row.date.toString().replace(' 12:00:00 AM','')}</span>
         },
     }),
     columnHelper.accessor('customer', {

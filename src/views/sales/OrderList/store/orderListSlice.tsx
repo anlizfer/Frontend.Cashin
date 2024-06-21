@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
     apiGetOrders,
     apiDeleteOrder,    
-    apiCreateOrder,    
+    apiCreateOrder,
+    apiChangeStatusOrder,    
 } from '@/services/OrderServices'
 import type { TableQueries } from '@/@types/common'
 
@@ -66,6 +67,8 @@ export type FilterQueries = {
 export type SalesOrderListState = {
     loading: boolean
     deleteConfirmation: boolean
+    statusConfirmation: boolean
+    statusOrderData:any[]
     selectedOrder: string
     tableData: TableQueries
     filterData: FilterQueries
@@ -91,14 +94,23 @@ export const getOrders = createAsyncThunk(
 //     return response.data
 // }
 
-
-
-
-
-export const deleteOrder = async (data: { id: string | string[], idOrder:number }) => {
+export const deleteOrder = async (data: { id: string | string[]}) => {
     const response = await apiDeleteOrder<
         boolean,
-        { id: string | string[], idOrder:number }
+        { id: string | string[] }
+    >(data)
+    return response.data
+}
+
+
+
+export const changeStatusOrder = async (data: { id: string, idStatusOrder:string}) => {
+    const response = await apiChangeStatusOrder<
+        boolean,
+        { 
+            id: string
+            idStatusOrder:string
+        }
     >(data)
     return response.data
 }
@@ -118,6 +130,8 @@ export const initialTableData: TableQueries = {
 const initialState: SalesOrderListState = {
     loading: false,
     deleteConfirmation: false,
+    statusConfirmation:false,
+    statusOrderData:[],
     selectedOrder: '',
     OrderList: [],    
     tableData: initialTableData,
@@ -145,6 +159,12 @@ const OrderListSlice = createSlice({
         toggleDeleteConfirmation: (state, action) => {
             state.deleteConfirmation = action.payload
         },
+        toggleStatusConfirmation: (state, action) => {
+            state.statusConfirmation = action.payload
+        },
+        setStatusOrderData:(state, action)=>{
+            state.statusOrderData = action.payload
+        },
         setSelectedOrder: (state, action) => {
             state.selectedOrder = action.payload
         },
@@ -167,6 +187,8 @@ export const {
     setTableData,
     setFilterData,
     toggleDeleteConfirmation,
+    toggleStatusConfirmation,
+    setStatusOrderData,
     setSelectedOrder,    
 } = OrderListSlice.actions
 

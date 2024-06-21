@@ -1,17 +1,25 @@
-import { API_SERVER, API_SERVER_AUTH_PREFIX,API_SERVER_PRODUCT_PREFIX } from '@/constants/route.constant'
+import { API_SERVER, API_SERVER_AUTH_PREFIX,API_SERVER_DASHBOARD_PREFIX,API_SERVER_PRODUCT_PREFIX } from '@/constants/route.constant'
 import ApiService from './ApiService'
 import ApiServiceFetch from './ApiServiceFetch';
 import {    
     useAppSelector,
 } from '../store'
 
-export async function apiGetSalesDashboardData<
-    T extends Record<string, unknown>
->() {
-    return ApiService.fetchData<T>({
-        url: '/sales/dashboard',
-        method: 'post',
-    })
+export async function apiGetSalesDashboardData<T>(
+    data:any
+) {    
+    let dataFilter:any=data.filterData;    
+    let idCompany:any=data.idCompany;      
+    
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_DASHBOARD_PREFIX}/dashboard`,
+        {
+            idCompany:idCompany,
+            dateBegin:"2024-04-03 00:00:01",
+            dateFinish:"2024-08-03 00:00:01"
+        },
+        'POST'
+    );
 }
 
 

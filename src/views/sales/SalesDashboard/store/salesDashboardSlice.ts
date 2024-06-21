@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 import { apiGetSalesDashboardData } from '@/services/SalesService'
+import { useAppSelector } from '@/store';
 
 type Statistic = {
     value: number
@@ -27,6 +28,7 @@ export type DashboardData = {
         sold: number
     }[]
     latestOrderData?: {
+        codeOrder:string
         id: string
         date: number
         customer: string
@@ -46,6 +48,7 @@ type DashboardDataResponse = DashboardData
 export type SalesDashboardState = {
     startDate: number
     endDate: number
+    idCompany:number
     loading: boolean
     dashboardData: DashboardData
 }
@@ -53,9 +56,18 @@ export type SalesDashboardState = {
 export const SLICE_NAME = 'salesDashboard'
 
 export const getSalesDashboardData = createAsyncThunk(
-    SLICE_NAME + '/getSalesDashboardData',
-    async () => {
-        const response = await apiGetSalesDashboardData<DashboardDataResponse>()
+    `${SLICE_NAME}/getSalesDashboardData`,
+    async (_, thunkAPI) => {
+        const state = thunkAPI.getState() as { salesDashboard: SalesDashboardState }
+        const { startDate, endDate, idCompany } = state.salesDashboard
+
+       
+        
+        const response = await apiGetSalesDashboardData<DashboardDataResponse>({
+            idCompany: 1,
+            startDate,
+            endDate,
+        })
         return response.data
     }
 )
@@ -66,6 +78,7 @@ const initialState: SalesDashboardState = {
     ).unix(),
     endDate: dayjs(new Date()).unix(),
     loading: true,
+    idCompany:1,
     dashboardData: {},
 }
 
@@ -83,7 +96,9 @@ const salesDashboardSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getSalesDashboardData.fulfilled, (state, action) => {
-                state.dashboardData = action.payload
+                if(action.payload!=null){
+                    state.dashboardData = action.payload
+                }                
                 state.loading = false
             })
             .addCase(getSalesDashboardData.pending, (state) => {

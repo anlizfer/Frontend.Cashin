@@ -3,27 +3,22 @@ import Notification from '@/components/ui/Notification'
 import ConfirmDialog from '@/components/shared/ConfirmDialog'
 import {
     toggleDeleteConfirmation,
-    deleteOrder,
+    deleteInventory,
     useAppDispatch,
     useAppSelector,
 } from '../store'
-import { useEffect } from 'react'
 
-const OrderDeleteConfirmation = () => {
-
-    
-
+const InventoryDeleteConfirmation = () => {
     const dispatch = useAppDispatch()
     const dialogOpen = useAppSelector(
-        (state) => state.salesOrderList.data.deleteConfirmation
-    )    
-
-    const selectedOrder = useAppSelector(
-        (state) => state.salesOrderList.data.selectedOrder
+        (state) => state.salesInventoryList.data.deleteConfirmation
+    )
+    const selectedInventory = useAppSelector(
+        (state) => state.salesInventoryList.data.selectedInventory
     )
     const tableData = useAppSelector(
-        (state) => state.salesOrderList.data.tableData
-    )    
+        (state) => state.salesInventoryList.data.tableData
+    )
 
     const onDialogClose = () => {
         dispatch(toggleDeleteConfirmation(false))
@@ -31,10 +26,10 @@ const OrderDeleteConfirmation = () => {
 
     const onDelete = async () => {
         dispatch(toggleDeleteConfirmation(false))
-        const success = await deleteOrder({ id: selectedOrder})
+        const success = await deleteInventory({ id: selectedInventory, idCompany:1 })
 
         if (success) {
-            //dispatch(getOrders(tableData))
+            //dispatch(getInventories(tableData))
             location.reload();
 
             toast.push(
@@ -43,7 +38,7 @@ const OrderDeleteConfirmation = () => {
                     type="success"
                     duration={2500}
                 >
-                    Compañía eliminada exitosamente
+                    Categoría eliminado exitosamente
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -56,7 +51,7 @@ const OrderDeleteConfirmation = () => {
         <ConfirmDialog
             isOpen={dialogOpen}
             type="danger"
-            title="Borrar Compañía"
+            title="Borrar Categoría"
             confirmButtonColor="red-600"
             onClose={onDialogClose}
             onRequestClose={onDialogClose}
@@ -64,12 +59,12 @@ const OrderDeleteConfirmation = () => {
             onConfirm={onDelete}
         >
             <p>
-            ¿Estás seguro de que deseas eliminar esta Compañía? También se eliminarán todos 
-            los registros relacionados con este Compañía. 
+            ¿Estás seguro de que deseas eliminar esta categoría? También se eliminarán todos 
+            los registros relacionados con este Categoría. 
             Esta acción no se puede deshacer.
             </p>
         </ConfirmDialog>
     )
 }
 
-export default OrderDeleteConfirmation
+export default InventoryDeleteConfirmation

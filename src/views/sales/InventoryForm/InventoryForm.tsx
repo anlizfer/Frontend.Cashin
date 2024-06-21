@@ -10,34 +10,15 @@ import cloneDeep from 'lodash/cloneDeep'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
-import CustomerInformationFields from './CustomerInformationFields'
-import ProductsInformationFields from './ProductsInformationField'
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
 type InitialData = {
     id?: string
-    idBranch?:string
-    idStore?:string
-    idDeliveryCompany?:string
-    shippingWithCollection?:number
-    dateDelivery?: string   
+    name?: string   
     status?: number    
-    idCompany?:number  
-    idPeople?:string
-    observation?:string
-    idPeopleContact?:string
-    lineProducts?:any[],
-    taxValor?:number,
-    valorBruto?:number,
-    valorTotal?:number,
-    cant?:string,
-    valorUnit?:string,
-    idProduct?: string,
-    idTaxes?:string,
-    taxRate?:string,   
-    discount?:string    
+    idCompany?:number    
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -50,7 +31,7 @@ export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 type OnDelete = (callback: OnDeleteCallback) => void
 
-type OrderForm = {
+type InventoryForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard?: () => void
@@ -61,11 +42,10 @@ type OrderForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    dateDelivery: Yup.string().required('La fecha de entrega  es requerida'),
-
+    name: Yup.string().required('El Nombre de la categoría es Requerido'),    
 })
 
-const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
+const DeleteInventoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const onConfirmDialogOpen = () => {
@@ -95,7 +75,7 @@ const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
             <ConfirmDialog
                 isOpen={dialogOpen}
                 type="danger"
-                title="Borrar orden"
+                title="Borrar categoría"
                 confirmButtonColor="red-600"
                 onClose={onConfirmDialogClose}
                 onRequestClose={onConfirmDialogClose}
@@ -103,8 +83,8 @@ const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 onConfirm={handleConfirm}
             >
                 <p>
-                ¿Estás seguro de que deseas eliminar esta orden? Todo los registros
-                     relacionados con esta orden también se eliminarán. Esta acción
+                ¿Estás seguro de que deseas eliminar esta categoría? Todo los registros
+                     relacionados con esta categoría también se eliminarán. Esta acción
                      no se puede deshacer.
                 </p>
             </ConfirmDialog>
@@ -112,38 +92,20 @@ const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
     )
 }
 
-const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
+const InventoryForm = forwardRef<FormikRef, InventoryForm>((props, ref) => {
     const {
         type,
         initialData = {
-            id:"",
-            idBranch:"",
-            idStore:"",
-            idDeliveryCompany:"",
-            shippingWithCollection:0,
-            dateDelivery:"",
-            status:0,
-            idCompany:0,
-            idPeople:"",
-            observation:"",
-            idPeopleContact:"",
-            lineProducts:[],
-            taxValor:0,
-            valorBruto:0,
-            valorTotal:0,
-            cant:"1",
-            valorUnit:"0",
-            idProduct: "",
-            idTaxes:"",
-            taxRate:"",   
-            discount:"0"  
+            id: '',
+            name: '',           
+            idCompany:1,            
         },
         onFormSubmit,
         onDiscard,
         onDelete,
     } = props
 
-    const newId = useUniqueId('Order-')
+    const newId = useUniqueId('Inventory-')
 
 
 
@@ -168,30 +130,12 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
                 {({ values, touched, errors, isSubmitting }) => (
                     <Form>
                         <FormContainer>
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-1">
-                                <div className="lg:col-span-3">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div className="lg:col-span-2">
                                     <BasicInformationFields
                                         touched={touched}
                                         errors={errors}
-                                        values={values}
-                                    />
-                                </div>
-
-                                <div className="lg:col-span-3">
-                                    <CustomerInformationFields
-                                        touched={touched}
-                                        errors={errors}
-                                        values={values}
-                                    />
-                                </div>
-
-                                <div className="lg:col-span-3">
-                                  <ProductsInformationFields
-                                        touched={touched}
-                                        errors={errors}
-                                        values={values}
-                                        type={type}
-                                    />
+                                    />                                    
                                 </div>
                                 
                             </div>
@@ -201,7 +145,7 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
                             >
                                 <div>
                                     {type === 'edit' && (
-                                        <DeleteOrderButton
+                                        <DeleteInventoryButton
                                             onDelete={onDelete as OnDelete}
                                         />
                                     )}
@@ -234,6 +178,6 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
     )
 })
 
-OrderForm.displayName = 'OrderForm'
+InventoryForm.displayName = 'InventoryForm'
 
-export default OrderForm
+export default InventoryForm

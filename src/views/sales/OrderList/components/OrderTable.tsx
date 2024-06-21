@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import Badge from '@/components/ui/Badge'
 import DataTable from '@/components/shared/DataTable'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
+import { FaExchangeAlt } from "react-icons/fa";
+
 import { FiPackage } from 'react-icons/fi'
 import {
     getOrders,
     setTableData,
     setSelectedOrder,
     toggleDeleteConfirmation,
+    toggleStatusConfirmation,
+    setStatusOrderData,
     useAppDispatch,
     useAppSelector,
     GetOrdersRequest,
@@ -22,6 +26,11 @@ import type {
     OnSortParam,
     ColumnDef,
 } from '@/components/shared/DataTable'
+import OrderChangeStatusConfirmation from './OrderChangeStatusModal'
+import { apiGetStatusOrder } from '@/services/OrderServices'
+
+
+
 
 type Order = {
     id: string        
@@ -114,6 +123,24 @@ const OrderColumn = ({ row }: { row: Order }) => {
 
 const OrderTable = () => {
     const tableRef = useRef<DataTableResetHandle>(null)
+    const [openModalStatusOrder, setOpenModalStatusOrder] = useState(false);
+    const [statusOrderData, setStatusOrderDataApi] = useState<any[]>([]);
+
+    useEffect(()=>{
+        getStatusOrderData();
+        
+    },[]);
+
+    const getStatusOrderData=async()=>{
+        const dataStatusOrder:any = await apiGetStatusOrder();
+        const dataStatus=dataStatusOrder.data;
+        const dataStatusD:any=[];
+        dataStatus.forEach((element:any) => {
+            dataStatusD.push({label:element.id+" - "+element.name, value:element.id});
+        });          
+        setStatusOrderDataApi(dataStatusD);
+        dispatch(setStatusOrderData(dataStatusD));       
+    }
 
     const dispatch = useAppDispatch()
 
@@ -137,6 +164,20 @@ const OrderTable = () => {
     const data = useAppSelector(
         (state) => state.salesOrderList.data.OrderList
     )
+
+
+    const showModalStatus=(idOrder:any)=>{
+        /*setOpenModalStatusOrder(true);*/
+        console.log("Abra");
+        
+        dispatch(toggleStatusConfirmation(true))
+        dispatch(setSelectedOrder(idOrder));
+    }
+
+    const onCloseDialogStatus=()=>{
+        setOpenModalStatusOrder(false);
+        console.log("Cerró cadabra");
+    }
 
     useEffect(() => {
         fetchData()
@@ -184,6 +225,20 @@ const OrderTable = () => {
                 cell: (props) => {
                     const { statusOrder } = props.row.original
                     return <span>{statusOrder}</span>
+                },
+            },
+
+            {
+                header: '',
+                accessorKey: 'statusOrderId',
+                cell: (props) => {
+                    const { statusOrder } = props.row.original
+                    return <span
+                    className="cursor-pointer p-2 hover:text-red-500" title='Cambiar Estado'    
+                    onClick={()=>{showModalStatus(props.row.original.id)}}
+                >
+                    <FaExchangeAlt />
+                </span>
                 },
             },
 
@@ -290,6 +345,8 @@ const OrderTable = () => {
                 onSort={onSort}
             />
             <OrderDeleteConfirmation />
+
+            <OrderChangeStatusConfirmation />
         </>
     )
 }

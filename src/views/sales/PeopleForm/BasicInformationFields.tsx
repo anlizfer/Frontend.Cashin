@@ -5,13 +5,14 @@ import Select from '@/components/ui/Select'
 import { FormItem } from '@/components/ui/Form'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
 import { getLegalForm, getPersonType } from '../PeopleList/store'
+import { useEffect, useState } from 'react'
 
 type FormFieldsName = {
     name: string    
     lastName: string    
-    idDocument: number
-    idDocumentType: number
-    idPersonType:number
+    idDocument: string
+    idDocumentType: string
+    idPersonType:string
     idLegalForm:number
     
 }
@@ -28,47 +29,80 @@ type BasicInformationFields = {
     values: {        
         idDocumentType:string
         idPersonType: string
-        idLegalForm:string
+        idLegalForm:number
         [key: string]: unknown
     }
 }
 
-const personTypes:any = [];
-const legalForms:any = [];
-const documentTypes=[
-    {label:"CC - Cédula de ciudadanía",value:1},
-    {label:"NIT - Número de Identificación Tributaria",value:2},
-    {label:"PSPT - Pasaporte ",value:3},
-    {label:"TE - Tarjeta de extranjería ",value:4},
-    {label:"CE - Cédula de extranjería",value:5},
-    {label:"DIE - Documento de identificación extranjero ",value:6},
-    {label:"PEP - Permiso especial de permanencia ",value:7},
-    {label:"TI - Tarjeta de identidad",value:8},
-    {label:"RC - Registro civil",value:9},
-    {label:"PPT - Permiso por Protección Temporal",value:10},
-    {label:"RIF - Registro Único de Información Fiscal",value:11},
+
+const documentTypesData=[
+    {label:"CC - Cédula de ciudadanía",value:"1"},
+    {label:"NIT - Número de Identificación Tributaria",value:"2"},
+    {label:"PSPT - Pasaporte ",value:"3"},
+    {label:"TE - Tarjeta de extranjería ",value:"4"},
+    {label:"CE - Cédula de extranjería",value:"5"},
+    {label:"DIE - Documento de identificación extranjero ",value:"6"},
+    {label:"PEP - Permiso especial de permanencia ",value:"7"},
+    {label:"TI - Tarjeta de identidad",value:"8"},
+    {label:"RC - Registro civil",value:"9"},
+    {label:"PPT - Permiso por Protección Temporal",value:"10"},
+    {label:"RIF - Registro Único de Información Fiscal",value:"11"},
 ];
 
 
-const fetchData = async () => {
-    let dataPer:any = await getPersonType(); // Se espera a que se resuelva la promesa de getCategories()
-    dataPer.forEach((element:any) => {
-        personTypes.push({label:element.name, value:parseInt(element.id)});
-    });
 
-    let dataLegForm:any = await getLegalForm();
-    dataLegForm.forEach((element:any) => {
-        legalForms.push({label:element.name, value:parseInt(element.id)});
-    });
 
-};
-
-fetchData(); 
 
 
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { idPersonType: '', idLegalForm:'', idDocumentType:''}, touched, errors,pType } = props
+    const { values = { idPersonType: '1', idLegalForm:5, idDocumentType:'1'}, touched, errors,pType } = props
+
+    const [documentTypes, setdocumentTypes] = useState(documentTypesData);
+    const [personTypes, setpersonTypes] = useState<any>([]);
+    const [legalForms, setlegalFormsData] = useState<any>([]);
+    
+    const [formaLegalHab, setFormaLegalHab]=useState(true);
+
+    useEffect(()=>{
+        fetchData();
+        if(values.idDocumentType==undefined || values.idDocumentType==""){
+            console.log("Entró");
+            values.idDocumentType="1";
+            values.idPersonType="1";
+        }
+    },[]);
+
+    useEffect(()=>{        
+
+        if(parseInt(values.idPersonType)===2){
+            values.idLegalForm=5;
+            setFormaLegalHab(false);
+        }else{
+            setFormaLegalHab(true);
+        }
+    },[values.idPersonType]);
+
+    
+    const fetchData = async () => {
+        const personTypesData:any = [];
+        const legalFormsData:any = [];
+        let dataPer:any = await getPersonType(); // Se espera a que se resuelva la promesa de getCategories()
+        dataPer.forEach((element:any) => {
+            personTypesData.push({label:element.name, value:parseInt(element.id)});
+        });
+    
+        let dataLegForm:any = await getLegalForm();
+        dataLegForm.forEach((element:any) => {
+            legalFormsData.push({label:element.name, value:parseInt(element.id)});
+        });
+
+        setpersonTypes(personTypesData);
+        setlegalFormsData(legalFormsData);
+    
+    };
+
+
 
     return (
         <AdaptableCard divider className="mb-4">
@@ -126,7 +160,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                     options={documentTypes}
                                     value={documentTypes.filter(
                                         (documentType:any) =>
-                                            documentType.value === values.idDocumentType
+                                            documentType.value == values.idDocumentType
                                     )}
                                     onChange={(option) =>{
                                         form.setFieldValue(
@@ -180,11 +214,13 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                         (personType:any) =>
                                             parseInt(personType.value) === parseInt(values.idPersonType)
                                     )}
-                                    onChange={(option) =>
-                                        form.setFieldValue(
-                                            field.name,
-                                            option?.value
-                                        )
+                                    onChange={(option) =>{                                            
+                                            form.setFieldValue(
+                                                field.name,
+                                                option?.value
+                                            )
+                                        }                                       
+
                                     }
                                 />
                             )}
@@ -205,6 +241,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                         <Field name="idLegalForm">
                             {({ field, form }: FieldProps) => (
                                 <Select
+                                    isDisabled={formaLegalHab}
                                     field={field}
                                     form={form}
                                     options={legalForms}

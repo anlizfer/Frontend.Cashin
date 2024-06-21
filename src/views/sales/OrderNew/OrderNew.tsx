@@ -17,12 +17,12 @@ const OrderNew = () => {
     const addOrder = async (data: FormModel) => {        
         data.idCompany=companyDefault?.id;
 
-        if(data.lineProducts?.length==0){
+        /*if(data.lineProducts?.length==0){
             openNotification('warning','Líneas de Productos','Debes agregar por lo menos 1 línea de producto.');
             return;
-        }
+        }*/
 
-        if(data.date=="" || data.date==undefined){
+        if(data.dateDelivery=="" || data.dateDelivery==undefined){
             openNotification('warning','Fecha de Entrega','Debes seleccionar una fecha de entrega');
             return;
         }

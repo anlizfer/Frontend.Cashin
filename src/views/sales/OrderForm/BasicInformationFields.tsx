@@ -41,6 +41,10 @@ const BasicInformationFields = (props: BasicInformationFields) => {
     const [deliveryCompanies,setDeliveryCompanies]=useState<any>([]);
     
     useEffect(()=>{
+        if(values.dateDelivery==undefined || values.dateDelivery==''){
+            values.dateDelivery=obtenerFechaActual();
+        }
+        
         GetBranches();     
         GetDeliveryCompanies();   
     },[]);
@@ -49,13 +53,24 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         GetStores(values.idBranch);
     },[values.idBranch]);
 
+    const obtenerFechaActual=()=> {
+        const hoy = new Date();
+        const año = hoy.getFullYear();
+        const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+        const dia = String(hoy.getDate()).padStart(2, '0');
+        return `${año}-${mes}-${dia}`;
+    }
+
     const GetBranches = async ()=>{
         let dataBranch:any = await apiGetBranchOrder({idCompany:1});
         let branchD:any=[];
         dataBranch=dataBranch.data;
         dataBranch.forEach((element:any) => {
             branchD.push({label:element.name, value:element.id});
-        });            
+        });          
+        if(values.idBranch==undefined || values.idBranch==''){
+            values.idBranch=branchD[0].value;
+        }
         setBranch(branchD);        
     };
 
@@ -67,6 +82,11 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         dataStore.forEach((element:any) => {
             storeD.push({label:element.name, value:element.id});
         });      
+
+        if(values.idStore==undefined || values.idStore==''){
+            values.idStore=storeD[0].value;
+        }
+
         setStore(storeD);
     };
 
@@ -78,7 +98,15 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         dataDeliveryCompany.forEach((element:any) => {
             deliveryCompany.push({label:element.name, value:element.id});
         });      
+
+        if(values.idDeliveryCompany==undefined || values.idDeliveryCompany==''){
+            values.idDeliveryCompany=deliveryCompany[0].value;
+        }
+
         setDeliveryCompanies(deliveryCompany);
+
+
+
     };
 
     return (

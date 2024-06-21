@@ -45,15 +45,8 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
         
     },[]);
 
-    useEffect( ()=>  {
-
-        const fetchData = async () => {
-            await GetContactInfo(values.idPeople);        
-        }        
-          // call the function
-        fetchData();
-
-        
+    useEffect( ()=>  {        
+        GetContactInfo(values.idPeople);        
     },[values.idPeople]);
 
     const GetPeople = async ()=>{
@@ -74,15 +67,25 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
                     nameCity:element.nameCity
                 }]
             });
-        });            
-        setPeople(peopleD);
+        });                    
+        setPeople(peopleD);        
+        if(values.idPeople!=undefined){
+            peopleD.map((element:any) => {
+                if(element.value==values.idPeople){
+                    setContactInfo(element.contactInfo)
+                }
+            });            
+            //GetContactInfo();
+        }
+
     };
 
     const GetContactInfo = (idCustomer:any)=>{        
-        people.forEach((element:any) => {
-            if(idCustomer== element.value){                
-                setContactInfo(element.contactInfo);
-                
+
+        people.map((element:any) => {
+            
+            if(idCustomer===element.value){                
+                setContactInfo(element.contactInfo);                
                 return;
             }
         });
@@ -90,7 +93,10 @@ const CustomerInformationFields = (props: CustomerInformationFields) => {
 
     return (
         <AdaptableCard className="mb-1">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-2"  style={{backgroundColor:"#f1f1f1"}}>
+                <div className="col-span-3">
+                    <small> - Datos de Entrega - </small>
+                </div>                
                 <div className="col-span-1">
 
                     <FormItem
