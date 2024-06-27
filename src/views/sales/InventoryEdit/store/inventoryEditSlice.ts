@@ -21,7 +21,7 @@ type GetSalesInventoryResponse = InventoryData
 export const SLICE_NAME = 'salesInventoryEdit'
 
 export const getInventory = createAsyncThunk(
-    SLICE_NAME + '/getInventorys',
+    SLICE_NAME + '/getInventories',
     async (data: { id: string }) => {
         const response = await apiGetInventory<
             GetSalesInventoryResponse,

@@ -5,16 +5,15 @@ import DataTable from '@/components/shared/DataTable'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
 import { FiPackage } from 'react-icons/fi'
 import {
-    getInventories,
+    getHistories,
     setTableData,
-    setSelectedInventory,
+    setSelectedHistory,
     toggleDeleteConfirmation,
     useAppDispatch,
     useAppSelector,
-    GetInventoriesRequest,
+    GetHistoriesRequest,
 } from '../store'
 import useThemeClass from '@/utils/hooks/useThemeClass'
-import InventoryDeleteConfirmation from './InventoryDeleteConfirmation'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type {
@@ -24,7 +23,7 @@ import type {
 } from '@/components/shared/DataTable'
 import { FaHistory } from 'react-icons/fa'
 
-type Inventory = {
+type History = {
     id: string    
     productName: string
     productCode:string
@@ -32,10 +31,11 @@ type Inventory = {
     storeName:string
     branchName:string    
     status: number    
+    transactionType:number
 }
 
 
-const inventoryStatusColor: Record<
+const historyStatusColor: Record<
     number,
     {
         label: string
@@ -44,29 +44,29 @@ const inventoryStatusColor: Record<
     }
 > = {
     1: {
-        label: 'Activo',
+        label: 'Entrada',
         dotClass: 'bg-emerald-500',
         textClass: 'text-emerald-500',
     },    
     0: {
-        label: 'Inactivo',
+        label: 'Salida',
         dotClass: 'bg-red-500',
         textClass: 'text-red-500',
     },
 }
 
-const ActionColumn = ({ row }: { row: Inventory }) => {
+const ActionColumn = ({ row }: { row: History }) => {
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
     const navigate = useNavigate()
 
     const onEdit = () => {
-        navigate(`/app/Inventory-History/${row.id}`)
+        navigate(`/app/History-History/${row.id}`)
     }
 
     const onDelete = () => {
         dispatch(toggleDeleteConfirmation(true))
-        dispatch(setSelectedInventory(row.id))
+        dispatch(setSelectedHistory(row.id))
     }
 
     return (
@@ -88,7 +88,7 @@ const ActionColumn = ({ row }: { row: Inventory }) => {
     )
 }
 
-const InventoryColumn = ({ row }: { row: Inventory }) => {
+const HistoryColumn = ({ row }: { row: History }) => {
    
     return (
         <div className="flex items-center">   
@@ -97,7 +97,7 @@ const InventoryColumn = ({ row }: { row: Inventory }) => {
     )
 }
 
-const InventoryTable = () => {
+const HistoryTable = () => {
     const tableRef = useRef<DataTableResetHandle>(null)
 
     const dispatch = useAppDispatch()
@@ -108,19 +108,19 @@ const InventoryTable = () => {
     
 
     const { pageIndex, pageSize, sort, query, total } = useAppSelector(
-        (state) => state.salesInventoryList.data.tableData
+        (state) => state.salesHistoryList.data.tableData
     )
 
     const filterData = useAppSelector(
-        (state) => state.salesInventoryList.data.filterData
+        (state) => state.salesHistoryList.data.filterData
     )
 
     const loading = useAppSelector(
-        (state) => state.salesInventoryList.data.loading
+        (state) => state.salesHistoryList.data.loading
     )
 
     const data = useAppSelector(
-        (state) => state.salesInventoryList.data.InventoryList
+        (state) => state.salesHistoryList.data.HistoryList
     )
 
     useEffect(() => {
@@ -140,11 +140,11 @@ const InventoryTable = () => {
     )
 
     const fetchData = () => { 
-        let pageParams:GetInventoriesRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
-        dispatch(getInventories(pageParams))
+        let pageParams:GetHistoriesRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
+        dispatch(getHistories(pageParams))
     }
 
-    const columns: ColumnDef<Inventory>[] = useMemo(
+    const columns: ColumnDef<History>[] = useMemo(
         () => [
             {
                 header:'Código',
@@ -161,7 +161,7 @@ const InventoryTable = () => {
                 accessorKey: 'productName',
                 cell: (props) => {
                     const row = props.row.original
-                    return <InventoryColumn row={row} />
+                    return <HistoryColumn row={row} />
                 },
             },  
             {
@@ -197,31 +197,26 @@ const InventoryTable = () => {
                 }
             },
             {
-                header: 'Estado',
-                accessorKey: 'status',
+                header: 'Tipo Movimiento',
+                accessorKey: 'transactionType',
                 cell: (props) => {
-                    const { status } = props.row.original
+                    const { transactionType } = props.row.original
                     return (
                         <div className="flex items-center gap-2">
                             <Badge
                                 className={
-                                    inventoryStatusColor[status].dotClass                                    
+                                    historyStatusColor[transactionType].dotClass                                    
                                 }
                             />
                             <span
-                                className={`capitalize font-semibold ${inventoryStatusColor[status].textClass}`}
+                                className={`capitalize font-semibold ${historyStatusColor[transactionType].textClass}`}
                             >
-                                {inventoryStatusColor[status].label}
+                                {historyStatusColor[transactionType].label}
                             </span>
                         </div>
                     )
                 },
-            },
-            {
-                header: '',
-                id: 'action',
-                cell: (props) => <ActionColumn row={props.row.original} />,
-            },
+            },            
         ],
         []
     )
@@ -263,9 +258,9 @@ const InventoryTable = () => {
                 onSelectChange={onSelectChange}
                 onSort={onSort}
             />
-            <InventoryDeleteConfirmation />
+            
         </>
     )
 }
 
-export default InventoryTable
+export default HistoryTable

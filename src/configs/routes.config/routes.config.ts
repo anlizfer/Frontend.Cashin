@@ -72,7 +72,7 @@ export const protectedRoutes = [
         authority: [ADMIN, USER],
     },
 
-    //COMPAÑÍA
+    //CLIENTES
     {
         key: 'customers.list',
         path: `${APP_PREFIX_PATH}/people-list`,
@@ -173,14 +173,32 @@ export const protectedRoutes = [
         authority: [ADMIN, USER],
     },
 
-
+    //INVENTORY
     {
-        key: 'products.inventory',
-        path: `${APP_PREFIX_PATH}/inventory`,
-        component: lazy(() => import('@/views/sales/SalesDashboard')),
+        key: 'inventory.list',
+        path: `${APP_PREFIX_PATH}/inventory-list`,
+        component: lazy(() => import('@/views/sales/InventoryList')),
         authority: [ADMIN, USER],
-    }
-    ,
+    },
+    {
+        key: 'inventory.create',
+        path: `${APP_PREFIX_PATH}/inventory`,
+        component: lazy(() => import('@/views/sales/InventoryNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'inventory.edit',
+        path: `${APP_PREFIX_PATH}/inventory/:inventoryId?/`,
+        component: lazy(() => import('@/views/sales/InventoryEdit')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'inventoryHistory.list',
+        path: `${APP_PREFIX_PATH}/inventory-history-list/:productId?/:storeId?/`,
+        component: lazy(() => import('@/views/sales/HistoryList')),
+        authority: [ADMIN, USER],
+    },
+
     {
         key: 'appsAccount.settings',
         path: `${APP_PREFIX_PATH}/user/:tab`,

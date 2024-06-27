@@ -137,8 +137,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
 
         if(type=="edit"){
             const lines=values.lineProducts;
-            let arraLines:any=[];
-            console.log("ENTRO ESTA MONDA");
+            let arraLines:any=[];            
             lines.forEach((element:any) => {
                 arraLines.push({
                     productCodeLine:element.refProduct,

@@ -30,11 +30,11 @@ const InventoryNew = () => {
         if (success) {
             toast.push(
                 <Notification
-                    title={'Categoría añadida exitosamente'}
+                    title={'Inventario añadido exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Categoría generada correctamente
+                    Inventario generado correctamente
                 </Notification>,
                 {
                     placement: 'top-center',

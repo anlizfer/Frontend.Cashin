@@ -15,8 +15,12 @@ import * as Yup from 'yup'
 type FormikRef = FormikProps<any>
 
 type InitialData = {
-    id?: string
-    name?: string   
+    id?: string    
+    idBranch?: string
+    idStore?:string  
+    idProduct?:string
+    transactionType?:number
+    cant?:number
     status?: number    
     idCompany?:number    
 }
@@ -42,7 +46,8 @@ type InventoryForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required('El Nombre de la categoría es Requerido'),    
+    cant: Yup.string().required('La cantidad es requerida'),    
+    idProduct: Yup.string().required('El producto es requerido'),
 })
 
 const DeleteInventoryButton = ({ onDelete }: { onDelete: OnDelete }) => {
@@ -96,9 +101,16 @@ const InventoryForm = forwardRef<FormikRef, InventoryForm>((props, ref) => {
     const {
         type,
         initialData = {
+
+
             id: '',
-            name: '',           
-            idCompany:1,            
+            idBranch: '',
+            idStore: '',
+            idProduct: '',
+            transactionType: 1,
+            cant: 0,
+            status: 1,
+            idCompany:1            
         },
         onFormSubmit,
         onDiscard,
@@ -130,9 +142,10 @@ const InventoryForm = forwardRef<FormikRef, InventoryForm>((props, ref) => {
                 {({ values, touched, errors, isSubmitting }) => (
                     <Form>
                         <FormContainer>
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                                <div className="lg:col-span-2">
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-1">
+                                <div className="lg:col-span-3">
                                     <BasicInformationFields
+                                        values={values}
                                         touched={touched}
                                         errors={errors}
                                     />                                    

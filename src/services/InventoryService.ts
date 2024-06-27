@@ -29,14 +29,54 @@ export async function apiGetInventories<T, U extends Record<string, unknown>>(
     );
 }
 
+
+export async function apiGetInventoriesHistories<T, U extends Record<string, unknown>>(
+    data: U
+) {    
+    let dataFilter:any=data.filterData;
+    let query:any="";
+    let idCompany:any=data.idCompany;
+    
+    if(data.query!=""){
+        query=data.query;
+    }else{
+        if(dataFilter.name!=""){
+            query=dataFilter.name;
+        }
+    }
+    
+    
+    return ApiServiceFetch.fetchData<T>(
+        `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/inventories-histories-by-filter`,
+        {
+            idCompany:idCompany,
+            pageIndex:data.pageIndex,
+            pageSize:data.pageSize,            
+            name:query,            
+        },
+        'POST'
+    );
+}
+
+
+
 export async function apiCreateInventory<T, U extends Record<string, unknown>>(data: U) {    
     const idCompany:any=data.idCompany;
-    const name:any=data.name;           
+    const idBranch:any=data.idBranch;
+    const idStore:any=data.idStore;
+    const idProduct:any=data.idProduct;
+    const transactionType:any=data.transactionType;
+    const cant:any=data.cant;
+    
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/create-inventory`,
         {
             idCompany:idCompany,
-            name:name
+            idBranch:idBranch,
+            idStore:idStore,
+            idProduct:idProduct,
+            transactionType:transactionType,
+            cant:cant
         },
         'POST'
     );

@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
-    apiGetInventories,
-    apiDeleteInventory,    
-    apiCreateInventory,
+    apiGetInventoriesHistories    
 } from '@/services/InventoryService'
 import type { TableQueries } from '@/@types/common'
 
 
 
-type Inventory = {
+type History = {
     id: string
     name: string 
     idCompany: number    
@@ -20,7 +18,7 @@ type Inventory = {
     idStore:number
 }
 
-type AddInventoriesRequest = {
+type AddHistoriesRequest = {
     id: string
     name: string 
     idCompany: number     
@@ -34,48 +32,42 @@ type MetadataSetting = {
 
 type Meta=MetadataSetting;
 
-export type GetInventoriesResponse = {
-    data: Inventory[]
+export type GetHistoriesResponse = {
+    data: History[]
 }
 
 export type FilterQueries = {
     name: string
-    inventory: string[]
+    history: string[]
     status: number[]    
     idCompany:number
-    Inventoriestatus:number
+    Historiestatus:number
 }
 
-export type SalesInventoryListState = {
+export type SalesHistoryListState = {
     loading: boolean
     deleteConfirmation: boolean
-    selectedInventory: string
+    selectedHistory: string
     tableData: TableQueries
     filterData: FilterQueries
-    InventoryList: Inventory[]
+    HistoryList: History[]
 }
 
-export type GetInventoriesRequest = TableQueries & { filterData?: FilterQueries }
+export type GetHistoriesRequest = TableQueries & { filterData?: FilterQueries }
 
 
-export const SLICE_NAME = 'salesInventoryList'
+export const SLICE_NAME = 'salesHistoryList'
 
-export const getInventories = createAsyncThunk(
-    SLICE_NAME + '/getInventories',
-    async (data: GetInventoriesRequest) => {        
-        const response = await apiGetInventories<GetInventoriesResponse,GetInventoriesRequest>(data)   
+export const getHistories = createAsyncThunk(
+    SLICE_NAME + '/getHistories',
+    async (data: GetHistoriesRequest) => {        
+        const response = await apiGetInventoriesHistories<GetHistoriesResponse,GetHistoriesRequest>(data)   
         return response
     }
 )
 
 
-export const deleteInventory = async (data: { id: string | string[], idCompany:number }) => {
-    const response = await apiDeleteInventory<
-        boolean,
-        { id: string | string[], idCompany:number }
-    >(data)
-    return response.data
-}
+
 
 export const initialTableData: TableQueries = {
     total: 0,
@@ -89,27 +81,27 @@ export const initialTableData: TableQueries = {
     },
 }
 
-const initialState: SalesInventoryListState = {
+const initialState: SalesHistoryListState = {
     loading: false,
     deleteConfirmation: false,
-    selectedInventory: '',
-    InventoryList: [],    
+    selectedHistory: '',
+    HistoryList: [],    
     tableData: initialTableData,
     filterData: {
         name: '',
-        inventory: [],
+        history: [],
         status: [0, 1],        
         idCompany:0,
-        Inventoriestatus:0
+        Historiestatus:0
     },
 }
 
-const InventoryListSlice = createSlice({
+const HistoryListSlice = createSlice({
     name: `${SLICE_NAME}/state`,
     initialState,
     reducers: {
-        updateInventoryList: (state, action) => {
-            state.InventoryList = action.payload
+        updateHistoryList: (state, action) => {
+            state.HistoryList = action.payload
         },
         setTableData: (state, action) => {
             state.tableData = action.payload
@@ -120,29 +112,29 @@ const InventoryListSlice = createSlice({
         toggleDeleteConfirmation: (state, action) => {
             state.deleteConfirmation = action.payload
         },
-        setSelectedInventory: (state, action) => {
-            state.selectedInventory = action.payload
+        setSelectedHistory: (state, action) => {
+            state.selectedHistory = action.payload
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getInventories.fulfilled, (state, action) => {                
-                state.InventoryList = action.payload.data
+            .addCase(getHistories.fulfilled, (state, action) => {                
+                state.HistoryList = action.payload.data
                 state.tableData.total = action.payload.meta.totalCount
                 state.loading = false
             })
-            .addCase(getInventories.pending, (state) => {
+            .addCase(getHistories.pending, (state) => {
                 state.loading = true
             })            
     },
 })
 
 export const {
-    updateInventoryList,
+    updateHistoryList,
     setTableData,
     setFilterData,
     toggleDeleteConfirmation,
-    setSelectedInventory,    
-} = InventoryListSlice.actions
+    setSelectedHistory,    
+} = HistoryListSlice.actions
 
-export default InventoryListSlice.reducer
+export default HistoryListSlice.reducer
