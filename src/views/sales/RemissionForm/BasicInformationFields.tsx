@@ -20,6 +20,10 @@ type FormFieldsName = {
     dateDelivery: string    
     idBranch:string
     idStore:string
+
+    idBranchDestination:string
+    idStoreDestination:string
+
     shippingWithCollection:number
     idDeliveryCompany:string
 }
@@ -30,6 +34,8 @@ type BasicInformationFields = {
     values: {        
         idBranch: string
         idStore:string
+        idBranchDestination: string
+        idStoreDestination:string
         shippingWithCollection:number
         idDeliveryCompany:string
         [key: string]: unknown
@@ -37,7 +43,7 @@ type BasicInformationFields = {
 }
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { idBranch: '', idStore:'',shippingWithCollection:0, idDeliveryCompany:'', dateDelivery:''}, touched, errors } = props
+    const { values = { idBranch: '', idStore:'',shippingWithCollection:0, idDeliveryCompany:'', dateDelivery:'', idBranchDestination: '', idStoreDestination:'',}, touched, errors } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
         (state) => state.auth.user
@@ -45,6 +51,10 @@ const BasicInformationFields = (props: BasicInformationFields) => {
     const dispatch = useAppDispatch();    
     const [branch,setBranch] = useState<any>([]);
     const [store,setStore]=useState<any>([]);
+
+    const [branchDestination,setBranchDestination] = useState<any>([]);
+    const [storeDestination,setStoreDestination]=useState<any>([]);
+
     const [deliveryCompanies,setDeliveryCompanies]=useState<any>([]);
     
     useEffect(()=>{
@@ -78,7 +88,13 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         if(values.idBranch==undefined || values.idBranch==''){
             values.idBranch=branchD[0].value;
         }
+
+        if(values.idBranchDestination==undefined || values.idBranchDestination==''){
+            values.idBranchDestination=branchD[0].value;
+        }
+
         setBranch(branchD);        
+        setBranchDestination(branchD);
     };
 
     const GetStores = async (idBr:any)=>{
@@ -93,12 +109,15 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         if(values.idStore==undefined || values.idStore==''){
             values.idStore=storeD[0].value;
             dispatch(setIdStore(storeD[0].value));
-        }
+        }       
 
-
-        
+        if(values.idStoreDestination==undefined || values.idStoreDestination==''){
+            values.idStoreDestination=storeD[0].value;
+            //dispatch(setIdStore(storeD[0].value));
+        }       
 
         setStore(storeD);
+        setStoreDestination(storeD);
     };
 
     const GetDeliveryCompanies=async ()=>{
@@ -230,19 +249,19 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                             <FormItem
                                 label="Sucursal Destino"
                                 invalid={
-                                        (errors.idBranch && touched.idBranch) as boolean
+                                        (errors.idBranchDestination && touched.idBranchDestination) as boolean
                                 }
-                                    errorMessage={errors.idBranch}
+                                    errorMessage={errors.idBranchDestination}
                                 >
-                                <Field name="idBranch">
+                                <Field name="idBranchDestination">
                                     {({ field, form }: FieldProps) => (
                                         <Select
                                             field={field}
                                             form={form}
-                                            options={branch}
-                                            value={branch.filter(
+                                            options={branchDestination}
+                                            value={branchDestination.filter(
                                                 (state:any) =>
-                                                    state.value === values.idBranch
+                                                    state.value === values.idBranchDestination
                                             )}
                                             onChange={(option) =>{                                             
                                                 form.setFieldValue(
@@ -266,19 +285,19 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                             <FormItem
                                 label="Bodega Destino"
                                 invalid={
-                                        (errors.idStore && touched.idStore) as boolean
+                                        (errors.idStoreDestination && touched.idStoreDestination) as boolean
                                 }
-                                    errorMessage={errors.idStore}
+                                    errorMessage={errors.idStoreDestination}
                                 >
                                 <Field name="idStore">
                                     {({ field, form }: FieldProps) => (
                                         <Select
                                             field={field}
                                             form={form}
-                                            options={store}
-                                            value={store.filter(
+                                            options={storeDestination}
+                                            value={storeDestination.filter(
                                                 (state:any) =>
-                                                    state.value === values.idStore
+                                                    state.value === values.idStoreDestination
                                             )}
                                             onChange={(option) =>{     
                                                 dispatch(setIdStore(option?.value));
