@@ -67,8 +67,12 @@ const BasicInformationFields = (props: BasicInformationFields) => {
     },[]);
 
     useEffect(()=>{
-        GetStores(values.idBranch);
+        GetStores(values.idBranch,1);
     },[values.idBranch]);
+
+    useEffect(()=>{
+        GetStores(values.idBranchDestination,2);
+    },[values.idBranchDestination]);
 
     const obtenerFechaActual=()=> {
         const hoy = new Date();
@@ -97,7 +101,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         setBranchDestination(branchD);
     };
 
-    const GetStores = async (idBr:any)=>{
+    const GetStores = async (idBr:any, type:any)=>{
         let dataStore:any = await apiGetStoreRemission({idBranch:idBr});
         let storeD:any=[];
 
@@ -106,18 +110,27 @@ const BasicInformationFields = (props: BasicInformationFields) => {
             storeD.push({label:element.name, value:element.id});
         });      
 
-        if(values.idStore==undefined || values.idStore==''){
-            values.idStore=storeD[0].value;
-            dispatch(setIdStore(storeD[0].value));
-        }       
+        if(type==1){
+            if(values.idStore==undefined || values.idStore==''){
+                values.idStore=storeD[0].value;
+                dispatch(setIdStore(storeD[0].value));
+            }       
+            setStore(storeD);
 
-        if(values.idStoreDestination==undefined || values.idStoreDestination==''){
-            values.idStoreDestination=storeD[0].value;
-            //dispatch(setIdStore(storeD[0].value));
-        }       
+        }else{
+            if(values.idStoreDestination==undefined || values.idStoreDestination==''){
+                values.idStoreDestination=storeD[0].value;
+                //dispatch(setIdStore(storeD[0].value));
+            }       
 
-        setStore(storeD);
-        setStoreDestination(storeD);
+            setStoreDestination(storeD);
+        }
+        
+
+        
+
+        
+        
     };
 
     const GetDeliveryCompanies=async ()=>{
