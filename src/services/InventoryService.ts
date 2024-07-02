@@ -36,6 +36,9 @@ export async function apiGetInventoriesHistories<T, U extends Record<string, unk
     let dataFilter:any=data.filterData;
     let query:any="";
     let idCompany:any=data.idCompany;
+    let idStore:any=data.idStore;
+    let idProducto:any=data.idProduct;
+    
     
     if(data.query!=""){
         query=data.query;
@@ -49,6 +52,8 @@ export async function apiGetInventoriesHistories<T, U extends Record<string, unk
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/inventories-histories-by-filter`,
         {
+            idStore:idStore,
+            idProducto:idProducto,
             idCompany:idCompany,
             pageIndex:data.pageIndex,
             pageSize:data.pageSize,            

@@ -5,11 +5,18 @@ import { FormItem } from '@/components/ui/Form'
 import Select from '@/components/ui/Select'
 import { Field, FormikErrors, FormikTouched, FieldProps } from 'formik'
 import { useAppSelector,useAppDispatch,setUser, CompanyState } from '@/store'
+import { setIdStore } from './store'
+
+
 import { useEffect, useState } from 'react'
 import { apiGetBranchOrder, apiGetDeliveryCompanies, apiGetStatusOrder, apiGetStoreOrder } from '@/services/OrderServices'
 import Checkbox from '@/components/ui/Checkbox/Checkbox'
 
+
+
+
 type FormFieldsName = {
+
     dateDelivery: string    
     idBranch:string
     idStore:string
@@ -35,7 +42,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
         (state) => state.auth.user
     )
-
+    const dispatch = useAppDispatch();    
     const [branch,setBranch] = useState<any>([]);
     const [store,setStore]=useState<any>([]);
     const [deliveryCompanies,setDeliveryCompanies]=useState<any>([]);
@@ -85,7 +92,11 @@ const BasicInformationFields = (props: BasicInformationFields) => {
 
         if(values.idStore==undefined || values.idStore==''){
             values.idStore=storeD[0].value;
+            dispatch(setIdStore(storeD[0].value));
         }
+
+
+        
 
         setStore(storeD);
     };
@@ -150,7 +161,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                         (state:any) =>
                                             state.value === values.idBranch
                                     )}
-                                    onChange={(option) =>{                        
+                                    onChange={(option) =>{                                             
                                         form.setFieldValue(
                                                     field.name,
                                                     option?.value
@@ -182,7 +193,8 @@ const BasicInformationFields = (props: BasicInformationFields) => {
                                         (state:any) =>
                                             state.value === values.idStore
                                     )}
-                                    onChange={(option) =>{                        
+                                    onChange={(option) =>{     
+                                        dispatch(setIdStore(option?.value));
                                         form.setFieldValue(
                                                     field.name,
                                                     option?.value

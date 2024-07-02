@@ -14,7 +14,7 @@ import {
     GetHistoriesRequest,
 } from '../store'
 import useThemeClass from '@/utils/hooks/useThemeClass'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type {
     DataTableResetHandle,
@@ -25,9 +25,11 @@ import { FaHistory } from 'react-icons/fa'
 
 type History = {
     id: string    
+    codeOrder:string
     productName: string
     productCode:string
     cant:string
+    cantInventory:string
     storeName:string
     branchName:string    
     status: number    
@@ -61,7 +63,7 @@ const ActionColumn = ({ row }: { row: History }) => {
     const navigate = useNavigate()
 
     const onEdit = () => {
-        navigate(`/app/History-History/${row.id}`)
+        //navigate(`/app/History-History/${row.id}`)
     }
 
     const onDelete = () => {
@@ -101,6 +103,7 @@ const HistoryTable = () => {
     const tableRef = useRef<DataTableResetHandle>(null)
 
     const dispatch = useAppDispatch()
+    const { productId,storeId } = useParams();
 
     const { companyDefault } = useAppSelector(
         (state) => state.auth.user
@@ -140,7 +143,16 @@ const HistoryTable = () => {
     )
 
     const fetchData = () => { 
-        let pageParams:GetHistoriesRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
+        let pageParams:GetHistoriesRequest={ 
+            pageIndex, 
+            pageSize, 
+            sort, 
+            query, 
+            filterData,
+            idCompany:companyDefault?.id,
+            idStore:storeId,
+            idProduct:productId
+        };
         dispatch(getHistories(pageParams))
     }
 
@@ -174,6 +186,18 @@ const HistoryTable = () => {
                     </div>
                 }
             },
+            {
+                header:'Cantidad Inventario',
+                accessorKey:'cantInventory',
+                cell:(props)=>{
+                    const row=props.row.original;
+                    return <div className={'flex items-center'}>
+                        <span>{row.cantInventory}</span>
+                    </div>
+                }
+            },
+
+            
             
             {
                 header:'Sucursal',
@@ -193,6 +217,17 @@ const HistoryTable = () => {
                     const row=props.row.original;
                     return <div className={'flex items-center'}>
                         <span>{row.storeName}</span>
+                    </div>
+                }
+            },
+
+            {
+                header:'Orden',
+                accessorKey:'codeOrder',
+                cell:(props)=>{
+                    const row=props.row.original;
+                    return <div className={'flex items-center'}>
+                        <span>{row.codeOrder}</span>
                     </div>
                 }
             },

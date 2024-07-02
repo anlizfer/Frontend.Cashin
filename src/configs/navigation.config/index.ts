@@ -162,13 +162,33 @@ const navigationConfig: NavigationTree[] = [
         subMenu: [
             {
                 key: 'remission',
-                path:`${APP_PREFIX_PATH}/remission`,
+                path:``,
                 title: 'Remisiones',
                 translateKey: '',
                 icon: 'remissions',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [ADMIN, USER],
-                subMenu: [],
+                subMenu: [
+                    {
+                        key: 'remission.list',
+                        path: `${APP_PREFIX_PATH}/remissions-list`,
+                        title: 'Listado de Remisiones',
+                        translateKey: '',
+                        icon: '',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        subMenu: [],                
+                    },{
+                        key: 'remission.create',
+                        path: `${APP_PREFIX_PATH}/remission`,
+                        title: 'Crear Remisión',
+                        translateKey: '',
+                        icon: '',
+                        type: NAV_ITEM_TYPE_ITEM,
+                        authority: [ADMIN, USER],
+                        subMenu: [],                
+                    }
+                ],
                 
             },
             {

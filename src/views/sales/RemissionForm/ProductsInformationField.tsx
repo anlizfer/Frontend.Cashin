@@ -7,7 +7,7 @@ import Select from '@/components/ui/Select'
 import { Field, FormikErrors, FormikTouched, FieldProps,FieldInputProps, Form } from 'formik'
 //import { useAppSelector,useAppDispatch,setUser, CompanyState } from '@/store'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { apiGetBranchOrder, apiGetStatusOrder, apiGetStoreOrder, apiGetTaxes } from '@/services/OrderServices'
+import { apiGetBranchRemission, apiGetStatusRemission, apiGetStoreRemission, apiGetTaxes } from '@/services/RemissionServices'
 import Checkbox from '@/components/ui/Checkbox/Checkbox'
 import type { Component, ComponentType } from 'react'
 import type { InputProps } from '@/components/ui/Input'
@@ -110,7 +110,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     )
 
     const idStoreData = useAppSelector(
-        (state) => state.salesOrderForm.data?.idStoreData
+        (state) => state.salesRemissionForm.data?.idStoreData
     )
 
     const tableRef = useRef<DataTableResetHandle>(null)
@@ -374,7 +374,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         <AdaptableCard>            
             <div className="grid grid-cols-1 md:grid-cols-12 gap-1 p-2" style={{backgroundColor:"#f1f1f1"}}>
 
-                <div className="col-span-3">
+                <div className="col-span-9">
                     <FormItem
                         label="Producto *"
                         invalid={
@@ -406,7 +406,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                     </FormItem>
                 </div>
 
-                <div className="col-span-1">
+                <div className="col-span-2">
                     <FormItem
                         label="Cant. *"
                         invalid={(errors.cant && touched.cant) as boolean}
@@ -426,147 +426,16 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                     
                 </div>
 
-                <div className="col-span-2">
-                    <FormItem
-                        label="Precio *"
-                        invalid={(errors.valorUnit && touched.valorUnit) as boolean}
-                        errorMessage={errors.valorUnit}
-                    >
-                        <Field name="valorUnit">
-                            {({ field, form }: FieldProps) => {
-                                return (
-                                    <NumericFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="0.00"
-                                        style={{textAlign:"right"}}
-                                        customInput={
-                                            PriceInput as ComponentType
-                                        }
-                                        onValueChange={(e) => {
-                                            form.setFieldValue(
-                                                field.name,
-                                                e.value
-                                            )
-                                        }}
-                                    />
-                                )
-                            }}
-                        </Field>
-                    </FormItem>
-                </div>
+                
 
 
-                <div className="col-span-1">
-                    <FormItem
-                        label="Bruto *"                        
-                    >
-                        <Field name="valorBruto">
-                            {({ field, form }: FieldProps) => {
-                                return (
-                                    <NumericFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="0.00"
-                                        disabled={true}
-                                        readOnly={true}
-                                        style={{textAlign:"right"}}
-                                        customInput={
-                                            PriceInput as ComponentType
-                                        }
-                                        
-                                    />
-                                )
-                            }}
-                        </Field>
-                    </FormItem>
-                </div>
+                
 
-                <div className="col-span-1">
-                    <FormItem
-                        label="Descuento"                        
-                    >
-                        <Field name="discount">
-                            {({ field, form }: FieldProps) => {
-                                return (
-                                    <NumericFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="0.00"                                        
-                                        style={{textAlign:"right"}}        
-                                        max={100}                                
-                                        min={0}
-                                        customInput={
-                                            PriceInput as ComponentType
-                                        }      
-                                        
-                                        onValueChange={(e) => {
-                                            form.setFieldValue(
-                                                field.name,
-                                                e.value
-                                            )
-                                        }}
-                                    />
-                                )
-                            }}
-                        </Field>
-                    </FormItem>
-                </div>
+                
 
-                <div className="col-span-2">
-                    <FormItem
-                        label="Impuesto"
-                        invalid={
-                                (errors.idTaxes && touched.idTaxes) as boolean
-                        }
-                            errorMessage={errors.idTaxes}
-                        >
-                        <Field name="idTaxes">
-                            {({ field, form }: FieldProps) => (
-                                <Select
-                                    field={field}
-                                    form={form}
-                                    options={taxes}
-                                    value={taxes.filter(
-                                        (state:any) =>
-                                            state.value === values.idTaxes
-                                    )}
-                                    onChange={(option) =>{                        
-                                        form.setFieldValue(
-                                                    field.name,
-                                                    option?.value
-                                                )
-                                        }                                           
-                                    }
-                                />
-                            )}
-                        </Field>
-                    </FormItem>
-                </div>
+                
 
-                <div className="col-span-1">
-                    <FormItem
-                        label="Total"                        
-                    >
-                        <Field name="valorTotal">
-                            {({ field, form }: FieldProps) => {
-                                return (
-                                    <NumericFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="0.00"
-                                        disabled={true}
-                                        readOnly={true}
-                                        style={{textAlign:"right"}}
-                                        customInput={
-                                            PriceInput as ComponentType
-                                        }                                        
-                                    />
-                                )
-                            }}
-                        </Field>
-                    </FormItem>
-                </div>
+                
 
                 <div className='col-span-1'>
                     <Button type='button' disabled={enabledAdd} className='mt-7' style={{backgroundColor:"#0ea5e9",color:"#fff"}} onClick={addlineProduct}>+</Button>
@@ -581,12 +450,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                         <Tr>
                             <Th>Ref.</Th>
                             <Th>Producto</Th>
-                            <Th>Cant.</Th>
-                            <Th style={{textAlign:"right"}}>Precio Unit.</Th>
-                            <Th style={{textAlign:"right"}}>Bruto</Th>
-                            <Th style={{textAlign:"right"}}>Descuento</Th>
-                            <Th style={{textAlign:"right"}}>Valor Impuesto</Th>
-                            <Th style={{textAlign:"right"}}>Total</Th>
+                            <Th>Cant.</Th>                            
                             <Th></Th>
                         </Tr>
                     </THead>
@@ -597,12 +461,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                                 <Tr key={ind}>
                                     <Td>{element.productCodeLine}</Td>
                                     <Td>{element.nameProductLine}</Td>
-                                    <Td style={{textAlign:"center"}}>{element.cantLine}</Td>
-                                    <Td style={{textAlign:"right"}}>${formatNumberCashin(parseFloat(element.priceProductLine))}</Td>
-                                    <Td style={{textAlign:"right"}}>${formatNumberCashin(parseFloat(element.brutoProductLine))}</Td>
-                                    <Td style={{textAlign:"right"}}>${formatNumberCashin(parseFloat(element.discountProductLine))}</Td>
-                                    <Td style={{textAlign:"right"}}>${formatNumberCashin(parseFloat(element.taxPriceProductLine))}</Td>
-                                    <Td style={{textAlign:"right"}}>${formatNumberCashin(parseFloat(element.totalLine))}</Td>
+                                    <Td style={{textAlign:"center"}}>{element.cantLine}</Td>                                    
                                     <Td>
                                         <button type='button' onClick={()=>{deleteLine(ind)}}><HiOutlineTrash /></button>
                                     </Td>
@@ -616,7 +475,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-8" >
-                <div className='col-span-8'>
+                <div className='col-span-12'>
                     <div className="col-span-1">
                         <FormItem
                             label="Observación"
@@ -634,36 +493,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                             />
                         </FormItem>
                     </div>
-                </div>
-
-                <div className='col-span-4'>
-                    <Table className="table-default table-hover table-compact">
-                        
-                        <TBody>
-                            <Tr style={{borderBottom:"none"}}>                                
-                                <Td style={{ width:"225px"}}><h5>Total Bruto</h5></Td>
-                                <Td style={{textAlign:"right", width:"325px"}}><h5>${totalBruto}</h5></Td>
-                            </Tr>
-                            <Tr style={{borderBottom:"none", border:"none"}}>                                
-                                <Td style={{ width:"225px", border:"none"}}><h5>- Descuento</h5></Td>
-                                <Td style={{textAlign:"right", width:"325px", border:"none"}}><h5>${totalDescuento}</h5></Td>
-                            </Tr>
-                            <Tr style={{borderBottom:"none"}}>
-                                <Td style={{width:"225px"}}><h5>Subtotal</h5></Td>
-                                <Td style={{textAlign:"right", width:"325px"}}><h5>${totalSubtotal}</h5></Td>
-                            </Tr>
-                            <Tr style={{borderBottom:"none", border:"none"}}>                                
-                                <Td style={{ width:"225px", border:"none"}}><h5>+ Impuesto</h5></Td>
-                                <Td style={{textAlign:"right", width:"325px", border:"none"}}><h5>${totalImpuesto}</h5></Td>
-                            </Tr>
-                            <Tr style={{borderBottom:"none"}}>
-                                <Td style={{width:"225px"}}><h4>Total Neto</h4></Td>
-                                <Td style={{textAlign:"right", width:"325px"}}><h4>${totalNeto}</h4></Td>
-                            </Tr>
-                        </TBody>
-                    </Table>
-                    
-                </div>
+                </div>                
             </div>
 
             <div className='mt-4'>

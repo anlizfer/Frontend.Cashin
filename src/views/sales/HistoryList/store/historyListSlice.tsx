@@ -13,6 +13,8 @@ type History = {
     productName:string
     productCode:string
     branchName:string
+    codeOrder:String
+    idOrder:number
     storeName:string
     idProduct:number
     idStore:number
@@ -41,6 +43,8 @@ export type FilterQueries = {
     history: string[]
     status: number[]    
     idCompany:number
+    idProduct:number
+    idStore:number
     Historiestatus:number
 }
 

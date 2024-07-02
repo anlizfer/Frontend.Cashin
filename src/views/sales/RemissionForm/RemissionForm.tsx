@@ -14,7 +14,7 @@ import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
 import CustomerInformationFields from './CustomerInformationFields'
 import ProductsInformationFields from './ProductsInformationField'
-injectReducer('salesOrderForm', reducer)
+injectReducer('salesRemissionForm', reducer)
 
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
@@ -53,7 +53,7 @@ export type OnDeleteCallback = React.Dispatch<React.SetStateAction<boolean>>
 
 type OnDelete = (callback: OnDeleteCallback) => void
 
-type OrderForm = {
+type RemissionForm = {
     initialData?: InitialData
     type: 'edit' | 'new'
     onDiscard?: () => void
@@ -68,7 +68,7 @@ const validationSchema = Yup.object().shape({
 
 })
 
-const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
+const DeleteRemissionButton = ({ onDelete }: { onDelete: OnDelete }) => {
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const onConfirmDialogOpen = () => {
@@ -115,7 +115,7 @@ const DeleteOrderButton = ({ onDelete }: { onDelete: OnDelete }) => {
     )
 }
 
-const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
+const RemissionForm = forwardRef<FormikRef, RemissionForm>((props, ref) => {
     const {
         type,
         initialData = {
@@ -146,7 +146,7 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
         onDelete,
     } = props
 
-    const newId = useUniqueId('Order-')
+    const newId = useUniqueId('Remission-')
 
 
 
@@ -178,15 +178,7 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
                                         errors={errors}
                                         values={values}
                                     />
-                                </div>
-
-                                <div className="lg:col-span-3">
-                                    <CustomerInformationFields
-                                        touched={touched}
-                                        errors={errors}
-                                        values={values}
-                                    />
-                                </div>
+                                </div>                               
 
                                 <div className="lg:col-span-3">
                                   <ProductsInformationFields
@@ -200,11 +192,11 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
                             </div>
                             <StickyFooter
                                 className="-mx-8 px-8 flex items-center justify-between py-4"
-                                stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+                                stickyClass="bremission-t bg-white dark:bg-gray-800 bremission-gray-200 dark:bremission-gray-700"
                             >
                                 <div>
                                     {type === 'edit' && (
-                                        <DeleteOrderButton
+                                        <DeleteRemissionButton
                                             onDelete={onDelete as OnDelete}
                                         />
                                     )}
@@ -237,6 +229,6 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
     )
 })
 
-OrderForm.displayName = 'OrderForm'
+RemissionForm.displayName = 'RemissionForm'
 
-export default OrderForm
+export default RemissionForm

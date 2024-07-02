@@ -209,6 +209,25 @@ export const protectedRoutes = [
             headerContainer: true,
         },
     },
+
+    {
+        key: 'remission.list',
+        path: `${APP_PREFIX_PATH}/remissions-list/`,
+        component: lazy(() => import('@/views/sales/RemissionList')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'remission.create',
+        path: `${APP_PREFIX_PATH}/remission`,
+        component: lazy(() => import('@/views/sales/RemissionNew')),
+        authority: [ADMIN, USER],
+    },
+    {
+        key: 'remission.edit',
+        path: `${APP_PREFIX_PATH}/remission/:branchId/:remissionId?`,
+        component: lazy(() => import('@/views/sales/RemissionEdit')),
+        authority: [ADMIN, USER],
+    },
     
     /** Example purpose only, please remove */
     

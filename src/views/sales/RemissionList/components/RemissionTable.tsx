@@ -1,20 +1,24 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Avatar from '@/components/ui/Avatar'
 import Badge from '@/components/ui/Badge'
 import DataTable from '@/components/shared/DataTable'
 import { HiOutlinePencil, HiOutlineTrash } from 'react-icons/hi'
+import { FaExchangeAlt } from "react-icons/fa";
+
 import { FiPackage } from 'react-icons/fi'
 import {
-    getInventories,
+    getRemissions,
     setTableData,
-    setSelectedInventory,
+    setSelectedRemission,
     toggleDeleteConfirmation,
+    toggleStatusConfirmation,
+    setStatusRemissionData,
     useAppDispatch,
     useAppSelector,
-    GetInventoriesRequest,
+    GetRemissionsRequest,
 } from '../store'
 import useThemeClass from '@/utils/hooks/useThemeClass'
-import InventoryDeleteConfirmation from './InventoryDeleteConfirmation'
+import RemissionDeleteConfirmation from './RemissionDeleteConfirmation'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
 import type {
@@ -22,19 +26,31 @@ import type {
     OnSortParam,
     ColumnDef,
 } from '@/components/shared/DataTable'
-import { FaHistory } from 'react-icons/fa'
+import RemissionChangeStatusConfirmation from './RemissionChangeStatusModal'
+import { apiGetStatusRemission } from '@/services/RemissionServices'
 
-type Inventory = {
-    id: string    
-    idProduct:number
-    idStore:number
-    productName: string
-    productCode:string
-    cant:string
-    storeName:string
-    branchName:string    
-    status: number    
+
+
+
+type Remission = {
+    id: string        
+    date:string
+    dateRemissionF:string    
+    idCompany: number
+    idAppUser: number
+    idStatusRemission: number
+    observation:string
+    idStoreOrigin:number
+    idStoreDestination:number
+    nameStoreOrigin:string
+    nameStoreDestination:string    
+    codeRemission:string
+    status:number
+    statusRemission:string
 }
+/*
+public List<RemissionLineDtoResponse>? RemissionLines { get; set; }
+*/
 
 
 const inventoryStatusColor: Record<
@@ -57,50 +73,60 @@ const inventoryStatusColor: Record<
     },
 }
 
-const ActionColumn = ({ row }: { row: Inventory }) => {
+const ActionColumn = ({ row }: { row: Remission }) => {
     const dispatch = useAppDispatch()
     const { textTheme } = useThemeClass()
     const navigate = useNavigate()
 
-    const onShowHistory = () => {
-        navigate(`/app/inventory-history-list/${row.idProduct}/${row.idStore}`)
+    const onEdit = () => {
+        navigate(`/app/remission/${row.id}`)
     }
 
     const onDelete = () => {
         dispatch(toggleDeleteConfirmation(true))
-        dispatch(setSelectedInventory(row.id))
+        dispatch(setSelectedRemission(row.id))
     }
 
     return (
         <div className="flex justify-end text-lg">
             <span
                 className={`cursor-pointer p-2 hover:${textTheme}`}
-                onClick={onShowHistory}
-                title='Ver Movimientos de Inventario'
+                onClick={onEdit}
             >
-                <FaHistory />
+                <HiOutlinePencil />
             </span>
-            {/*<span
+            <span
                 className="cursor-pointer p-2 hover:text-red-500"
                 onClick={onDelete}
             >
                 <HiOutlineTrash />
-            </span>*/}
+            </span>
         </div>
     )
 }
 
-const InventoryColumn = ({ row }: { row: Inventory }) => {
-   
-    return (
-        <div className="flex items-center">   
-            <span className={`ml-2 rtl:mr-2 font-semibold`}>{row.productName}</span>
-        </div>
-    )
-}
 
-const InventoryTable = () => {
+
+const RemissionTable = () => {
     const tableRef = useRef<DataTableResetHandle>(null)
+    const [openModalStatusRemission, setOpenModalStatusRemission] = useState(false);
+    const [statusRemissionData, setStatusRemissionDataApi] = useState<any[]>([]);
+
+    useEffect(()=>{
+        getStatusRemissionData();
+        
+    },[]);
+
+    const getStatusRemissionData=async()=>{
+        const dataStatusRemission:any = await apiGetStatusRemission();
+        const dataStatus=dataStatusRemission.data;
+        const dataStatusD:any=[];
+        dataStatus.forEach((element:any) => {
+            dataStatusD.push({label:element.id+" - "+element.name, value:element.id});
+        });          
+        setStatusRemissionDataApi(dataStatusD);
+        dispatch(setStatusRemissionData(dataStatusD));       
+    }
 
     const dispatch = useAppDispatch()
 
@@ -110,20 +136,34 @@ const InventoryTable = () => {
     
 
     const { pageIndex, pageSize, sort, query, total } = useAppSelector(
-        (state) => state.salesInventoryList.data.tableData
+        (state) => state.salesRemissionList.data.tableData
     )
 
     const filterData = useAppSelector(
-        (state) => state.salesInventoryList.data.filterData
+        (state) => state.salesRemissionList.data.filterData
     )
 
     const loading = useAppSelector(
-        (state) => state.salesInventoryList.data.loading
+        (state) => state.salesRemissionList.data.loading
     )
 
     const data = useAppSelector(
-        (state) => state.salesInventoryList.data.InventoryList
+        (state) => state.salesRemissionList.data.RemissionList
     )
+
+
+    const showModalStatus=(idRemission:any)=>{
+        /*setOpenModalStatusRemission(true);*/
+        console.log("Abra");
+        
+        dispatch(toggleStatusConfirmation(true))
+        dispatch(setSelectedRemission(idRemission));
+    }
+
+    const onCloseDialogStatus=()=>{
+        setOpenModalStatusRemission(false);
+        console.log("Cerró cadabra");
+    }
 
     useEffect(() => {
         fetchData()
@@ -142,62 +182,69 @@ const InventoryTable = () => {
     )
 
     const fetchData = () => { 
-        let pageParams:GetInventoriesRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
-        dispatch(getInventories(pageParams))
+        let pageParams:GetRemissionsRequest={ pageIndex, pageSize, sort, query, filterData,idCompany:companyDefault?.id };
+        dispatch(getRemissions(pageParams))
     }
 
-    const columns: ColumnDef<Inventory>[] = useMemo(
+    const columns: ColumnDef<Remission>[] = useMemo(
         () => [
             {
-                header:'Código',
-                accessorKey:'productCode',
-                cell:(props)=>{
-                    const row=props.row.original;
-                    return <div className={'flex items-center'}>
-                        <span>{row.productCode}</span>
-                    </div>
-                }
-            },
-            {
-                header: 'Producto',
-                accessorKey: 'productName',
+                header: 'Ref',
+                accessorKey: 'codeRemission',
                 cell: (props) => {
-                    const row = props.row.original
-                    return <InventoryColumn row={row} />
+                    const { codeRemission } = props.row.original
+                    return <span>{codeRemission}</span>
                 },
-            },  
-            {
-                header:'Cantidad',
-                accessorKey:'cant',
-                cell:(props)=>{
-                    const row=props.row.original;
-                    return <div className={'flex items-center'}>
-                        <span>{row.cant}</span>
-                    </div>
-                }
             },
-            
             {
-                header:'Sucursal',
-                accessorKey:'branchName',
-                cell:(props)=>{
-                    const row=props.row.original;
-                    return <div className={'flex items-center'}>
-                        <span>{row.branchName}</span>
-                    </div>
-                }
+                header: 'Fecha',
+                accessorKey: 'DateRemissionF',
+                cell: (props) => {
+                    const { dateRemissionF } = props.row.original
+                    return <span>{dateRemissionF}</span>
+                },
             },
 
             {
-                header:'Bodega',
-                accessorKey:'storeName',
-                cell:(props)=>{
-                    const row=props.row.original;
-                    return <div className={'flex items-center'}>
-                        <span>{row.storeName}</span>
-                    </div>
-                }
+                header: 'Estado Remisión',
+                accessorKey: 'statusRemission',
+                cell: (props) => {
+                    const { statusRemission } = props.row.original
+                    return <span>{statusRemission}</span>
+                },
             },
+
+            {
+                header: '',
+                accessorKey: 'statusRemissionId',
+                cell: (props) => {
+                    const { statusRemission } = props.row.original
+                    return <span
+                    className="cursor-pointer p-2 hover:text-red-500" title='Cambiar Estado'    
+                    onClick={()=>{showModalStatus(props.row.original.id)}}
+                >
+                    <FaExchangeAlt />
+                </span>
+                },
+            },
+
+            {
+                header: 'Bodega Origen',
+                accessorKey: 'nameStoreOrigin',
+                cell: (props) => {
+                    const { nameStoreOrigin } = props.row.original
+                    return <span>{nameStoreOrigin}</span>
+                },
+            },
+            {
+                header: 'Bodega Destino',
+                accessorKey: 'nameStoreDestination',
+                cell: (props) => {
+                    const { nameStoreDestination } = props.row.original
+                    return <span>{nameStoreDestination}</span>
+                },
+            },            
+
             {
                 header: 'Estado',
                 accessorKey: 'status',
@@ -265,9 +312,11 @@ const InventoryTable = () => {
                 onSelectChange={onSelectChange}
                 onSort={onSort}
             />
-            <InventoryDeleteConfirmation />
+            <RemissionDeleteConfirmation />
+
+            <RemissionChangeStatusConfirmation />
         </>
     )
 }
 
-export default InventoryTable
+export default RemissionTable

@@ -30,6 +30,8 @@ export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
     let query:any="";
     let idCompany:any=data.idCompany;
     
+    
+    
     if(data.query!=""){
         query=data.query;
     }else{
@@ -42,7 +44,7 @@ export async function apiGetSalesProducts<T, U extends Record<string, unknown>>(
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_PRODUCT_PREFIX}/products-by-filter`,
         {
-            idCompany:idCompany,
+            idCompany:idCompany,            
             pageIndex:data.pageIndex,
             pageSize:data.pageSize,            
             name:query,            
