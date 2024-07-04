@@ -233,7 +233,12 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         if(values.cant=="" || values.cant==undefined  || parseFloat(values.cant)<=0){
             openNotification('warning','Cantidad','La cantidad no debe ser 0 o vacío');
             return;
-        }        
+        }       
+        
+        if(parseFloat(values.cant)>inventorySel.cant){
+            openNotification('warning','Cantidad','La cantidad no debe sobrepasar la del inventario');
+            return;
+        }
 
         lineProd.push({
                        productCodeLine:productSel.productCode,
@@ -328,7 +333,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                     </FormItem>
                     
                 </div>
-                
+
                 <div className='col-span-1'>
                     <Button type='button' disabled={enabledAdd} className='mt-7' style={{backgroundColor:"#0ea5e9",color:"#fff"}} onClick={addlineProduct}>+</Button>
                 </div>

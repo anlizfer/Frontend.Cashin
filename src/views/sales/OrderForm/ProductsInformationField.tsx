@@ -222,6 +222,11 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
 
         //IMPUESTOS        
         let convTax=(parseFloat((values.taxRate!=undefined)?values.taxRate:"0")/100)+1;       
+
+        if(isNaN(convTax)){
+            convTax=1;
+        }
+        console.log("taxes",convTax);
                 
         //descuento
         values.valorBruto=valorBruto.toString();        
@@ -293,6 +298,11 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
 
         if(values.valorUnit=="" || values.valorUnit==undefined  || parseFloat(values.valorUnit)<=0){
             openNotification('warning','Precio','El precio no debe ser 0 o vacío');
+            return;
+        }
+
+        if(parseFloat(values.cant)>inventorySel.cant){
+            openNotification('warning','Cantidad','La cantidad no debe sobrepasar la del inventario');
             return;
         }
 
