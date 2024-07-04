@@ -12,7 +12,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
-import CustomerInformationFields from './CustomerInformationFields'
 import ProductsInformationFields from './ProductsInformationField'
 injectReducer('salesRemissionForm', reducer)
 
@@ -22,25 +21,16 @@ type FormikRef = FormikProps<any>
 type InitialData = {
     id?: string
     idBranch?:string
-    idStore?:string
-    idDeliveryCompany?:string
-    shippingWithCollection?:number
-    dateDelivery?: string   
+    idStore?:string    
+    idBranchDestination?:string
+    idStoreDestination?:string 
+    dateRemission?: string   
     status?: number    
-    idCompany?:number  
-    idPeople?:string
-    observation?:string
-    idPeopleContact?:string
-    lineProducts?:any[],
-    taxValor?:number,
-    valorBruto?:number,
-    valorTotal?:number,
-    cant?:string,
-    valorUnit?:string,
-    idProduct?: string,
-    idTaxes?:string,
-    taxRate?:string,   
-    discount?:string    
+    idCompany?:number      
+    observation?:string    
+    lineProducts?:any[],    
+    cant?:string,    
+    idProduct?: string,     
 }
 
 export type FormModel = Omit<InitialData, 'tags'> & {
@@ -64,7 +54,7 @@ type RemissionForm = {
 const { useUniqueId } = hooks
 
 const validationSchema = Yup.object().shape({
-    dateDelivery: Yup.string().required('La fecha de entrega  es requerida'),
+    dateRemission: Yup.string().required('La fecha de la remisión  es requerida'),
 
 })
 
@@ -106,8 +96,8 @@ const DeleteRemissionButton = ({ onDelete }: { onDelete: OnDelete }) => {
                 onConfirm={handleConfirm}
             >
                 <p>
-                ¿Estás seguro de que deseas eliminar esta orden? Todo los registros
-                     relacionados con esta orden también se eliminarán. Esta acción
+                ¿Estás seguro de que deseas eliminar esta remisión? Todo los registros
+                     relacionados con esta remisión también se eliminarán. Esta acción
                      no se puede deshacer.
                 </p>
             </ConfirmDialog>
@@ -122,24 +112,16 @@ const RemissionForm = forwardRef<FormikRef, RemissionForm>((props, ref) => {
             id:"",
             idBranch:"",
             idStore:"",
-            idDeliveryCompany:"",
-            shippingWithCollection:0,
-            dateDelivery:"",
+            idBranchDestination:"",
+            idStoreDestination:"",
+            dateRemission:"",
             status:0,
-            idCompany:0,
-            idPeople:"",
-            observation:"",
-            idPeopleContact:"",
-            lineProducts:[],
-            taxValor:0,
-            valorBruto:0,
-            valorTotal:0,
-            cant:"1",
-            valorUnit:"0",
-            idProduct: "",
-            idTaxes:"",
-            taxRate:"",   
-            discount:"0"  
+            idCompany:0,            
+            observation:"",            
+            lineProducts:[],            
+            cant:"1",            
+            idProduct: ""
+            
         },
         onFormSubmit,
         onDiscard,

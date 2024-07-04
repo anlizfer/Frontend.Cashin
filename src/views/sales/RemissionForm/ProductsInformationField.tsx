@@ -36,13 +36,6 @@ import { useAppSelector,useAppDispatch } from './store'
 type FormFieldsName = {
     cant: string
     idProduct:string   
-    valorUnit:string 
-    valorBruto:string
-    discount:string
-    idTaxes:string    
-    taxRate:string
-    taxValor:string
-    valorTotal:string
     observation:string
     lineProducts:any[]
 }
@@ -51,16 +44,9 @@ type ProductsInformationFields = {
     type:string
     touched: FormikTouched<FormFieldsName>
     errors: FormikErrors<FormFieldsName>
-    values: {        
-        valorUnit:string
-        valorBruto:string
+    values: {                
         cant:string
-        idProduct: string
-        idTaxes:string
-        taxRate:string
-        taxValor:string
-        valorTotal:string
-        discount:string
+        idProduct: string        
         observation:string
         lineProducts:any[] 
         [key: string]: unknown
@@ -100,9 +86,7 @@ const PriceInput = (props: InputProps) => {
 
 const ProductsInformationFields = (props: ProductsInformationFields) => {    
     const dispatch = useAppDispatch();    
-    const { values = { idProduct: '', idTaxes:'', cant:"", valorBruto:"", 
-                        valorUnit:"", taxRate:"",valorTotal:"", discount:"",
-                        taxValor:"",lineProducts:[], observation:""
+    const { values = { idProduct: '',  cant:"", lineProducts:[], observation:""
                     }, touched, errors, type } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
@@ -194,52 +178,12 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                 
             }
         });
-
-        
-        
-
-        calcTotal();        
+    
     },[values.idProduct]);
 
-    useEffect(()=>{  
-        taxes.forEach((element:any) => {
-            if(element.id==values.idTaxes){
-                values.taxRate=element.price;                
-            }
-        });
-
-        calcTotal();
-    },[values.idTaxes]);
-
-    useEffect(()=>{                
-        calcTotal();
-    },[values.cant, values.idTaxes,values.valorUnit,values.discount]);
-
-    const calcTotal=()=>{
-        let valorUnitary=parseFloat(values.valorUnit);
-        let cant=parseFloat((values.cant!=undefined)?values.cant:"0");        
-        let valorBruto=cant*valorUnitary;       
-
-        //IMPUESTOS        
-        let convTax=(parseFloat((values.taxRate!=undefined)?values.taxRate:"0")/100)+1;       
-                
-        //descuento
-        values.valorBruto=valorBruto.toString();        
-
-        if(values.discount!=undefined && values.discount!=""  ){
-            valorBruto = valorBruto-parseFloat(values.discount);
-        }
-        console.log(values.discount);
         
-        let subTotal=valorBruto*convTax;                
-        values.taxValor=((valorBruto*(convTax-1)).toFixed(2)).toString();
-        values.valorTotal=subTotal.toFixed(2).toString();
 
-        if(type!="edit"){
-            values.lineProducts=lineProduct;
-            //setProductSel({cantLine:values.cant,...productSel});
-        }       
-    }
+    
 
     const openNotification = (type: 'success' | 'warning' | 'danger' | 'info', title:string, message:string ) => {
         toast.push(
@@ -289,25 +233,13 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         if(values.cant=="" || values.cant==undefined  || parseFloat(values.cant)<=0){
             openNotification('warning','Cantidad','La cantidad no debe ser 0 o vacío');
             return;
-        }
-
-        if(values.valorUnit=="" || values.valorUnit==undefined  || parseFloat(values.valorUnit)<=0){
-            openNotification('warning','Precio','El precio no debe ser 0 o vacío');
-            return;
-        }
+        }        
 
         lineProd.push({
-
                        productCodeLine:productSel.productCode,
                        nameProductLine:productSel.name,
                        idProductLine:productSel.id,
-                       cantLine:values.cant,
-                       priceProductLine:values.valorUnit,
-                       brutoProductLine:values.valorBruto,
-                       discountProductLine:(values.discount!="")?values.discount:"0.00",
-                       taxPriceProductLine:values.taxValor,
-                       totalLine:values.valorTotal,
-                       idTaxes:values.idTaxes
+                       cantLine:values.cant                       
                     });
         setLineProduct([...lineProd,...lineProduct]);        
         cleanData();
@@ -316,31 +248,8 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     useEffect(()=>{
         if(type!="edit"){
             values.lineProducts=lineProduct;
-        }
-        CalcTotal();
-    },[lineProduct])
-
-    const CalcTotal=()=>{
-
-        let _totalBruto=0;
-        let _totalDescuento=0;
-        let _totalImpuesto=0;
-        let _totalNeto=0;
-        lineProduct.map((element:any,ind:any)=>{
-            _totalBruto+=parseFloat(element.brutoProductLine);
-            _totalDescuento+=parseFloat(element.discountProductLine);
-            _totalImpuesto+=parseFloat(element.taxPriceProductLine);
-            _totalNeto+=parseFloat(element.totalLine);
-        });
-
-        console.log("_totalBruto",lineProduct);
-
-        setTotalBruto(formatNumberCashin(_totalBruto));
-        setTotalDescuento(formatNumberCashin(_totalDescuento));
-        setTotalSubtotal(formatNumberCashin((_totalBruto-_totalDescuento)));
-        setTotalImpuesto(formatNumberCashin(_totalImpuesto));
-        setTotalNeto(formatNumberCashin(_totalNeto));
-    }
+        }        
+    },[lineProduct])    
 
 
 
@@ -348,13 +257,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
         setProductSel({});
         values.idProduct='';
         values.idTaxes='0';
-        values.cant="1";
-        values.valorBruto="0.00";
-        values.valorUnit="0.00";
-        values.taxRate="0";
-        values.valorTotal="0.00";
-        values.discount="0.00";
-        values.taxValor="0.00";                    
+        values.cant="1";                          
     }
 
     // Eliminar el elemento en la posición 'index' del array 'estad'
@@ -364,7 +267,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                 return(index!==indx)
             })
         );
-        calcTotal();        
+        
     };
 
    
@@ -372,7 +275,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
 
     return (
         <AdaptableCard>            
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-1 p-2" style={{backgroundColor:"#f1f1f1"}}>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-1 p-2" style={{backgroundColor:"#f1f1f1", border:"1px solid #ccc", borderRadius:"5px"}}>
 
                 <div className="col-span-9">
                     <FormItem
@@ -425,18 +328,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                     </FormItem>
                     
                 </div>
-
                 
-
-
-                
-
-                
-
-                
-
-                
-
                 <div className='col-span-1'>
                     <Button type='button' disabled={enabledAdd} className='mt-7' style={{backgroundColor:"#0ea5e9",color:"#fff"}} onClick={addlineProduct}>+</Button>
                 </div>

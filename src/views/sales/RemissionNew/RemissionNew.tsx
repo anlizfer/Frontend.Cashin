@@ -22,25 +22,11 @@ const RemissionNew = () => {
             return;
         }*/
 
-        if(data.dateDelivery=="" || data.dateDelivery==undefined){
-            openNotification('warning','Fecha de Entrega','Debes seleccionar una fecha de entrega');
+        if(data.dateRemission=="" || data.dateRemission==undefined){
+            openNotification('warning','Fecha de Entrega','Debes seleccionar una fecha de remisión');
             return;
         }
-
-        if(data.idPeople=="" || data.idPeople==undefined){
-            openNotification('warning','Cliente','Debes seleccionar un cliente');
-            return;
-        }
-
-        if(data.idPeopleContact=="" || data.idPeopleContact==undefined){
-            openNotification('warning','Dirección de Envío','Debes seleccionar la dirección de envío');
-            return;
-        }        
-
-        if(data.idDeliveryCompany=="" || data.idDeliveryCompany==undefined){
-            openNotification('warning','Transportadora','Debes seleccionar una transportadora');
-            return;
-        }       
+         
 
         const response = await apiCreateRemission<boolean, FormModel>(data)
         return response.data
@@ -56,17 +42,17 @@ const RemissionNew = () => {
         if (success) {
             toast.push(
                 <Notification
-                    title={'Orden añadida exitosamente'}
+                    title={'Remisión añadida exitosamente'}
                     type="success"
                     duration={2500}
                 >
-                    Orden generada correctamente
+                    Remisión generada correctamente
                 </Notification>,
                 {
                     placement: 'top-center',
                 }
             )
-            navigate('/app/remission-list')
+            navigate('/app/remissions-list')
         }
     }
 

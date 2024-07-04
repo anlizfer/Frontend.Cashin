@@ -17,7 +17,7 @@ import Checkbox from '@/components/ui/Checkbox/Checkbox'
 
 type FormFieldsName = {
 
-    dateDelivery: string    
+    dateRemission: string    
     idBranch:string
     idStore:string
 
@@ -43,7 +43,7 @@ type BasicInformationFields = {
 }
 
 const BasicInformationFields = (props: BasicInformationFields) => {    
-    const { values = { idBranch: '', idStore:'',shippingWithCollection:0, idDeliveryCompany:'', dateDelivery:'', idBranchDestination: '', idStoreDestination:'',}, touched, errors } = props
+    const { values = { idBranch: '', idStore:'',shippingWithCollection:0, idDeliveryCompany:'', dateRemission:'', idBranchDestination: '', idStoreDestination:'',}, touched, errors } = props
 
     const { avatar, userName, authority, email,companies,companyDefault } = useAppSelector(
         (state) => state.auth.user
@@ -58,8 +58,8 @@ const BasicInformationFields = (props: BasicInformationFields) => {
     const [deliveryCompanies,setDeliveryCompanies]=useState<any>([]);
     
     useEffect(()=>{
-        if(values.dateDelivery==undefined || values.dateDelivery==''){
-            values.dateDelivery=obtenerFechaActual();
+        if(values.dateRemission==undefined || values.dateRemission==''){
+            values.dateRemission=obtenerFechaActual();
         }
         
         GetBranches();     
@@ -156,18 +156,18 @@ const BasicInformationFields = (props: BasicInformationFields) => {
         <AdaptableCard>
             <h5>Nueva Remisión</h5>
             <br />
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
 
                 <div className="col-span-2">
                     <FormItem
                         label="Fecha de Remisión"
-                        invalid={(errors.dateDelivery && touched.dateDelivery) as boolean}
-                        errorMessage={errors.dateDelivery}
+                        invalid={(errors.dateRemission && touched.dateRemission) as boolean}
+                        errorMessage={errors.dateRemission}
                     >   
                         <Field
                             type="date"
                             autoComplete="off"
-                            name="dateDelivery"
+                            name="dateRemission"
                             placeholder="Fecha"
                             component={Input}
                         />
@@ -176,7 +176,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
 
                 <div className="col-span-5">
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4"  style={{backgroundColor:"#f1f1f1", paddingLeft:"5px", paddingRight:"5px", border:"1px solid #ccc"}}>
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4"  style={{backgroundColor:"#f1f1f1", paddingLeft:"5px", paddingRight:"5px", border:"1px solid #ccc", borderRadius:"5px"}}>
 
                         <div className="col-span-6">
                             
@@ -255,7 +255,7 @@ const BasicInformationFields = (props: BasicInformationFields) => {
 
                 <div className="col-span-5">
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4"  style={{backgroundColor:"#f1f1f1", paddingLeft:"5px", paddingRight:"5px", border:"1px solid #ccc"}}>
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4"  style={{backgroundColor:"#f1f1f1", paddingLeft:"5px", paddingRight:"5px", border:"1px solid #ccc", borderRadius:"5px"}}>
 
                         <div className="col-span-6">
                             

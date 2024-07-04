@@ -56,7 +56,7 @@ const RemissionChangeStatusConfirmation = () => {
                     duration={2500}
                     onClose={()=>{location.reload()}}
                 >
-                    La Orden ha cambiado de estado.
+                    La Remisión ha cambiado de estado.
                 </Notification>,
                 {
                     placement: 'top-center',
@@ -71,7 +71,7 @@ const RemissionChangeStatusConfirmation = () => {
         <ConfirmDialog
             isOpen={dialogOpen}
             type="danger"
-            title="Cambiar Estado Orden"
+            title="Cambiar Estado Remisión"
             confirmButtonColor="red-600"
             onClose={onDialogClose}
             onRequestClose={onDialogClose}
@@ -79,11 +79,11 @@ const RemissionChangeStatusConfirmation = () => {
             onConfirm={onDelete}
         >
             <p>
-            ¿Estás seguro de que deseas cambiar el estado de esta Orden?            
+            ¿Estás seguro de que deseas cambiar el estado de esta remisión?            
             </p>
             <Select  className='mt-5' 
                 options={statusRemissionData} 
-                placeholder="Estado Orden" 
+                placeholder="Estado Remisión" 
                 onChange={(option)=>{
                     setIdStatusRemission(option?.value);
                 }}
