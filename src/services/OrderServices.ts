@@ -7,6 +7,7 @@ export async function apiGetOrders<T, U extends Record<string, unknown>>(
     let dataFilter:any=data.filterData;
     let query:any="";
     let idOrder:any=data.idOrder;
+    let IdStatusOrder:any=data.IdStatusOrder;
     
     if(data.query!=""){
         query=data.query;
@@ -20,6 +21,7 @@ export async function apiGetOrders<T, U extends Record<string, unknown>>(
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_ORDER_PREFIX}/Orders-by-filter`,
         {            
+            idStatusOrder:IdStatusOrder,
             pageIndex:data.pageIndex,
             pageSize:data.pageSize,            
             name:query,            
@@ -41,7 +43,7 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
     const observation:any=(data.observation!=undefined)?data.observation:'';
     const lineProducts:any=data.lineProducts;
     let totalOrder=0;
-    debugger
+    
 
     const formData = new FormData();    
     formData.append('idPeopleContact', idPeopleContact);
@@ -67,6 +69,9 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
 
     let lineOrderLine:any[]=[];
     lineProducts.forEach((element:any,indx:any) => {
+
+        let idTax=getIdTaxes(element.idTaxes);
+
         lineOrderLine.push({            
             idProduct:element.idProductLine,
             refProduct:element.productCodeLine,
@@ -75,7 +80,7 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
             discount:element.discountProductLine,
             taxes:element.taxPriceProductLine,
             quantity:element.cantLine,
-            idTaxes:element.idTaxes,
+            idTaxes:idTax,
         });
 
         formData.append(`productCategory[${indx}].idProduct`, element.idProductLine);
@@ -96,7 +101,7 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
     nameProductLine
     brutoProductLine
     */
-    
+    debugger
       
     return ApiServiceFetch.fetchData<T>(
         `${API_SERVER}${API_SERVER_ORDER_PREFIX}/create-order`,
@@ -119,6 +124,15 @@ export async function apiCreateOrder<T, U extends Record<string, unknown>>(data:
         ,
         'POST'
     );
+}
+
+function getIdTaxes(arrTaxes:any){
+    console.log(arrTaxes);
+    let idTaxes=<any>[];
+    arrTaxes.forEach((element:any) => {
+        idTaxes.push(element.id);
+    });
+    return idTaxes;
 }
 
 

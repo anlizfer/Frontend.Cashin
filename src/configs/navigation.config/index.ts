@@ -5,7 +5,7 @@ import {
     NAV_ITEM_TYPE_COLLAPSE
 } from '@/constants/navigation.constant'
 import type { NavigationTree } from '@/@types/navigation'
-import { ADMIN, USER } from '@/constants/roles.constant'
+import { ADMIN, LOGISTIC_COORDINATOR, USER } from '@/constants/roles.constant'
 import { APP_PREFIX_PATH } from '@/constants/route.constant'
 
 const navigationConfig: NavigationTree[] = [
@@ -22,7 +22,7 @@ const navigationConfig: NavigationTree[] = [
             {
                 key: 'home',
                 path:`${APP_PREFIX_PATH}/home`,
-                title: 'Inicio',
+                title: 'Inicio S',
                 translateKey: '',
                 icon: 'home',
                 type: NAV_ITEM_TYPE_ITEM,
@@ -287,7 +287,7 @@ const navigationConfig: NavigationTree[] = [
                 translateKey: '',
                 icon: 'confirmations',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [ADMIN, USER],
+                authority: [ADMIN, USER,LOGISTIC_COORDINATOR],
                 subMenu: [
                     {
                         key: 'confirmations.list',
@@ -296,17 +296,8 @@ const navigationConfig: NavigationTree[] = [
                         translateKey: '',
                         icon: '',
                         type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
+                        authority: [ADMIN, USER,LOGISTIC_COORDINATOR],
                         subMenu: [],
-                    },{
-                        key: 'confirmations.create',
-                        path: `${APP_PREFIX_PATH}/confirmation`,
-                        title: 'Crear Confirmación',
-                        translateKey: '',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [ADMIN, USER],
-                        subMenu: [],                
                     }
                 ],
             },
@@ -375,7 +366,7 @@ const navigationConfig: NavigationTree[] = [
                 translateKey: '',
                 icon: 'pickingpacking',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [ADMIN, USER],
+                authority: [ADMIN, USER, LOGISTIC_COORDINATOR],
                 subMenu: [],
                 
             },{

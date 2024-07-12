@@ -19,6 +19,11 @@ injectReducer('salesOrderForm', reducer)
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
 type FormikRef = FormikProps<any>
 
+type Options = {
+    label: string
+    value: string
+}[]
+
 type InitialData = {
     id?: string
     idBranch?:string
@@ -38,13 +43,13 @@ type InitialData = {
     cant?:string,
     valorUnit?:string,
     idProduct?: string,
-    idTaxes?:string,
+    idTaxes?:Options[]
     taxRate?:string,   
     discount?:string    
 }
 
-export type FormModel = Omit<InitialData, 'tags'> & {
-    tags: { label: string; value: string }[] | string[]
+export type FormModel = Omit<InitialData, 'idTaxes'> & {
+    idTaxes: { label: string; value: string }[] | string[]
 }
 
 export type SetSubmitting = (isSubmitting: boolean) => void
@@ -137,7 +142,7 @@ const OrderForm = forwardRef<FormikRef, OrderForm>((props, ref) => {
             cant:"1",
             valorUnit:"0",
             idProduct: "",
-            idTaxes:"",
+            idTaxes:[],
             taxRate:"",   
             discount:"0"  
         },

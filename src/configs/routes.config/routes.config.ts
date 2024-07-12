@@ -228,6 +228,14 @@ export const protectedRoutes = [
         component: lazy(() => import('@/views/sales/RemissionEdit')),
         authority: [ADMIN, USER],
     },
+
+    {
+        key: 'confirmations.list',
+        path: `${APP_PREFIX_PATH}/confirmation-list/`,
+        component: lazy(() => import('@/views/sales/ConfirmationList')),
+        authority: [ADMIN, USER],
+    },
+    
     
     /** Example purpose only, please remove */
     

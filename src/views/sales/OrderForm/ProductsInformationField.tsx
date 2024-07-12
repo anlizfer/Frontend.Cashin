@@ -15,7 +15,7 @@ import Button from '@/components/ui/Button'
 import { apiGetSalesProducts } from '@/services/SalesService'
 import Table from '@/components/ui/Table'
 const { Tr, Th, Td, THead, TBody } = Table
-
+import CreatableSelect from 'react-select/creatable'
 import useThemeClass from '@/utils/hooks/useThemeClass'
 import { useNavigate } from 'react-router-dom'
 import cloneDeep from 'lodash/cloneDeep'
@@ -32,6 +32,10 @@ import paginate from '@/utils/paginate'
 import toast from '@/components/ui/toast'
 import { useAppSelector,useAppDispatch } from './store'
 
+type Options = {
+    label: string
+    value: string
+}[]
 
 type FormFieldsName = {
     cant: string
@@ -39,7 +43,7 @@ type FormFieldsName = {
     valorUnit:string 
     valorBruto:string
     discount:string
-    idTaxes:string    
+    idTaxes:Options[]
     taxRate:string
     taxValor:string
     valorTotal:string
@@ -56,7 +60,7 @@ type ProductsInformationFields = {
         valorBruto:string
         cant:string
         idProduct: string
-        idTaxes:string
+        idTaxes:Options[]
         taxRate:string
         taxValor:string
         valorTotal:string
@@ -100,7 +104,7 @@ const PriceInput = (props: InputProps) => {
 
 const ProductsInformationFields = (props: ProductsInformationFields) => {    
     const dispatch = useAppDispatch();    
-    const { values = { idProduct: '', idTaxes:'', cant:"", valorBruto:"", 
+    const { values = { idProduct: '', idTaxes:[], cant:"", valorBruto:"", 
                         valorUnit:"", taxRate:"",valorTotal:"", discount:"",
                         taxValor:"",lineProducts:[], observation:""
                     }, touched, errors, type } = props
@@ -202,11 +206,21 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     },[values.idProduct]);
 
     useEffect(()=>{  
+
+        console.log("IMPUESTOS",values.idTaxes);
+        values.taxRate="0";
+        let sumaImp=0;
         taxes.forEach((element:any) => {
-            if(element.id==values.idTaxes){
-                values.taxRate=element.price;                
-            }
+            
+            values.idTaxes.forEach((elementTaxes:any) => {
+                if(element.id==elementTaxes.value){
+                    sumaImp+=parseFloat(elementTaxes.price);
+                }
+            });
         });
+        values.taxRate=sumaImp.toString();
+
+        console.log("SUMA IMPUESTO",values.taxRate);
 
         calcTotal();
     },[values.idTaxes]);
@@ -357,7 +371,7 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
     const cleanData=()=>{
         setProductSel({});
         values.idProduct='';
-        values.idTaxes='0';
+        values.idTaxes=[];
         values.cant="1";
         values.valorBruto="0.00";
         values.valorUnit="0.00";
@@ -527,26 +541,22 @@ const ProductsInformationFields = (props: ProductsInformationFields) => {
                     <FormItem
                         label="Impuesto"
                         invalid={
-                                (errors.idTaxes && touched.idTaxes) as boolean
+                            (errors.idTaxes && touched.idTaxes) as unknown as boolean
                         }
-                            errorMessage={errors.idTaxes}
+                        errorMessage={errors.idTaxes as string}
+                            
                         >
                         <Field name="idTaxes">
                             {({ field, form }: FieldProps) => (
                                 <Select
+                                    isMulti
+                                    componentAs={CreatableSelect}
                                     field={field}
                                     form={form}
                                     options={taxes}
-                                    value={taxes.filter(
-                                        (state:any) =>
-                                            state.value === values.idTaxes
-                                    )}
-                                    onChange={(option) =>{                        
-                                        form.setFieldValue(
-                                                    field.name,
-                                                    option?.value
-                                                )
-                                        }                                           
+                                    value={values.idTaxes}
+                                    onChange={(option) =>
+                                        form.setFieldValue(field.name, option)
                                     }
                                 />
                             )}

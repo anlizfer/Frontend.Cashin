@@ -12,6 +12,7 @@ export type TableQueries = {
     pageSize?: number
     query?: string
     idCompany?:number
+    IdStatusOrder?:number[]
     idStore?:string
     idProduct?:string
     sort?: {
